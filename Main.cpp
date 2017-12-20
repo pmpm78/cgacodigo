@@ -12,6 +12,14 @@ bool	keys[256];			// Arreglo para el manejo de teclado
 bool	active=TRUE;		// Bandera de ventana activa
 BOOL	done=FALSE;			// Variable booleana para salir del ciclo
 
+float profundidadEscenario = 20.0f;
+float base1height = 0.0f;
+float piso1height = 5.0f;
+float base2height = 15.0f;
+float piso2height = 20.0f;
+float base3height = 30.0f;
+float piso3height = 35.0f;
+
 //int glWidth;
 //int glHeight;
 infoGame infGame;
@@ -1831,31 +1839,141 @@ void DibujaEscenario(){
 
 	//glBindTexture(GL_TEXTURE_2D, textura);
 
-	//Base del escenario
+	//1er nivel
 	glBegin(GL_QUADS);
 	glColor3f(1, 0, 0);
 	glNormal3f(0.0f, 0.0f, 1.0f);
 	//glTexCoord2f(0.0f, 0.0f); 
-	glVertex3f(0.0f,0.0f, 20.0f);
+	glVertex3f(0.0f, base1height, profundidadEscenario);
 	//glTexCoord2f(8.0f, 0.0f); 
-	glVertex3f(100.0f, 0.0f, 20.0f);
+	glVertex3f(100.0f, base1height, profundidadEscenario);
 	//glTexCoord2f(8.0f, 5.0f); 
-	glVertex3f(100.0f, 10.0f, 20.0f);
+	glVertex3f(100.0f, piso1height, profundidadEscenario);
 	//glTexCoord2f(0.0f, 5.0f); 
-	glVertex3f(0.0f, 10.0f, 20.0f);
+	glVertex3f(0.0f, piso1height, profundidadEscenario);
 	glEnd();
 
 	glBegin(GL_QUADS);
 	glColor3f(1, 0, 0);
 	glNormal3f(0.0f, 0.0f, 1.0f);
 	//glTexCoord2f(0.0f, 0.0f); 
-	glVertex3f(0.0f, 10.0f, 0.0f);
+	glVertex3f(0.0f, piso1height, profundidadEscenario);
 	//glTexCoord2f(8.0f, 0.0f); 
-	glVertex3f(0.0f, 10.0f, 20.0f);
+	glVertex3f(100.0f, piso1height, profundidadEscenario);
 	//glTexCoord2f(8.0f, 5.0f); 
-	glVertex3f(100.0f, 10.0f, 20.0f);
+	glVertex3f(100.0f, piso1height, 0.0f);
 	//glTexCoord2f(0.0f, 5.0f); 
-	glVertex3f(100.0f, 10.0f, 0.0f);
+	glVertex3f(0.0f, piso1height, 0.0f);
+	glEnd();
+
+	//2o nivel
+
+	//izquierda
+	glBegin(GL_QUADS);
+	glColor3f(1, 0, 0);
+	glNormal3f(0.0f, 0.0f, 1.0f);
+	//glTexCoord2f(0.0f, 0.0f); 
+	glVertex3f(0.0f, base2height, profundidadEscenario);
+	//glTexCoord2f(8.0f, 0.0f); 
+	glVertex3f(20.0f, base2height, profundidadEscenario);
+	//glTexCoord2f(8.0f, 5.0f); 
+	glVertex3f(20.0f, piso2height, profundidadEscenario);
+	//glTexCoord2f(0.0f, 5.0f); 
+	glVertex3f(0.0f, piso2height, profundidadEscenario);
+	glEnd();
+
+	glBegin(GL_QUADS);
+	glColor3f(1, 0, 0);
+	glNormal3f(0.0f, 0.0f, 1.0f);
+	//glTexCoord2f(0.0f, 0.0f); 
+	glVertex3f(0.0f, piso2height, profundidadEscenario);
+	//glTexCoord2f(8.0f, 0.0f); 
+	glVertex3f(20.0f, piso2height, profundidadEscenario);
+	//glTexCoord2f(8.0f, 5.0f); 
+	glVertex3f(20.0f, piso2height, 0.0f);
+	//glTexCoord2f(0.0f, 5.0f); 
+	glVertex3f(0.0f, piso2height, 0.0f);
+	glEnd();
+
+	//centro
+	glBegin(GL_QUADS);
+	glColor3f(1, 0, 0);
+	glNormal3f(0.0f, 0.0f, 1.0f);
+	//glTexCoord2f(0.0f, 0.0f); 
+	glVertex3f(40.0f, base2height, profundidadEscenario);
+	//glTexCoord2f(8.0f, 0.0f); 
+	glVertex3f(60.0f, base2height, profundidadEscenario);
+	//glTexCoord2f(8.0f, 5.0f); 
+	glVertex3f(60.0f, piso2height, profundidadEscenario);
+	//glTexCoord2f(0.0f, 5.0f); 
+	glVertex3f(40.0f, piso2height, profundidadEscenario);
+	glEnd();
+
+	glBegin(GL_QUADS);
+	glColor3f(1, 0, 0);
+	glNormal3f(0.0f, 0.0f, 1.0f);
+	//glTexCoord2f(0.0f, 0.0f); 
+	glVertex3f(40.0f, piso2height, profundidadEscenario);
+	//glTexCoord2f(8.0f, 0.0f); 
+	glVertex3f(60.0f, piso2height, profundidadEscenario);
+	//glTexCoord2f(8.0f, 5.0f); 
+	glVertex3f(60.0f, piso2height, 0.0f);
+	//glTexCoord2f(0.0f, 5.0f); 
+	glVertex3f(40.0f, piso2height, 0.0f);
+	glEnd();
+
+	//derecha
+	glBegin(GL_QUADS);
+	glColor3f(1, 0, 0);
+	glNormal3f(0.0f, 0.0f, 1.0f);
+	//glTexCoord2f(0.0f, 0.0f); 
+	glVertex3f(80.0f, base2height, profundidadEscenario);
+	//glTexCoord2f(8.0f, 0.0f); 
+	glVertex3f(100.0f, base2height, profundidadEscenario);
+	//glTexCoord2f(8.0f, 5.0f); 
+	glVertex3f(100.0f, piso2height, profundidadEscenario);
+	//glTexCoord2f(0.0f, 5.0f); 
+	glVertex3f(80.0f, piso2height, profundidadEscenario);
+	glEnd();
+
+	glBegin(GL_QUADS);
+	glColor3f(1, 0, 0);
+	glNormal3f(0.0f, 0.0f, 1.0f);
+	//glTexCoord2f(0.0f, 0.0f); 
+	glVertex3f(80.0f, piso2height, profundidadEscenario);
+	//glTexCoord2f(8.0f, 0.0f); 
+	glVertex3f(100.0f, piso2height, profundidadEscenario);
+	//glTexCoord2f(8.0f, 5.0f); 
+	glVertex3f(100.0f, piso2height, 0.0f);
+	//glTexCoord2f(0.0f, 5.0f); 
+	glVertex3f(80.0f, piso2height, 0.0f);
+	glEnd();
+
+	//3er nivel
+	glBegin(GL_QUADS);
+	glColor3f(1, 0, 0);
+	glNormal3f(0.0f, 0.0f, 1.0f);
+	//glTexCoord2f(0.0f, 0.0f); 
+	glVertex3f(15.0f, base3height, profundidadEscenario);
+	//glTexCoord2f(8.0f, 0.0f); 
+	glVertex3f(85.0f, base3height, profundidadEscenario);
+	//glTexCoord2f(8.0f, 5.0f); 
+	glVertex3f(85.0f, piso3height, profundidadEscenario);
+	//glTexCoord2f(0.0f, 5.0f); 
+	glVertex3f(15.0f, piso3height, profundidadEscenario);
+	glEnd();
+
+	glBegin(GL_QUADS);
+	glColor3f(1, 0, 0);
+	glNormal3f(0.0f, 0.0f, 1.0f);
+	//glTexCoord2f(0.0f, 0.0f); 
+	glVertex3f(15.0f, piso3height, profundidadEscenario);
+	//glTexCoord2f(8.0f, 0.0f); 
+	glVertex3f(85.0f, piso3height, profundidadEscenario);
+	//glTexCoord2f(8.0f, 5.0f); 
+	glVertex3f(85.0f, piso3height, 0.0f);
+	//glTexCoord2f(0.0f, 5.0f); 
+	glVertex3f(15.0f, piso3height, 0.0f);
 	glEnd();
 
 	glDisable(GL_TEXTURE_2D);
