@@ -928,7 +928,7 @@ int IniGL(GLvoid)										// Aqui se configuran los parametros iniciales de Ope
 	Font.BuildFont();
 	controlFunc.inicializaControl();
 
-	infGame.estadoJuego=1;
+	infGame.estadoJuego=6; //
 
 	posCamV=CVector(0.0f, 30.0f, 0.0f);
 	dirCamV=CVector(0.0f, 0.0f, 1.0f);
@@ -1288,7 +1288,8 @@ void actualizaMovPersonaje()
 		}
 	}
 	
-	if(player1.cayendo == true)
+	//comentar para que el personaje no se caiga
+	/*if(player1.cayendo == true)
 	{
 		if(player1.PosicionObj.y > altMin)
 		{
@@ -1300,7 +1301,7 @@ void actualizaMovPersonaje()
 			player1.PosicionObj.y=altMin;
 			altPiso=altMin;
 		}
-	}
+	}*/
 
 	actualizaEsferasdeColision();
 	colisionEsferas();
@@ -1824,7 +1825,44 @@ void ejemploDeteccionCamara()
 	
 }
 
-void DibujaEscenario()
+void DibujaEscenario(){
+
+	glEnable(GL_TEXTURE_2D);
+
+	//glBindTexture(GL_TEXTURE_2D, textura);
+
+	//Base del escenario
+	glBegin(GL_QUADS);
+	glColor3f(1, 0, 0);
+	glNormal3f(0.0f, 0.0f, 1.0f);
+	//glTexCoord2f(0.0f, 0.0f); 
+	glVertex3f(0.0f,0.0f, 20.0f);
+	//glTexCoord2f(8.0f, 0.0f); 
+	glVertex3f(100.0f, 0.0f, 20.0f);
+	//glTexCoord2f(8.0f, 5.0f); 
+	glVertex3f(100.0f, 10.0f, 20.0f);
+	//glTexCoord2f(0.0f, 5.0f); 
+	glVertex3f(0.0f, 10.0f, 20.0f);
+	glEnd();
+
+	glBegin(GL_QUADS);
+	glColor3f(1, 0, 0);
+	glNormal3f(0.0f, 0.0f, 1.0f);
+	//glTexCoord2f(0.0f, 0.0f); 
+	glVertex3f(0.0f, 10.0f, 0.0f);
+	//glTexCoord2f(8.0f, 0.0f); 
+	glVertex3f(0.0f, 10.0f, 20.0f);
+	//glTexCoord2f(8.0f, 5.0f); 
+	glVertex3f(100.0f, 10.0f, 20.0f);
+	//glTexCoord2f(0.0f, 5.0f); 
+	glVertex3f(100.0f, 10.0f, 0.0f);
+	glEnd();
+
+	glDisable(GL_TEXTURE_2D);
+
+}
+
+void DibujaEscenarioDelProfe()
 {
 	//-- Aquí comienzan los planos con textura
 	glEnable(GL_TEXTURE_2D);
@@ -3513,13 +3551,13 @@ int RenderizaEscena(GLvoid)
 	glLoadIdentity();
 		
 	//gluLookAt(-100.0f, 30.0f, 90.0f, -30.0f, 25.0f, 0.0f, 0, 1, 0);
-	if(infGame.estadoJuego == 9)
+	/*if(infGame.estadoJuego == 9)
 	{
 		movimientoSpline();
 		gluLookAt(camSpline.x, camSpline.y, camSpline.z, objSpline.x, objSpline.y, objSpline.z, 0.0f, 1.0f, 0.0f);
-	}
+	}*/
 
-	else if(infGame.estadoJuego == 6)
+	//else if(infGame.estadoJuego == 6)
 		gluLookAt(player1.PosicionObj.x-10.0f, player1.PosicionObj.y+30.0f, player1.PosicionObj.z+40.0f, 
 				  player1.PosicionObj.x, player1.PosicionObj.y+18.0f, player1.PosicionObj.z, 
 				  0.0f, 1.0f, 0.0f);
@@ -3535,7 +3573,7 @@ int RenderizaEscena(GLvoid)
 	glEnable(GL_LIGHT1);
 
 	DibujaEscenario();
-	dibujaSpline();
+	//dibujaSpline();
 	ejemploDeteccionCamara();
 
 	dibujaCajaColision(&cajaPersonaje);
@@ -3633,13 +3671,12 @@ int RenderizaEscena(GLvoid)
 	
 	//PARTÍCULAS -- cambio 5
 	//Se incorpora el dibujo de las partículas en el lugar deseado en la escena
-
-	glPushMatrix();
+	/*glPushMatrix();
 		glTranslatef(player1.PosicionObj.x, player1.PosicionObj.y+2.5f, player1.PosicionObj.z);
 		glRotatef(AngObj, 0.0f, 1.0f, 0.0f);
 		glScalef(3.0f, 3.0f, 3.0f);
 		DibujaParticulas();
-	glPopMatrix();
+	glPopMatrix();*/
 
 	IndicadorVidas();
 	DibujaTextos();
@@ -3656,27 +3693,27 @@ void dibujaSegunEstado()
 {
 	if(infGame.estadoJuego == 1)
 	{
-		glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+		/*glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glLoadIdentity();
 
-		dibujaLogoStudio();
+		dibujaLogoStudio();*/
 	}
 	else if(infGame.estadoJuego == 2)
 	{
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		/*glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glLoadIdentity();
 
-		dibujaPantalladeCarga();
+		dibujaPantalladeCarga();*/
 	}
 	else if(infGame.estadoJuego == 3)
 	{
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		/*glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glLoadIdentity();
 
-		dibujaPantalladeIntroduccion();
+		dibujaPantalladeIntroduccion();*/
 	}
 	else if(infGame.estadoJuego == 4 || infGame.estadoJuego == 5)
 	{
@@ -3952,7 +3989,7 @@ int WINAPI WinMain(	HINSTANCE	hInstance,			// Instancia
 {
 	MSG		msg;									// Estructura de mensajes de la ventana
 	
-	infGame.estadoJuego=0;
+	infGame.estadoJuego=0; //6 o 9 entra directo al juego
 	infGame.glHeight=0;
 	infGame.glWidth=0;
 
