@@ -108,6 +108,54 @@ void CControl::controlTeclado()
 	{
 		estadoTecla[6]=0;
 	}
+
+	//Teclas para el proyecto
+
+	//F
+	if (GetKeyState('F') & 0x80)
+	{
+		estadoTecla[7] = 1;
+	}
+
+	if (!(GetKeyState('F') & 0x80))
+	{
+		estadoTecla[7] = 0;
+	}
+
+	//H
+	if (GetKeyState('H') & 0x80)
+	{
+		estadoTecla[8] = 1;
+	}
+
+	if (!(GetKeyState('H') & 0x80))
+	{
+		estadoTecla[8] = 0;
+	}
+
+	//T
+	if (GetKeyState('T') & 0x80)
+	{
+		estadoTecla[9] = 1;
+	}
+
+	if (!(GetKeyState('T') & 0x80))
+	{
+		estadoTecla[9] = 0;
+	}
+
+	//G
+	if (GetKeyState('G') & 0x80)
+	{
+		estadoTecla[10] = 1;
+	}
+
+	if (!(GetKeyState('G') & 0x80))
+	{
+		estadoTecla[10] = 0;
+	}
+
+	//Fin teclas para el proyecto
 }
 
 void CControl::controlJoystick()

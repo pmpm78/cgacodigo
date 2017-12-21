@@ -12,6 +12,8 @@ bool	keys[256];			// Arreglo para el manejo de teclado
 bool	active=TRUE;		// Bandera de ventana activa
 BOOL	done=FALSE;			// Variable booleana para salir del ciclo
 
+//Variables proyecto
+
 float profundidadEscenario = 20.0f;
 float base1height = 0.0f;
 float piso1height = 5.0f;
@@ -24,6 +26,11 @@ float piso4height = 50.0f;
 float base5height = 60.0f;
 float piso5heightBaja = 65.0f;
 float piso5heightAlta = 70.0f;
+
+CVector posCam;
+CVector dirCam;
+
+//fin variables proyecto
 
 //int glWidth;
 //int glHeight;
@@ -1004,6 +1011,13 @@ int IniGL(GLvoid)										// Aqui se configuran los parametros iniciales de Ope
 
 	timerEstados.iniciaTimer();
 	InicializaParticulas();
+
+	//Inicialización de las variables del proyecto
+
+	posCam = CVector(100.0f, 40.0f, 200.0f);
+	dirCam = CVector(0.0f, 0.0f, 0.0f);
+
+	//Fin inicialización de las variables del proyecto
 
 	return TRUE;										
 }
@@ -3783,9 +3797,10 @@ int RenderizaEscena(GLvoid)
 	}*/
 
 	//else if(infGame.estadoJuego == 6)
-		gluLookAt(player1.PosicionObj.x-10.0f, player1.PosicionObj.y+30.0f, player1.PosicionObj.z+40.0f, 
+		/*gluLookAt(player1.PosicionObj.x-10.0f, player1.PosicionObj.y+30.0f, player1.PosicionObj.z+40.0f, 
 				  player1.PosicionObj.x, player1.PosicionObj.y+18.0f, player1.PosicionObj.z, 
-				  0.0f, 1.0f, 0.0f);
+				  0.0f, 1.0f, 0.0f);*/
+		gluLookAt(posCam.x, posCam.y, posCam.z, dirCam.x, dirCam.y, dirCam.z, 0.0f, 1.0f, 0.0f);
 
 	//AlturaPiso();
 					
@@ -4876,6 +4891,28 @@ void manejaEventosMain()
 					player1.cayendo=false;
 				}
 			}
+
+
+			if (controlFunc.obtieneEstadoTecla(7) == 1) //F
+			{
+				posCam.x += 1.0f;
+			}
+
+			if (controlFunc.obtieneEstadoTecla(8) == 1) //H
+			{
+				posCam.x -= 1.0f;
+			}
+
+			if (controlFunc.obtieneEstadoTecla(9) == 1) //T
+			{
+				posCam.z -= 1.0f;
+			}
+
+			if (controlFunc.obtieneEstadoTecla(10) == 1) //G
+			{
+				posCam.z -= 1.0f;
+			}
+
 		}
 		else if(infGame.pausa == 1)
 		{
