@@ -1014,8 +1014,8 @@ int IniGL(GLvoid)										// Aqui se configuran los parametros iniciales de Ope
 
 	//Inicialización de las variables del proyecto
 
-	posCam = CVector(100.0f, 40.0f, 200.0f);
-	dirCam = CVector(0.0f, 0.0f, 0.0f);
+	posCam = CVector(0.0f, 50.0f, 200.0f);
+	dirCam = CVector(0.0f, 0.0f, -100.0f);
 
 	//Fin inicialización de las variables del proyecto
 
@@ -4895,22 +4895,26 @@ void manejaEventosMain()
 
 			if (controlFunc.obtieneEstadoTecla(7) == 1) //F
 			{
-				posCam.x += 1.0f;
+				posCam.x -= 0.1f;
+				dirCam.x -= 0.1f;
 			}
 
 			if (controlFunc.obtieneEstadoTecla(8) == 1) //H
 			{
-				posCam.x -= 1.0f;
+				posCam.x += 0.1f;
+				dirCam.x += 0.1f;
 			}
 
 			if (controlFunc.obtieneEstadoTecla(9) == 1) //T
 			{
-				posCam.z -= 1.0f;
+				posCam.z -= 0.1f;
+				dirCam.z -= 0.1f;
 			}
 
 			if (controlFunc.obtieneEstadoTecla(10) == 1) //G
 			{
-				posCam.z -= 1.0f;
+				posCam.z += 0.1f;
+				dirCam.z += 0.1f;
 			}
 
 		}
