@@ -1,4 +1,4 @@
-//Snow Bros
+//Snow Bros cga
 
 #include "Main.h"
 #include "3ds.h"
