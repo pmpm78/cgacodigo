@@ -123,7 +123,7 @@ cajaCol cajaPersonaje;
 cajaCol cajaEscenario[7];
 int numCajas=7;
 float altPiso=0.0f;
-float altMin=-30.0f;
+float altMin=-0.0f;
 esferaCol esferaPersonaje;
 esferaCol esferaEnemigo;
 
@@ -278,6 +278,7 @@ void DescargaModelos()
 	
 }
 
+//Parámetros iniciales del personaje
 void InicializaParametrosdeControl()
 {
 	//Esta función establece los parámetros como velocidad del objeto y distancia de la cámara así como la posición y dirección iniciales
@@ -298,8 +299,9 @@ void InicializaParametrosdeControl()
 	player1.AngObj=90.0f;		//Este valor se elige dependiendo de la orientación con la que aparece el modelo en la escena al dibujarlo
 								//sin aplicarle ninguna transformación (hacia adonde está volteando). Se elige un ángulo tal que al aplicarle
 								//una rotación inicial con respecto al eje Y esté viendo hacia la misma dirección que la definida por AngDir
-		
-	player1.PosicionObj=CVector(-80.0f, 0.0f, 10.0f); //Esta es la posición inicial del objeto en la escena
+	
+	//Posición inicial personaje
+	player1.PosicionObj=CVector(5.0f, 5.0f, 10.0f); //Esta es la posición inicial del objeto en la escena
 	player1.Direccion.x=(float)cos(player1.AngDir*PI/180.0f);
 	player1.Direccion.y=0.0f;
 	player1.Direccion.z=(float)sin(player1.AngDir*PI/180.0f);
@@ -646,7 +648,7 @@ void DatosAnimacion()
 	KeyFrame2[0].Angpi=0.0f;
 	KeyFrame2[0].Angpd=0.0f;
 	KeyFrame2[0].Xtor=0.0f;
-	KeyFrame2[0].Ytor=8.0f;
+	KeyFrame2[0].Ytor=20.0f; //modificado para hacer el salto más alto
 	KeyFrame2[0].Ztor=0.0f;
 
 	KeyFrame2[1].Angt1=0.0f;
@@ -2854,9 +2856,9 @@ void IndicadorVidas()
 
 	glBegin(GL_QUADS);
 		glTexCoord2f(0.0f, 0.0f); glVertex2f(				 0.0f,					0.0f);
-		glTexCoord2f(1.0f, 0.0f); glVertex2f(infGame.glWidth*0.2f,					0.0f);
-		glTexCoord2f(1.0f, 1.0f); glVertex2f(infGame.glWidth*0.2f, infGame.glHeight*0.3f);
-		glTexCoord2f(0.0f, 1.0f); glVertex2f(				 0.0f, infGame.glHeight*0.3f);
+		glTexCoord2f(1.0f, 0.0f); glVertex2f(infGame.glWidth*0.1f,					0.0f);
+		glTexCoord2f(1.0f, 1.0f); glVertex2f(infGame.glWidth*0.1f, infGame.glHeight*0.1f);
+		glTexCoord2f(0.0f, 1.0f); glVertex2f(				 0.0f, infGame.glHeight*0.1f);
 	glEnd();
 
 	glDisable(GL_ALPHA_TEST);
