@@ -53,15 +53,15 @@ void guardaModelo();
 void cargaModelo();
 void actualizaCajaColPersonaje();
 
-//PARTÕCULAS -- cambio 1
+//PART√çCULAS -- cambio 1
 
-//Se crea el contenedor para almacenar los datos de cada partÌcula (ver estructura particles)
-//Al tener almacenados los datos para cada partÌcula se puede definir un patron de movimiento y tiempo
-//de desvanecimiento que puede ser igual, distinto o ligeramente distinto para cada partÌcula
+//Se crea el contenedor para almacenar los datos de cada part√≠cula (ver estructura particles)
+//Al tener almacenados los datos para cada part√≠cula se puede definir un patron de movimiento y tiempo
+//de desvanecimiento que puede ser igual, distinto o ligeramente distinto para cada part√≠cula
 //Contenedor de particulas
-particles particle[MAX_PARTICULAS];	// Arreglo de partÌculas
+particles particle[MAX_PARTICULAS];	// Arreglo de part√≠culas
 
-//Nombre y ubicaciÛn del modelo
+//Nombre y ubicaci√≥n del modelo
 #define FILE_NAME1c  "Modelos/stewie_torso.3ds"
 #define FILE_NAME2c  "Modelos/stewie_cabeza.3ds"
 #define FILE_NAME3c  "Modelos/stewie_piernader.3ds"
@@ -103,28 +103,28 @@ t3DModel g_3DModel1e;
 //Objeto para acceder a las variables de control del personaje
 paramObj player1;
 
-//Objeto para manejo de la c·mara
+//Objeto para manejo de la c√°mara
 paramCam camara1;
 
-//Objeto para acceder a la selecciÛn de materiales
+//Objeto para acceder a la selecci√≥n de materiales
 CMateriales Material;
 
 //- SPLINES -//
-CVector puntosdeControl[20]; //AquÌ se almacenar· la posiciÛn de cada punto de control
+CVector puntosdeControl[20]; //Aqu√≠ se almacenar√° la posici√≥n de cada punto de control
 int resolucion=60; //Entre cada par de puntos de control se calcularan puntos intermedios para dibujar 5 segmentos
 int pSpAct; //Punto calculado actual (indice)
 int totalP; //Total de puntos a calcular
 int pctAct;  //Punto de control actual
 CVector pAct;  //Punto actual calculado en la curva
 CVector pSig;  //Punto siguiente a calcular en la curva
-CVector DirSp; //DirecciÛn del vector sobre la curva
+CVector DirSp; //Direcci√≥n del vector sobre la curva
 
 CVector camSpline;
 CVector objSpline;
 
 cajaCol cajaPersonaje;
-cajaCol cajaEscenario[7];
-int numCajas=7;
+cajaCol cajaEscenario[11];
+int numCajas=11;
 float altPiso=0.0f;
 float altMin=-0.0f;
 esferaCol esferaPersonaje;
@@ -163,13 +163,13 @@ FRAME KeyFrame2[maxKF2]; //Contenedor para almacenar cada keyframe de la secuenc
 FRAME KeyFrame3[maxKF3]; //Contenedor para almacenar cada keyframe de la secuencia 3
 
 //Variables auxiliares para animacion
-bool play=false; //Bandera para iniciar la animaciÛn
-int  playIndex=0; //Auxiliar para leer la informaciÛn del contenedor de keyframes
-int  tipoAnim=1; //Indicador del tipo de animaciÛn: 1-caminando
+bool play=false; //Bandera para iniciar la animaci√≥n
+int  playIndex=0; //Auxiliar para leer la informaci√≥n del contenedor de keyframes
+int  tipoAnim=1; //Indicador del tipo de animaci√≥n: 1-caminando
 
 //Variables para iluminacion
-//GLfloat LightPos[] = {-250.0f, 80.0f, 5.0f, 1.0f};		// PosiciÛn de la luz
-GLfloat LightPos[] = {-50.0f, 80.0f, 50.0f, 1.0f};		// PosiciÛn de la luz
+//GLfloat LightPos[] = {-250.0f, 80.0f, 5.0f, 1.0f};		// Posici√≥n de la luz
+GLfloat LightPos[] = {-50.0f, 80.0f, 50.0f, 1.0f};		// Posici√≥n de la luz
 GLfloat LightAmb[] = { 0.8f,  0.8f, 0.8f, 1.0f};		// Valores de la componente ambiente
 GLfloat LightDif[] = { 0.9f,  0.9f, 0.9f, 1.0f};		// Valores de la componente difusa
 GLfloat LightSpc[] = { 0.5f,  0.5f, 0.5f, 1.0f};		// Valores de la componente especular
@@ -281,10 +281,10 @@ void DescargaModelos()
 	
 }
 
-//Par·metros iniciales del personaje
+//Par√°metros iniciales del personaje
 void InicializaParametrosdeControl()
 {
-	//Esta funciÛn establece los par·metros como velocidad del objeto y distancia de la c·mara asÌ como la posiciÛn y direcciÛn iniciales
+	//Esta funci√≥n establece los par√°metros como velocidad del objeto y distancia de la c√°mara as√≠ como la posici√≥n y direcci√≥n iniciales
 
 	player1.visible=true;
 	player1.cayendo=true;
@@ -292,19 +292,19 @@ void InicializaParametrosdeControl()
 	player1.dirX=0;
 	player1.dirZ=0;
 
-	player1.VelocidadObj=0.3f;
+	player1.VelocidadObj=0.2f;
 	player1.DistanciaCam=50.0f;
 	
-	player1.CamaraPosAlt=15.0f;	//PosiciÛn en y de la c·mara (altura a la que se situa la c·mara)
-	player1.CamaraObjAlt=8.0f;	//PosiciÛn en y del objetivo de la c·mara (altura a la que ve la c·mara)
-	player1.AngDir=0.0f;		//Este ·ngulo inicial hace que la direcciÛn inicial sea paralela al eje Z y con sentido negativo
-	player1.AngDirCam=0.0f;		//Este es el ·ngulo inicial que define la posiciÛn de la camara respecto al personaje
-	player1.AngObj=90.0f;		//Este valor se elige dependiendo de la orientaciÛn con la que aparece el modelo en la escena al dibujarlo
-								//sin aplicarle ninguna transformaciÛn (hacia adonde est· volteando). Se elige un ·ngulo tal que al aplicarle
-								//una rotaciÛn inicial con respecto al eje Y estÈ viendo hacia la misma direcciÛn que la definida por AngDir
+	player1.CamaraPosAlt=15.0f;	//Posici√≥n en y de la c√°mara (altura a la que se situa la c√°mara)
+	player1.CamaraObjAlt=8.0f;	//Posici√≥n en y del objetivo de la c√°mara (altura a la que ve la c√°mara)
+	player1.AngDir=0.0f;		//Este √°ngulo inicial hace que la direcci√≥n inicial sea paralela al eje Z y con sentido negativo
+	player1.AngDirCam=0.0f;		//Este es el √°ngulo inicial que define la posici√≥n de la camara respecto al personaje
+	player1.AngObj=90.0f;		//Este valor se elige dependiendo de la orientaci√≥n con la que aparece el modelo en la escena al dibujarlo
+								//sin aplicarle ninguna transformaci√≥n (hacia adonde est√° volteando). Se elige un √°ngulo tal que al aplicarle
+								//una rotaci√≥n inicial con respecto al eje Y est√© viendo hacia la misma direcci√≥n que la definida por AngDir
 	
-	//PosiciÛn inicial personaje
-	player1.PosicionObj=CVector(5.0f, 5.0f, 10.0f); //Esta es la posiciÛn inicial del objeto en la escena
+	//Posici√≥n inicial personaje
+	player1.PosicionObj=CVector(5.0f, 5.0f, 10.0f); //Esta es la posici√≥n inicial del objeto en la escena
 	player1.Direccion.x=(float)cos(player1.AngDir*PI/180.0f);
 	player1.Direccion.y=0.0f;
 	player1.Direccion.z=(float)sin(player1.AngDir*PI/180.0f);
@@ -315,7 +315,7 @@ void InicializaParametrosdeControl()
 	player1.PosicionCam=player1.PosicionObj-player1.DireccionCam*player1.DistanciaCam;
 	player1.PosicionCam.y=player1.CamaraPosAlt;
 
-	player1.ObjetivoCam=player1.PosicionObj;		//La c·mara ve siempre al objeto
+	player1.ObjetivoCam=player1.PosicionObj;		//La c√°mara ve siempre al objeto
 	player1.ObjetivoCam.y=player1.CamaraObjAlt;		//Para que no vea a los "pies" del objeto (personaje)
 
 	player1.escalaX=0.8f;
@@ -334,7 +334,7 @@ void InicializaCamara()
 
 	//como no es simetrico porque va de -200.0 a 100.0 se usa un desplazamiento para la distancia
 	camara1.VariacionDespDist=-50.0f;
-	camara1.VariacionDespCam=0.0f;	//la variaciond de la camara se mantiene simÈtrica
+	camara1.VariacionDespCam=0.0f;	//la variacion de la camara se mantiene sim√©trica
 
 	camara1.FactorCam=camara1.VariacionCam/camara1.VariacionDist;
 
@@ -350,24 +350,24 @@ void InicializaCamara()
 
 void IniVarsPlayer()
 {
-	Angt1=25.0f;   //Torso: rotaciÛn en X
-	Angt2=0.0f;   //Torso: rotaciÛn en Z
-	Angc1=-25.0f;   //Cabeza: rotaciÛn en X
-	Angc2=0.0f;   //Cabeza: rotaciÛn en Y
-	Angbi1=-100.0f;  //Brazo Izq: rotaciÛn en X
-	Angbi2=0.0f;  //Brazo Izq: rotaciÛn en Z
-	Angbib=-30.0f;  //Antebrazo Izq: rotaciÛn en X
-	Angbd1=120.0f;  //Brazo Der: rotaciÛn en X
-	Angbd2=0.0f;  //Brazo Der: rotaciÛn en Z
-	Angbdb=-80.0f;  //Antebrazo Der: rotaciÛn en X
-	Angpizq=40.0f; //Pierna Izq: rotaciÛn en X
-	Angpder=-60.0f; //Pierna Der: rotaciÛn en X
-	Angpi=0.0f;   //Pie Izq: rotaciÛn en X
-	Angpd=0.0f;   //Pie Der: rotaciÛn en X
+	Angt1=25.0f;   //Torso: rotaci√≥n en X
+	Angt2=0.0f;   //Torso: rotaci√≥n en Z
+	Angc1=-25.0f;   //Cabeza: rotaci√≥n en X
+	Angc2=0.0f;   //Cabeza: rotaci√≥n en Y
+	Angbi1=-100.0f;  //Brazo Izq: rotaci√≥n en X
+	Angbi2=0.0f;  //Brazo Izq: rotaci√≥n en Z
+	Angbib=-30.0f;  //Antebrazo Izq: rotaci√≥n en X
+	Angbd1=120.0f;  //Brazo Der: rotaci√≥n en X
+	Angbd2=0.0f;  //Brazo Der: rotaci√≥n en Z
+	Angbdb=-80.0f;  //Antebrazo Der: rotaci√≥n en X
+	Angpizq=40.0f; //Pierna Izq: rotaci√≥n en X
+	Angpder=-60.0f; //Pierna Der: rotaci√≥n en X
+	Angpi=0.0f;   //Pie Izq: rotaci√≥n en X
+	Angpd=0.0f;   //Pie Der: rotaci√≥n en X
 
-	Xtor=0.0f;    //Torso: posiciÛn en X
-	Ytor=0.0f;    //Torso: posiciÛn en Y
-	Ztor=0.0f;    //Torso: posiciÛn en Z
+	Xtor=0.0f;    //Torso: posici√≥n en X
+	Ytor=0.0f;    //Torso: posici√≥n en Y
+	Ztor=0.0f;    //Torso: posici√≥n en Z
 }
 
 void CargaTexturas(){
@@ -651,7 +651,7 @@ void DatosAnimacion()
 	KeyFrame2[0].Angpi=0.0f;
 	KeyFrame2[0].Angpd=0.0f;
 	KeyFrame2[0].Xtor=0.0f;
-	KeyFrame2[0].Ytor=.0f; //modificado para hacer el salto m·s alto
+	KeyFrame2[0].Ytor=.0f; //modificado para hacer el salto m√°s alto
 	KeyFrame2[0].Ztor=0.0f;
 
 	KeyFrame2[1].Angt1=0.0f;
@@ -795,43 +795,55 @@ void inicializaPuntosdeControl()
 void iniciaCajasdeColision()
 {
 	cajaPersonaje.pos=CVector(player1.PosicionObj.x, player1.PosicionObj.y+3.0f, player1.PosicionObj.z);
-	cajaPersonaje.tamaÒo=CVector(6.0f, 6.0f, 6.0f);
-	cajaPersonaje.xMin=cajaPersonaje.pos.x-cajaPersonaje.tamaÒo.x*0.5f;
-	cajaPersonaje.xMax=cajaPersonaje.pos.x+cajaPersonaje.tamaÒo.x*0.5f;
-	cajaPersonaje.yMin=cajaPersonaje.pos.y-cajaPersonaje.tamaÒo.y*0.5f;
-	cajaPersonaje.yMax=cajaPersonaje.pos.y+cajaPersonaje.tamaÒo.y*0.5f;
-	cajaPersonaje.zMin=cajaPersonaje.pos.z-cajaPersonaje.tamaÒo.z*0.5f;
-	cajaPersonaje.zMax=cajaPersonaje.pos.z+cajaPersonaje.tamaÒo.z*0.5f;
+	cajaPersonaje.tama√±o=CVector(6.0f, 6.0f, 6.0f);
+	cajaPersonaje.xMin=cajaPersonaje.pos.x-cajaPersonaje.tama√±o.x*0.5f;
+	cajaPersonaje.xMax=cajaPersonaje.pos.x+cajaPersonaje.tama√±o.x*0.5f;
+	cajaPersonaje.yMin=cajaPersonaje.pos.y-cajaPersonaje.tama√±o.y*0.5f;
+	cajaPersonaje.yMax=cajaPersonaje.pos.y+cajaPersonaje.tama√±o.y*0.5f;
+	cajaPersonaje.zMin=cajaPersonaje.pos.z-cajaPersonaje.tama√±o.z*0.5f;
+	cajaPersonaje.zMax=cajaPersonaje.pos.z+cajaPersonaje.tama√±o.z*0.5f;
 
-	cajaEscenario[0].pos=CVector(-75.0f, -30.0f, 10.0f);
-	cajaEscenario[0].tamaÒo=CVector(30.0f, 60.0f, 20.0f);
+	cajaEscenario[0].pos=CVector(50.0f, 2.5f, 10.0f);
+	cajaEscenario[0].tama√±o=CVector(100.0f, 5.0f, 20.0f);
 
-	cajaEscenario[1].pos=CVector(-67.5f, 7.5f, -10.0f);
-	cajaEscenario[1].tamaÒo=CVector(45.0f, 15.0f, 20.0f);
+	cajaEscenario[1].pos=CVector(50.0f, 17.5f, 10.0f);
+	cajaEscenario[1].tama√±o=CVector(70.0f, 5.0f, 20.0f);
 
-	cajaEscenario[2].pos=CVector(-67.5f, 22.5f, -20.0f);
-	cajaEscenario[2].tamaÒo=CVector(45.0f, 15.0f, 20.0f);
+	cajaEscenario[2].pos=CVector(50.0f, 25.0f, 10.0f);
+	cajaEscenario[2].tama√±o=CVector(10.0f, 10.0f, 20.0f);
 
-	cajaEscenario[3].pos=CVector(-52.5f, -25.0f, 5.0f);
-	cajaEscenario[3].tamaÒo=CVector(15.0f, 60.0f, 10.0f);
+	cajaEscenario[3].pos=CVector(15.0f, 32.5f, 10.0f);
+	cajaEscenario[3].tama√±o=CVector(30.0f, 5.0f, 20.0f);
 
-	cajaEscenario[4].pos=CVector(-22.5f, 17.5f, -5.0f);
-	cajaEscenario[4].tamaÒo=CVector(45.0f, 25.0f, 10.0f);
+	cajaEscenario[4].pos=CVector(50.0f, 47.5f, 10.0f);
+	cajaEscenario[4].tama√±o=CVector(20.0f, 35.0f, 20.0f);
 
-	cajaEscenario[5].pos=CVector(-22.5f, 4.0f, 11.0f);
-	cajaEscenario[5].tamaÒo=CVector(45.0f, 8.0f, 22.0f);
+	cajaEscenario[5].pos = CVector(85.0f, 32.5f, 10.0f);
+	cajaEscenario[5].tama√±o = CVector(30.0f, 5.0f, 20.0f);
 
-	cajaEscenario[6].pos=CVector(-22.5f, -6.0f, 12.5f);
-	cajaEscenario[6].tamaÒo=CVector(45.0f, 20.0f, 25.0f);
+	cajaEscenario[6].pos=CVector(50.0f, 47.5f, 10.0f);
+	cajaEscenario[6].tama√±o=CVector(70.0f, 5.0f, 20.0f);
 
-	for(int i=0; i<7; i++)
+	cajaEscenario[7].pos = CVector(15.0f, 62.5f, 10.0f);
+	cajaEscenario[7].tama√±o = CVector(30.0f, 5.0f, 20.0f);
+
+	cajaEscenario[8].pos=CVector(85.0f, 62.5f, 10.0f);
+	cajaEscenario[8].tama√±o=CVector(30.0f, 5.0f, 20.0f);
+
+	cajaEscenario[9].pos = CVector(50.0f, 70.0f, 10.0f);
+	cajaEscenario[9].tama√±o = CVector(10.0f, 10.0f, 20.0f);
+
+	cajaEscenario[10].pos = CVector(50.0f, 77.5f, 10.0f);
+	cajaEscenario[10].tama√±o = CVector(70.0f, 5.0f, 20.0f);
+
+	for(int i=0; i<numCajas; i++)
 	{
-		cajaEscenario[i].xMin=cajaEscenario[i].pos.x-cajaEscenario[i].tamaÒo.x*0.5f;
-		cajaEscenario[i].xMax=cajaEscenario[i].pos.x+cajaEscenario[i].tamaÒo.x*0.5f;
-		cajaEscenario[i].yMin=cajaEscenario[i].pos.y-cajaEscenario[i].tamaÒo.y*0.5f;
-		cajaEscenario[i].yMax=cajaEscenario[i].pos.y+cajaEscenario[i].tamaÒo.y*0.5f;
-		cajaEscenario[i].zMin=cajaEscenario[i].pos.z-cajaEscenario[i].tamaÒo.z*0.5f;
-		cajaEscenario[i].zMax=cajaEscenario[i].pos.z+cajaEscenario[i].tamaÒo.z*0.5f;
+		cajaEscenario[i].xMin=cajaEscenario[i].pos.x-cajaEscenario[i].tama√±o.x*0.5f;
+		cajaEscenario[i].xMax=cajaEscenario[i].pos.x+cajaEscenario[i].tama√±o.x*0.5f;
+		cajaEscenario[i].yMin=cajaEscenario[i].pos.y-cajaEscenario[i].tama√±o.y*0.5f;
+		cajaEscenario[i].yMax=cajaEscenario[i].pos.y+cajaEscenario[i].tama√±o.y*0.5f;
+		cajaEscenario[i].zMin=cajaEscenario[i].pos.z-cajaEscenario[i].tama√±o.z*0.5f;
+		cajaEscenario[i].zMax=cajaEscenario[i].pos.z+cajaEscenario[i].tama√±o.z*0.5f;
 	}
 }
 
@@ -885,27 +897,27 @@ void iniciaEsferasdeColision()
 	esferaEnemigo.pos=CVector(-70.0f, 5.0f, 15.0f);
 }
 
-//PARTÕCULAS -- cambio 3
-//Se definen los valores iniciales para las propiedades de cada partÌcula
-//Por ejemplo, si se desea que todas las partÌculas surjan de un punto la posiciÛn inicial debe ser 0
-//en cada eje para todas las partÌculas.
-//Si se desea que el punto de origen estÈ dentro de un ·rea mas amplia que un punto, como una zona esfÈrica
-//la posiciÛn inicial de cada particula se puede calcular de manera pseudoaleatoria limitando a un rango para
-//cada eje como se hace en la asignaciÛn inicial de velocidad en esta funciÛn
+//PART√çCULAS -- cambio 3
+//Se definen los valores iniciales para las propiedades de cada part√≠cula
+//Por ejemplo, si se desea que todas las part√≠culas surjan de un punto la posici√≥n inicial debe ser 0
+//en cada eje para todas las part√≠culas.
+//Si se desea que el punto de origen est√© dentro de un √°rea mas amplia que un punto, como una zona esf√©rica
+//la posici√≥n inicial de cada particula se puede calcular de manera pseudoaleatoria limitando a un rango para
+//cada eje como se hace en la asignaci√≥n inicial de velocidad en esta funci√≥n
 
-//fade es la cantidad que se le restar· al valor alpha del color de la partÌcula en cada ciclo de dibujo y
-//determina el tiempo de vida de la partÌcula. Si se quiere que todas las particulas duren lo mismo se le da un
-//valor constante y todas las partÌculas desapareceran antes de "revivir". Si se da un valor aleatorio algunas 
+//fade es la cantidad que se le restar√° al valor alpha del color de la part√≠cula en cada ciclo de dibujo y
+//determina el tiempo de vida de la part√≠cula. Si se quiere que todas las particulas duren lo mismo se le da un
+//valor constante y todas las part√≠culas desapareceran antes de "revivir". Si se da un valor aleatorio algunas 
 //particulas moriran mientras otras continuan vivas, de esta forma el efecto se desvanece poco a poco mientras 
-//se sigue generando en la posiciÛn inicial en vez de terminar de manera abrupta y reiniciarse.
+//se sigue generando en la posici√≥n inicial en vez de terminar de manera abrupta y reiniciarse.
 
-//TambiÈn se puede definir la gravedad para cada partÌcula. Dependiendo que tan grande sea el valor que se le da
-//se puede hacer que esa sea la direcciÛn de movimiento o que sea la definida por la velocidad en cada eje pero
+//Tambi√©n se puede definir la gravedad para cada part√≠cula. Dependiendo que tan grande sea el valor que se le da
+//se puede hacer que esa sea la direcci√≥n de movimiento o que sea la definida por la velocidad en cada eje pero
 //desviandose un poco al final hacia el eje con mas gravedad (se hace una curva)
 
 void InicializaParticulas()
 {
-	//Se inicializan los valores de la estructura de partÌculas
+	//Se inicializan los valores de la estructura de part√≠culas
 	for (int loop=0; loop<MAX_PARTICULAS; loop++)				
 	{
   		particle[loop].life=1.0f;
@@ -934,7 +946,7 @@ int IniGL(GLvoid)										// Aqui se configuran los parametros iniciales de Ope
 	glClearDepth(1.0f);									// Valor para el Depth Buffer
 	glEnable(GL_DEPTH_TEST);							// Activa Depth Testing
 	glDepthFunc(GL_LEQUAL);								// Tipo de Depth Testing a usar
-	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Correccion de c·lculos de perspectiva
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Correccion de c√°lculos de perspectiva
 
 	glCullFace(GL_BACK);								// Configurado para eliminar caras traseras
 	glEnable(GL_CULL_FACE);								// Activa eliminacion de caras ocultas
@@ -951,7 +963,7 @@ int IniGL(GLvoid)										// Aqui se configuran los parametros iniciales de Ope
 	glLightfv(GL_LIGHT1, GL_DIFFUSE,  LightDif2);		// Componente difusa
 	glLightfv(GL_LIGHT1, GL_SPECULAR, LightSpc2);		// Componente especular
 
-	glEnable(GL_LIGHTING);								// Habilita la iluminaciÛn
+	glEnable(GL_LIGHTING);								// Habilita la iluminaci√≥n
 
 	e=gluNewQuadric();
 
@@ -1017,12 +1029,12 @@ int IniGL(GLvoid)										// Aqui se configuran los parametros iniciales de Ope
 	timerEstados.iniciaTimer();
 	InicializaParticulas();
 
-	//InicializaciÛn de las variables del proyecto
+	//Inicializaci√≥n de las variables del proyecto
 
-	posCam = CVector(0.0f, 50.0f, 200.0f);
-	dirCam = CVector(0.0f, 0.0f, -100.0f);
+	posCam = CVector(50.0f, 100.0f, 120.0f);
+	dirCam = CVector(50.0f, 0.0f, -100.0f);
 
-	//Fin inicializaciÛn de las variables del proyecto
+	//Fin inicializaci√≥n de las variables del proyecto
 
 	return TRUE;										
 }
@@ -1115,8 +1127,8 @@ void obtieneAltPiso()
 			&& ((ade > cajaEscenario[i].zMin && ade < cajaEscenario[i].zMax)
 			|| (atr > cajaEscenario[i].zMin && atr < cajaEscenario[i].zMax)))
 		{
-			//Comprueba que sea la m·s cercana en y (de otra forma podrÌa tomar la altura de la caja m·s baja si se encuentra una caja debajo de otra)
-			if(fabs(cajaPersonaje.pos.y-cajaEscenario[i].pos.y) <= cajaPersonaje.tamaÒo.y*0.5f+cajaEscenario[i].tamaÒo.y*0.5f+player1.VelocidadObj)
+			//Comprueba que sea la m√°s cercana en y (de otra forma podr√≠a tomar la altura de la caja m√°s baja si se encuentra una caja debajo de otra)
+			if(fabs(cajaPersonaje.pos.y-cajaEscenario[i].pos.y) <= cajaPersonaje.tama√±o.y*0.5f+cajaEscenario[i].tama√±o.y*0.5f+player1.VelocidadObj)
 			{
 				altPiso=cajaEscenario[i].yMax;
 				break;
@@ -1173,12 +1185,12 @@ bool colisionCajas(int dir)
 		}
 
 		cajaPersonaje.pos=CVector(pSig.x, pSig.y+3.0f, pSig.z);
-		cajaPersonaje.xMin=cajaPersonaje.pos.x-cajaPersonaje.tamaÒo.x*0.5f;
-		cajaPersonaje.xMax=cajaPersonaje.pos.x+cajaPersonaje.tamaÒo.x*0.5f;
-		cajaPersonaje.yMin=cajaPersonaje.pos.y-cajaPersonaje.tamaÒo.y*0.5f;
-		cajaPersonaje.yMax=cajaPersonaje.pos.y+cajaPersonaje.tamaÒo.y*0.5f;
-		cajaPersonaje.zMin=cajaPersonaje.pos.z-cajaPersonaje.tamaÒo.z*0.5f;
-		cajaPersonaje.zMax=cajaPersonaje.pos.z+cajaPersonaje.tamaÒo.z*0.5f;
+		cajaPersonaje.xMin=cajaPersonaje.pos.x-cajaPersonaje.tama√±o.x*0.5f;
+		cajaPersonaje.xMax=cajaPersonaje.pos.x+cajaPersonaje.tama√±o.x*0.5f;
+		cajaPersonaje.yMin=cajaPersonaje.pos.y-cajaPersonaje.tama√±o.y*0.5f;
+		cajaPersonaje.yMax=cajaPersonaje.pos.y+cajaPersonaje.tama√±o.y*0.5f;
+		cajaPersonaje.zMin=cajaPersonaje.pos.z-cajaPersonaje.tama√±o.z*0.5f;
+		cajaPersonaje.zMax=cajaPersonaje.pos.z+cajaPersonaje.tama√±o.z*0.5f;
 
 		//Inf-izq-front
 		A.x=cajaPersonaje.xMin;
@@ -1232,15 +1244,15 @@ bool colisionCajas(int dir)
 			col=true;
 			
 			if(dir == 1) //x+
-				player1.PosicionObj.x=cajaEscenario[i].xMin-cajaPersonaje.tamaÒo.x*0.5f;
+				player1.PosicionObj.x=cajaEscenario[i].xMin-cajaPersonaje.tama√±o.x*0.5f;
 			else if(dir == 2) //x-
-				player1.PosicionObj.x=cajaEscenario[i].xMax+cajaPersonaje.tamaÒo.x*0.5f;
+				player1.PosicionObj.x=cajaEscenario[i].xMax+cajaPersonaje.tama√±o.x*0.5f;
 			else if(dir == 3) //z+
-				player1.PosicionObj.z=cajaEscenario[i].zMin-cajaPersonaje.tamaÒo.z*0.5f;
+				player1.PosicionObj.z=cajaEscenario[i].zMin-cajaPersonaje.tama√±o.z*0.5f;
 			else if(dir == 4) //z-
-				player1.PosicionObj.z=cajaEscenario[i].zMax+cajaPersonaje.tamaÒo.z*0.5f;
+				player1.PosicionObj.z=cajaEscenario[i].zMax+cajaPersonaje.tama√±o.z*0.5f;
 			else if(dir == 5) //y+
-				player1.PosicionObj.y=cajaEscenario[i].yMin-cajaPersonaje.tamaÒo.y*0.5f-3.0f;
+				player1.PosicionObj.y=cajaEscenario[i].yMin-cajaPersonaje.tama√±o.y*0.5f-3.0f;
 			else if(dir == 6) //y-
 				player1.PosicionObj.y=cajaEscenario[i].yMax;
 		
@@ -1336,7 +1348,7 @@ void actualizaMovPersonaje()
 	}
 	
 	//comentar para que el personaje no se caiga
-	/*if(player1.cayendo == true)
+	if(player1.cayendo == true)
 	{
 		if(player1.PosicionObj.y > altMin)
 		{
@@ -1348,7 +1360,7 @@ void actualizaMovPersonaje()
 			player1.PosicionObj.y=altMin;
 			altPiso=altMin;
 		}
-	}*/
+	}
 
 	actualizaEsferasdeColision();
 	colisionEsferas();
@@ -1385,7 +1397,7 @@ void controlEstados()
 			infGame.estadoJuego=4;
 		}
 	}
-	else if(infGame.estadoJuego == 4) //TÌtulo del juego
+	else if(infGame.estadoJuego == 4) //T√≠tulo del juego
 	{
 		if(timerEstados.TiempoActual() > 31000)
 		{
@@ -1531,7 +1543,7 @@ void ControlPersonaje(int funcion)
 		ActualizaCamara();
 
 	}
-	else if(funcion == 4) //Avanza hacia atr·s
+	else if(funcion == 4) //Avanza hacia atr√°s
 	{
 		player1.PosicionObj=player1.PosicionObj-player1.Direccion*player1.VelocidadObj;
 		player1.PosicionCam=player1.PosicionObj-player1.DireccionCam*player1.DistanciaCam;
@@ -1544,12 +1556,12 @@ void ControlPersonaje(int funcion)
 		ActualizaCamara();
 
 	}
-	else if(funcion == 5) //Sube objetivo de la c·mara
+	else if(funcion == 5) //Sube objetivo de la c√°mara
 	{
 		camara1.ObjetivoCam.y+=1.0f;
 		player1.CamaraObjAlt+=1.0f;
 	}
-	else if(funcion == 6) //Baja objetivo de la c·mara
+	else if(funcion == 6) //Baja objetivo de la c√°mara
 	{
 		camara1.ObjetivoCam.y-=1.0f;
 		player1.CamaraObjAlt-=1.0f;
@@ -1560,12 +1572,12 @@ void ControlPersonaje(int funcion)
 void actualizaCajaColPersonaje()
 {
 	cajaPersonaje.pos=CVector(player1.PosicionObj.x, player1.PosicionObj.y+3.0f, player1.PosicionObj.z);
-	cajaPersonaje.xMin=cajaPersonaje.pos.x-cajaPersonaje.tamaÒo.x*0.5f;
-	cajaPersonaje.xMax=cajaPersonaje.pos.x+cajaPersonaje.tamaÒo.x*0.5f;
-	cajaPersonaje.yMin=cajaPersonaje.pos.y-cajaPersonaje.tamaÒo.y*0.5f;
-	cajaPersonaje.yMax=cajaPersonaje.pos.y+cajaPersonaje.tamaÒo.y*0.5f;
-	cajaPersonaje.zMin=cajaPersonaje.pos.z-cajaPersonaje.tamaÒo.z*0.5f;
-	cajaPersonaje.zMax=cajaPersonaje.pos.z+cajaPersonaje.tamaÒo.z*0.5f;
+	cajaPersonaje.xMin=cajaPersonaje.pos.x-cajaPersonaje.tama√±o.x*0.5f;
+	cajaPersonaje.xMax=cajaPersonaje.pos.x+cajaPersonaje.tama√±o.x*0.5f;
+	cajaPersonaje.yMin=cajaPersonaje.pos.y-cajaPersonaje.tama√±o.y*0.5f;
+	cajaPersonaje.yMax=cajaPersonaje.pos.y+cajaPersonaje.tama√±o.y*0.5f;
+	cajaPersonaje.zMin=cajaPersonaje.pos.z-cajaPersonaje.tama√±o.z*0.5f;
+	cajaPersonaje.zMax=cajaPersonaje.pos.z+cajaPersonaje.tama√±o.z*0.5f;
 }
 
 void ControlPersonaje2(int funcion)
@@ -1839,37 +1851,6 @@ void DibujaTransportadora()
 		animTs+=0.01f;
 	else
 		animTs=0.0f;
-}
-
-void dibujaCamara()
-{
-	glPushMatrix();
-		glRotatef(90.0f, 0.0f, 0.0f, 1.0f);
-		gluCylinder(e, 1.0f, 1.0f, 5.0f, 12, 1);
-		glPushMatrix();
-			glTranslatef(0.0f, 0.0f, 5.0f);
-			gluDisk(e, 0.0f, 1.0f, 12, 1);
-		glPopMatrix();
-	glPopMatrix();
-}
-
-void ejemploDeteccionCamara()
-{
-	glPushMatrix();
-		glTranslatef(posCamV.x, posCamV.y, posCamV.z);
-		glRotatef(20.0f, 1.0f, 0.0f, 0.0f);
-		dibujaCamara();
-	glPopMatrix();
-
-	vecCamVPl=Normaliza(player1.PosicionObj-posCamV);
-
-	float p=Punto(vecCamVPl, dirCamV);
-
-	if(p > 0.5f)
-		detectado=1;
-	else
-		detectado=0;
-	
 }
 
 void DibujaEscenario(){
@@ -2164,588 +2145,6 @@ void DibujaEscenario(){
 
 }
 
-void DibujaEscenarioDelProfe()
-{
-	//-- AquÌ comienzan los planos con textura
-	glEnable(GL_TEXTURE_2D);
-
-	//Plano 1 (pared 1)
-	glBindTexture(GL_TEXTURE_2D, textura[2].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(0.0f,0.0f,1.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-90.0f, 20.0f, -20.0f);
-		glTexCoord2f(8.0f, 0.0f); glVertex3f( 80.0f, 20.0f, -20.0f);
-		glTexCoord2f(8.0f, 5.0f); glVertex3f( 80.0f, 80.0f, -20.0f);
-		glTexCoord2f(0.0f, 5.0f); glVertex3f(-90.0f, 80.0f, -20.0f);
-	glEnd();
-
-	//Plano 2 (piso 1)
-	glBindTexture(GL_TEXTURE_2D, textura[4].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(0.0f,1.0f,0.0f);
-		glTexCoord2f(0.1f, 0.0f); glVertex3f(-90.0f, 0.0f, 20.0f);
-		glTexCoord2f(1.0f, 0.0f); glVertex3f(-60.0f, 0.0f, 20.0f);
-		glTexCoord2f(1.0f, 1.0f); glVertex3f(-60.0f, 0.0f,  0.0f);
-		glTexCoord2f(0.1f, 1.0f); glVertex3f(-90.0f, 0.0f,  0.0f);
-	glEnd();
-
-	//Plano 3 (pared 2)
-	glBindTexture(GL_TEXTURE_2D, textura[3].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(0.0f,0.0f,1.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-90.0f,  0.0f, 0.0f);
-		glTexCoord2f(3.0f, 0.0f); glVertex3f(-60.0f,  0.0f, 0.0f);
-		glTexCoord2f(3.0f, 1.0f); glVertex3f(-60.0f, 15.0f, 0.0f);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(-90.0f, 15.0f, 0.0f);
-	glEnd();
-
-	//Plano 4 (pared 3)
-	glBindTexture(GL_TEXTURE_2D, textura[0].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(0.0f,0.0f,1.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-60.0f,  5.0f, 0.0f);
-		glTexCoord2f(1.0f, 0.0f); glVertex3f(-45.0f,  5.0f, 0.0f);
-		glTexCoord2f(1.0f, 0.7f); glVertex3f(-45.0f, 15.0f, 0.0f);
-		glTexCoord2f(0.0f, 0.7f); glVertex3f(-60.0f, 15.0f, 0.0f);
-	glEnd();
-
-	//Plano 5 (pared 4)
-	glBindTexture(GL_TEXTURE_2D, textura[0].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(0.0f,0.0f,1.0f);
-		glTexCoord2f(-0.6f, 0.0f); glVertex3f(-90.0f, 15.0f, -10.0f);
-		glTexCoord2f( 1.4f, 0.0f); glVertex3f(-45.0f, 15.0f, -10.0f);
-		glTexCoord2f( 1.4f, 1.0f); glVertex3f(-45.0f, 30.0f, -10.0f);
-		glTexCoord2f(-0.6f, 1.0f); glVertex3f(-90.0f, 30.0f, -10.0f);
-	glEnd();
-
-	//Plano 6 (piso 2)
-	glBindTexture(GL_TEXTURE_2D, textura[1].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(0.0f,1.0f,0.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-90.0f, 15.0f,   0.0f);
-		glTexCoord2f(2.5f, 0.0f); glVertex3f(-45.0f, 15.0f,   0.0f);
-		glTexCoord2f(2.5f, 1.0f); glVertex3f(-45.0f, 15.0f, -10.0f);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(-90.0f, 15.0f, -10.0f);
-	glEnd();
-
-	//Plano 7 (pared 5)
-	glBindTexture(GL_TEXTURE_2D, textura[16].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(0.0f,0.0f,1.0f);
-		glTexCoord2f(0.0f, 0.5f); glVertex3f(-90.0f, -20.0f, 20.0f);
-		glTexCoord2f(1.0f, 0.5f); glVertex3f(-60.0f, -20.0f, 20.0f);
-		glTexCoord2f(1.0f, 1.0f); glVertex3f(-60.0f,   0.0f, 20.0f);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(-90.0f,   0.0f, 20.0f);
-	glEnd();
-
-	//Plano 8 (bloque piso)
-	glBindTexture(GL_TEXTURE_2D, textura[5].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(0.0f,1.0f,0.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-60.0f, 5.0f, 10.0f);
-		glTexCoord2f(1.0f, 0.0f); glVertex3f(-45.0f, 5.0f, 10.0f);
-		glTexCoord2f(1.0f, 1.0f); glVertex3f(-45.0f, 5.0f,  0.0f);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(-60.0f, 5.0f,  0.0f);
-	glEnd();
-
-	//Plano 9 (bloque pared front)
-	glBindTexture(GL_TEXTURE_2D, textura[6].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(0.0f,0.0f,1.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-60.0f, 0.0f, 10.0f);
-		glTexCoord2f(1.0f, 0.0f); glVertex3f(-45.0f, 0.0f, 10.0f);
-		glTexCoord2f(1.0f, 1.0f); glVertex3f(-45.0f, 5.0f, 10.0f);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(-60.0f, 5.0f, 10.0f);
-	glEnd();
-
-	//Plano 10 (bloque pared izq)
-	glBindTexture(GL_TEXTURE_2D, textura[6].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(-1.0f,0.0f,0.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-60.0f, 0.0f,  0.0f);
-		glTexCoord2f(1.0f, 0.0f); glVertex3f(-60.0f, 0.0f, 10.0f);
-		glTexCoord2f(1.0f, 1.0f); glVertex3f(-60.0f, 5.0f, 10.0f);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(-60.0f, 5.0f,  0.0f);
-	glEnd();
-
-	//Plano 11 (pared 6)
-	glBindTexture(GL_TEXTURE_2D, textura[12].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(0.0f,0.0f,1.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-60.0f, -20.0f, 10.0f);
-		glTexCoord2f(4.0f, 0.0f); glVertex3f(-45.0f, -20.0f, 10.0f);
-		glTexCoord2f(4.0f, 8.0f); glVertex3f(-45.0f,   0.0f, 10.0f);
-		glTexCoord2f(0.0f, 8.0f); glVertex3f(-60.0f,   0.0f, 10.0f);
-	glEnd();
-
-	//Plano 12 (pared 7)
-	glBindTexture(GL_TEXTURE_2D, textura[12].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(1.0f,0.0f,0.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-60.0f, -20.0f, 20.0f);
-		glTexCoord2f(4.0f, 0.0f); glVertex3f(-60.0f, -20.0f, 10.0f);
-		glTexCoord2f(4.0f, 8.0f); glVertex3f(-60.0f,   0.0f, 10.0f);
-		glTexCoord2f(0.0f, 8.0f); glVertex3f(-60.0f,   0.0f, 20.0f);
-	glEnd();
-
-	//Plano 13 (pared 8)
-	glBindTexture(GL_TEXTURE_2D, textura[7].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(-1.0f,0.0f,0.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-45.0f, 15.0f, -10.0f);
-		glTexCoord2f(1.0f, 0.0f); glVertex3f(-45.0f, 15.0f,   0.0f);
-		glTexCoord2f(1.0f, 1.0f); glVertex3f(-45.0f, 30.0f,   0.0f);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(-45.0f, 30.0f, -10.0f);
-	glEnd();
-
-	//Plano 14 (pared 9)
-	glBindTexture(GL_TEXTURE_2D, textura[8].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(0.0f,0.0f,1.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-45.0f,  5.0f, 0.0f);
-		glTexCoord2f(1.0f, 0.0f); glVertex3f(  0.0f,  5.0f, 0.0f);
-		glTexCoord2f(1.0f, 1.0f); glVertex3f(  0.0f, 30.0f, 0.0f);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(-45.0f, 30.0f, 0.0f);
-	glEnd();
-
-	//Plano 15 (piso 3)
-	glBindTexture(GL_TEXTURE_2D, textura[1].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(0.0f,1.0f,0.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-45.0f, 30.0f,   0.0f);
-		glTexCoord2f(2.5f, 0.0f); glVertex3f(  0.0f, 30.0f,   0.0f);
-		glTexCoord2f(2.5f, 1.0f); glVertex3f(  0.0f, 30.0f, -10.0f);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(-45.0f, 30.0f, -10.0f);
-	glEnd();
-
-	//Plano 16 (piso 4)
-	glBindTexture(GL_TEXTURE_2D, textura[11].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(0.0f,1.0f,0.0f);
-		glTexCoord2f( 0.0f, 0.0f); glVertex3f(-45.0f, 8.0f, 22.0f);
-		glTexCoord2f(14.0f, 0.0f); glVertex3f(  0.0f, 8.0f, 22.0f);
-		glTexCoord2f(14.0f, 5.0f); glVertex3f(  0.0f, 8.0f,  0.0f);
-		glTexCoord2f( 0.0f, 5.0f); glVertex3f(-45.0f, 8.0f,  0.0f);
-	glEnd();
-
-	//Plano 17 (pared 10)
-	glBindTexture(GL_TEXTURE_2D, textura[10].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(-1.0f,0.0f,0.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-45.0f, 4.0f,  0.0f);
-		glTexCoord2f(5.0f, 0.0f); glVertex3f(-45.0f, 4.0f, 22.0f);
-		glTexCoord2f(5.0f, 2.0f); glVertex3f(-45.0f, 8.0f, 22.0f);
-		glTexCoord2f(0.0f, 2.0f); glVertex3f(-45.0f, 8.0f,  0.0f);
-	glEnd();
-
-	//Plano 18 (pared 11)
-	glBindTexture(GL_TEXTURE_2D, textura[9].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(0.0f,0.0f,1.0f);
-		glTexCoord2f( 0.0f, 0.0f); glVertex3f(-45.0f, 4.0f, 22.0f);
-		glTexCoord2f(14.0f, 0.0f); glVertex3f(  0.0f, 4.0f, 22.0f);
-		glTexCoord2f(14.0f, 2.0f); glVertex3f(  0.0f, 8.0f, 22.0f);
-		glTexCoord2f( 0.0f, 2.0f); glVertex3f(-45.0f, 8.0f, 22.0f);
-	glEnd();
-
-	//Plano 19 (piso 5)
-	glBindTexture(GL_TEXTURE_2D, textura[11].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(0.0f,1.0f,0.0f);
-		glTexCoord2f( 0.0f, 0.0f); glVertex3f(-45.0f, 4.0f, 25.0f);
-		glTexCoord2f(14.0f, 0.0f); glVertex3f(  0.0f, 4.0f, 25.0f);
-		glTexCoord2f(14.0f, 1.0f); glVertex3f(  0.0f, 4.0f, 22.0f);
-		glTexCoord2f( 0.0f, 1.0f); glVertex3f(-45.0f, 4.0f, 22.0f);
-	glEnd();
-
-	//Plano 20 (pared 12)
-	glBindTexture(GL_TEXTURE_2D, textura[10].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(-1.0f,0.0f,0.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-45.0f, -6.0f,  0.0f);
-		glTexCoord2f(6.0f, 0.0f); glVertex3f(-45.0f, -6.0f, 25.0f);
-		glTexCoord2f(6.0f, 5.0f); glVertex3f(-45.0f,  4.0f, 25.0f);
-		glTexCoord2f(0.0f, 5.0f); glVertex3f(-45.0f,  4.0f,  0.0f);
-	glEnd();
-
-	//Plano 21 (pared 13)
-	glBindTexture(GL_TEXTURE_2D, textura[9].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(0.0f,0.0f,1.0f);
-		glTexCoord2f( 0.0f, 0.0f); glVertex3f(-45.0f, -6.0f, 25.0f);
-		glTexCoord2f(14.0f, 0.0f); glVertex3f(  0.0f, -6.0f, 25.0f);
-		glTexCoord2f(14.0f, 5.0f); glVertex3f(  0.0f,  4.0f, 25.0f);
-		glTexCoord2f( 0.0f, 5.0f); glVertex3f(-45.0f,  4.0f, 25.0f);
-	glEnd();
-
-	//Plano 22 (piso 6)
-	glBindTexture(GL_TEXTURE_2D, textura[11].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(0.0f,1.0f,0.0f);
-		glTexCoord2f(0.0f, 3.0f); glVertex3f(-25.0f, 10.0f, 8.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(  0.0f, 10.0f, 8.0f);
-		glTexCoord2f(2.0f, 0.0f); glVertex3f(  0.0f, 10.0f, 0.0f);
-		glTexCoord2f(2.0f, 3.0f); glVertex3f(-25.0f, 10.0f, 0.0f);
-	glEnd();
-
-	//Plano 23 (piso 7)
-	glBindTexture(GL_TEXTURE_2D, textura[11].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(0.0f,1.0f,0.0f);
-		glTexCoord2f(0.0f, 3.0f); glVertex3f(-15.0f, 10.0f, 12.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(  0.0f, 10.0f, 12.0f);
-		glTexCoord2f(1.0f, 0.0f); glVertex3f(  0.0f, 10.0f,  8.0f);
-		glTexCoord2f(1.0f, 3.0f); glVertex3f(-15.0f, 10.0f,  8.0f);
-	glEnd();
-
-	//Plano 24 (piso 8)
-	glBindTexture(GL_TEXTURE_2D, textura[11].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(0.0f,1.0f,0.0f);
-		glTexCoord2f(0.0f, 3.0f); glVertex3f(-7.0f, 10.0f, 16.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f( 0.0f, 10.0f, 16.0f);
-		glTexCoord2f(1.0f, 0.0f); glVertex3f( 0.0f, 10.0f, 12.0f);
-		glTexCoord2f(1.0f, 3.0f); glVertex3f(-7.0f, 10.0f, 12.0f);
-	glEnd();
-
-	//Plano 25 (piso 9)
-	glBindTexture(GL_TEXTURE_2D, textura[11].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(0.0f,1.0f,0.0f);
-		glTexCoord2f(0.0f, 3.0f); glVertex3f(-8.0f, 12.0f, 8.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f( 0.0f, 12.0f, 8.0f);
-		glTexCoord2f(2.0f, 0.0f); glVertex3f( 0.0f, 12.0f, 0.0f);
-		glTexCoord2f(2.0f, 3.0f); glVertex3f(-8.0f, 12.0f, 0.0f);
-	glEnd();
-
-	//Plano 26 (pared 14)
-	glBindTexture(GL_TEXTURE_2D, textura[9].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(-1.0f,0.0f,0.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-25.0f,  8.0f, 0.0f);
-		glTexCoord2f(2.0f, 0.0f); glVertex3f(-25.0f,  8.0f, 8.0f);
-		glTexCoord2f(2.0f, 1.0f); glVertex3f(-25.0f, 10.0f, 8.0f);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(-25.0f, 10.0f, 0.0f);
-	glEnd();
-
-	//Plano 27 (pared 15)
-	glBindTexture(GL_TEXTURE_2D, textura[9].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(-1.0f,0.0f,0.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-15.0f,  8.0f,  8.0f);
-		glTexCoord2f(1.0f, 0.0f); glVertex3f(-15.0f,  8.0f, 12.0f);
-		glTexCoord2f(1.0f, 1.0f); glVertex3f(-15.0f, 10.0f, 12.0f);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(-15.0f, 10.0f,  8.0f);
-	glEnd();
-
-	//Plano 28 (pared 16)
-	glBindTexture(GL_TEXTURE_2D, textura[9].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(-1.0f,0.0f,0.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-7.0f,  8.0f, 12.0f);
-		glTexCoord2f(1.0f, 0.0f); glVertex3f(-7.0f,  8.0f, 16.0f);
-		glTexCoord2f(1.0f, 1.0f); glVertex3f(-7.0f, 10.0f, 16.0f);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(-7.0f, 10.0f, 12.0f);
-	glEnd();
-
-	//Plano 29 (pared 17)
-	glBindTexture(GL_TEXTURE_2D, textura[9].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(-1.0f,0.0f,0.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-8.0f, 10.0f, 0.0f);
-		glTexCoord2f(2.0f, 0.0f); glVertex3f(-8.0f, 10.0f, 8.0f);
-		glTexCoord2f(2.0f, 1.0f); glVertex3f(-8.0f, 12.0f, 8.0f);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(-8.0f, 12.0f, 0.0f);
-	glEnd();
-
-	//Plano 30 (pared 18)
-	glBindTexture(GL_TEXTURE_2D, textura[10].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(0.0f,0.0f,1.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-7.0f,  8.0f, 16.0f);
-		glTexCoord2f(2.0f, 0.0f); glVertex3f( 0.0f,  8.0f, 16.0f);
-		glTexCoord2f(2.0f, 1.0f); glVertex3f( 0.0f, 10.0f, 16.0f);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(-7.0f, 10.0f, 16.0f);
-	glEnd();
-
-	//Plano 31 (pared 19)
-	glBindTexture(GL_TEXTURE_2D, textura[10].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(0.0f,0.0f,1.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-15.0f,  8.0f, 12.0f);
-		glTexCoord2f(3.0f, 0.0f); glVertex3f(- 7.0f,  8.0f, 12.0f);
-		glTexCoord2f(3.0f, 1.0f); glVertex3f(- 7.0f, 10.0f, 12.0f);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(-15.0f, 10.0f, 12.0f);
-	glEnd();
-
-	//Plano 32 (pared 20)
-	glBindTexture(GL_TEXTURE_2D, textura[10].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(0.0f,0.0f,1.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-25.0f,  8.0f, 8.0f);
-		glTexCoord2f(4.0f, 0.0f); glVertex3f(-15.0f,  8.0f, 8.0f);
-		glTexCoord2f(4.0f, 1.0f); glVertex3f(-15.0f, 10.0f, 8.0f);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(-25.0f, 10.0f, 8.0f);
-	glEnd();
-
-	//Plano 33 (pared 21)
-	glBindTexture(GL_TEXTURE_2D, textura[10].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(0.0f,0.0f,1.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-8.0f, 10.0f, 8.0f);
-		glTexCoord2f(2.0f, 0.0f); glVertex3f( 0.0f, 10.0f, 8.0f);
-		glTexCoord2f(2.0f, 1.0f); glVertex3f( 0.0f, 12.0f, 8.0f);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(-8.0f, 12.0f, 8.0f);
-	glEnd();
-
-	//Plano 34 (pared 22)
-	glBindTexture(GL_TEXTURE_2D, textura[14].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(-1.0f,0.0f,0.0f);
-		glTexCoord2f(0.6f, 0.0f); glVertex3f(0.0f, -20.0f,  0.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(0.0f, -20.0f, 30.0f);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(0.0f,  17.0f, 30.0f);
-		glTexCoord2f(0.6f, 1.0f); glVertex3f(0.0f,  17.0f,  0.0f);
-	glEnd();
-
-	//Plano 35 (pared 23)
-	glBindTexture(GL_TEXTURE_2D, textura[14].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(0.0f,0.0f,1.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f( 0.0f, -20.0f, 30.0f);
-		glTexCoord2f(1.0f, 0.0f); glVertex3f(80.0f, -20.0f, 30.0f);
-		glTexCoord2f(1.0f, 1.0f); glVertex3f(80.0f,  17.0f, 30.0f);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f( 0.0f,  17.0f, 30.0f);
-	glEnd();
-
-	//Plano 36 (piso 10)
-	glBindTexture(GL_TEXTURE_2D, textura[13].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(0.0f,1.0f,0.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f( 0.0f, 17.0f, 30.0f);
-		glTexCoord2f(6.0f, 0.0f); glVertex3f(80.0f, 17.0f, 30.0f);
-		glTexCoord2f(6.0f, 2.0f); glVertex3f(80.0f, 17.0f,  0.0f);
-		glTexCoord2f(0.0f, 2.0f); glVertex3f( 0.0f, 17.0f,  0.0f);
-	glEnd();
-
-	//Plano 37 (pared 24)
-	glBindTexture(GL_TEXTURE_2D, textura[15].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(0.0f,0.0f,1.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(22.0f, 17.0f, 8.0f);
-		glTexCoord2f(1.0f, 0.0f); glVertex3f(80.0f, 17.0f, 8.0f);
-		glTexCoord2f(1.0f, 1.0f); glVertex3f(80.0f, 35.0f, 8.0f);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(22.0f, 35.0f, 8.0f);
-	glEnd();
-
-	//Plano 38 (pared 25)
-	glBindTexture(GL_TEXTURE_2D, textura[7].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(-1.0f,0.0f,0.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(22.0f, 17.0f, 0.0f);
-		glTexCoord2f(1.0f, 0.0f); glVertex3f(22.0f, 17.0f, 8.0f);
-		glTexCoord2f(1.0f, 2.0f); glVertex3f(22.0f, 35.0f, 8.0f);
-		glTexCoord2f(0.0f, 2.0f); glVertex3f(22.0f, 35.0f, 0.0f);
-	glEnd();
-
-	//Plano 39 (piso 11)
-	glBindTexture(GL_TEXTURE_2D, textura[1].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(0.0f,1.0f,0.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(22.0f, 35.0f, 8.0f);
-		glTexCoord2f(2.5f, 0.0f); glVertex3f(80.0f, 35.0f, 8.0f);
-		glTexCoord2f(2.5f, 1.0f); glVertex3f(80.0f, 35.0f, 0.0f);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(22.0f, 35.0f, 0.0f);
-	glEnd();
-
-	//Plano 40 (pared 26)
-	glBindTexture(GL_TEXTURE_2D, textura[7].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(-1.0f,0.0f,0.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(80.0f, 35.0f, 0.0f);
-		glTexCoord2f(1.0f, 0.0f); glVertex3f(80.0f, 35.0f, 8.0f);
-		glTexCoord2f(1.0f, 2.0f); glVertex3f(80.0f, 50.0f, 8.0f);
-		glTexCoord2f(0.0f, 2.0f); glVertex3f(80.0f, 50.0f, 0.0f);
-	glEnd();
-
-	//Plano 41 (pared 27)
-	glBindTexture(GL_TEXTURE_2D, textura[8].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(0.0f,0.0f,1.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f( 0.0f, 17.0f, 0.0f);
-		glTexCoord2f(1.0f, 0.0f); glVertex3f(80.0f, 17.0f, 0.0f);
-		glTexCoord2f(1.0f, 1.0f); glVertex3f(80.0f, 50.0f, 0.0f);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f( 0.0f, 50.0f, 0.0f);
-	glEnd();
-
-	//Plano 42 (pared 28)
-	glBindTexture(GL_TEXTURE_2D, textura[7].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(-1.0f,0.0f,0.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(0.0f, 30.0f, -10.0f);
-		glTexCoord2f(1.0f, 0.0f); glVertex3f(0.0f, 30.0f,   0.0f);
-		glTexCoord2f(1.0f, 2.0f); glVertex3f(0.0f, 50.0f,   0.0f);
-		glTexCoord2f(0.0f, 2.0f); glVertex3f(0.0f, 50.0f, -10.0f);
-	glEnd();
-
-	//Plano 43 (pared 29)
-	glBindTexture(GL_TEXTURE_2D, textura[16].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(-1.0f,0.0f,0.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(80.0f, 17.0f,  8.0f);
-		glTexCoord2f(1.0f, 0.0f); glVertex3f(80.0f, 17.0f, 30.0f);
-		glTexCoord2f(1.0f, 0.7f); glVertex3f(80.0f, 50.0f, 30.0f);
-		glTexCoord2f(0.0f, 0.7f); glVertex3f(80.0f, 50.0f,  8.0f);
-	glEnd();
-
-	glDisable(GL_TEXTURE_2D);
-
-	//Cajas
-
-	//Caja 1
-	glPushMatrix();
-		glTranslatef(8.9f, 19.0f, 3.5f);
-		DibujaCaja(2);
-	glPopMatrix();
-
-	//Caja 2
-	glPushMatrix();
-		glTranslatef(14.1f, 19.0f, 3.0f);
-		DibujaCaja(1);
-	glPopMatrix();
-
-	//Caja 3
-	glPushMatrix();
-		glTranslatef(19.3f, 19.0f, 3.5f);
-		DibujaCaja(3);
-	glPopMatrix();
-
-	//Caja 4
-	glPushMatrix();
-		glTranslatef(9.0f, 23.0f, 3.5f);
-		DibujaCaja(1);
-	glPopMatrix();
-
-	//Caja 5
-	glPushMatrix();
-		glTranslatef(17.0f, 23.0f, 3.5f);
-		glRotatef(-70.0f, 0.0f, 1.0f, 0.0f);
-		glRotatef(-90.0f, 0.0f, 0.0f, 1.0f);
-		glScalef(0.8f, 1.0f, 1.2f);
-		DibujaCaja(1);
-	glPopMatrix();
-
-	//Caja 6
-	glPushMatrix();
-		glTranslatef(14.3f, 27.0f, 3.0f);
-		DibujaCaja(3);
-	glPopMatrix();
-
-	//Caja 7
-	glPushMatrix();
-		glTranslatef(19.4f, 27.0f, 3.0f);
-		DibujaCaja(3);
-	glPopMatrix();
-
-	//Caja 8
-	glPushMatrix();
-		glTranslatef(19.4f, 31.0f, 3.0f);
-		DibujaCaja(2);
-	glPopMatrix();
-
-	//Caja 9
-	glPushMatrix();
-		glTranslatef(67.4f, 19.0f, 11.5f);
-		glScalef(1.0f, 1.0f, 0.8f);
-		DibujaCaja(2);
-	glPopMatrix();
-
-	//Caja 10
-	glPushMatrix();
-		glTranslatef(72.5f, 19.0f, 11.0f);
-		glScalef(1.0f, 1.0f, 0.8f);
-		DibujaCaja(1);
-	glPopMatrix();
-
-	//Caja 11
-	glPushMatrix();
-		glTranslatef(77.5f, 19.0f, 11.5f);
-		glScalef(1.0f, 1.0f, 0.8f);
-		DibujaCaja(3);
-	glPopMatrix();
-
-	//Caja 12
-	glPushMatrix();
-		glTranslatef(72.5f, 23.0f, 11.0f);
-		glScalef(1.0f, 1.0f, 0.8f);
-		DibujaCaja(1);
-	glPopMatrix();
-
-	//Caja 13
-	glPushMatrix();
-		glTranslatef(77.5f, 23.0f, 11.5f);
-		glScalef(1.0f, 1.0f, 0.8f);
-		DibujaCaja(1);
-	glPopMatrix();
-
-	//Caja 14
-	glPushMatrix();
-		glTranslatef(77.5f, 27.0f, 11.5f);
-		glScalef(1.0f, 1.0f, 0.8f);
-		DibujaCaja(3);
-	glPopMatrix();
-
-	//Banda transportadora
-	glPushMatrix();
-		glTranslatef(71.0f, 18.5f, 19.0f);
-		DibujaTransportadora();
-	glPopMatrix();
-}
-
 void DibujaPersonaje()
 {
 	glPushMatrix();
@@ -2902,7 +2301,7 @@ void IndicadorVidas()
 	glMatrixMode(GL_PROJECTION);						// Selecciona la matriz de proyeccion
 	glPushMatrix();										// Guarda la matriz de proyeccion
 	glLoadIdentity();									// Limpia la matriz de proyeccion
-	glOrtho(0,infGame.glWidth,0,infGame.glHeight,-1,1);					// Crea una proyecciÛn paralela
+	glOrtho(0,infGame.glWidth,0,infGame.glHeight,-1,1);					// Crea una proyecci√≥n paralela
 	glMatrixMode(GL_MODELVIEW);							// Selecciona la matriz de modelo de vista
 	glPushMatrix();										// Guarda matriz de modelo de vista
 	glLoadIdentity();
@@ -2938,10 +2337,10 @@ void IndicadorVidas()
 void DibujaTextos()
 {
 	glDisable(GL_DEPTH_TEST);							// Desactiva la prueba de profundidad
-	glMatrixMode(GL_PROJECTION);						// Selecciona la matriz de proyecciÛn
-	glPushMatrix();										// Guarda la matriz de proyecciÛn
-	glLoadIdentity();									// Limpia la matriz de proyecciÛn
-	glOrtho(0,infGame.glWidth,0,infGame.glHeight,-1,1);					// Crea una proyecciÛn ortogonal
+	glMatrixMode(GL_PROJECTION);						// Selecciona la matriz de proyecci√≥n
+	glPushMatrix();										// Guarda la matriz de proyecci√≥n
+	glLoadIdentity();									// Limpia la matriz de proyecci√≥n
+	glOrtho(0,infGame.glWidth,0,infGame.glHeight,-1,1);					// Crea una proyecci√≥n ortogonal
 	glMatrixMode(GL_MODELVIEW);							// Selecciona la matriz de modelo de vista
 	glPushMatrix();										// Guarda la matriz de modelo de vista
 	
@@ -2967,8 +2366,8 @@ void DibujaTextos()
 	glColor3f(1.0f,1.0f,1.0f);
 
 	glEnable(GL_LIGHTING);
-	glMatrixMode(GL_PROJECTION);						// Selecciona la matriz de proyecciÛn
-	glPopMatrix();										// Recupera la anterior matriz de proyecciÛn
+	glMatrixMode(GL_PROJECTION);						// Selecciona la matriz de proyecci√≥n
+	glPopMatrix();										// Recupera la anterior matriz de proyecci√≥n
 	glMatrixMode(GL_MODELVIEW);							// Selecciona la matriz de modelo de vista
 	glPopMatrix();										// Recupera la anterior matriz de modelo de vista
 	glEnable(GL_DEPTH_TEST);							// Activa la prueba de profundidad
@@ -2980,7 +2379,7 @@ void dibujaLogoStudio()
 	glMatrixMode(GL_PROJECTION);						// Selecciona la matriz de proyeccion
 	glPushMatrix();										// Guarda la matriz de proyeccion
 	glLoadIdentity();									// Limpia la matriz de proyeccion
-	glOrtho(0,infGame.glWidth,0,infGame.glHeight,-1,1);					// Crea una proyecciÛn paralela
+	glOrtho(0,infGame.glWidth,0,infGame.glHeight,-1,1);					// Crea una proyecci√≥n paralela
 	glMatrixMode(GL_MODELVIEW);							// Selecciona la matriz de modelo de vista
 	glPushMatrix();										// Guarda matriz de modelo de vista
 	glLoadIdentity();
@@ -3030,7 +2429,7 @@ void dibujaPantalladeCarga()
 	glMatrixMode(GL_PROJECTION);						// Selecciona la matriz de proyeccion
 	glPushMatrix();										// Guarda la matriz de proyeccion
 	glLoadIdentity();									// Limpia la matriz de proyeccion
-	glOrtho(0,infGame.glWidth,0,infGame.glHeight,-1,1);					// Crea una proyecciÛn paralela
+	glOrtho(0,infGame.glWidth,0,infGame.glHeight,-1,1);					// Crea una proyecci√≥n paralela
 	glMatrixMode(GL_MODELVIEW);							// Selecciona la matriz de modelo de vista
 	glPushMatrix();										// Guarda matriz de modelo de vista
 	glLoadIdentity();
@@ -3062,7 +2461,7 @@ void dibujaPantalladeIntroduccion()
 	glMatrixMode(GL_PROJECTION);						// Selecciona la matriz de proyeccion
 	glPushMatrix();										// Guarda la matriz de proyeccion
 	glLoadIdentity();									// Limpia la matriz de proyeccion
-	glOrtho(0,infGame.glWidth,0,infGame.glHeight,-1,1);					// Crea una proyecciÛn paralela
+	glOrtho(0,infGame.glWidth,0,infGame.glHeight,-1,1);					// Crea una proyecci√≥n paralela
 	glMatrixMode(GL_MODELVIEW);							// Selecciona la matriz de modelo de vista
 	glPushMatrix();										// Guarda matriz de modelo de vista
 	glLoadIdentity();
@@ -3105,7 +2504,7 @@ void dibujaTituloJuego()
 	glMatrixMode(GL_PROJECTION);						// Selecciona la matriz de proyeccion
 	glPushMatrix();										// Guarda la matriz de proyeccion
 	glLoadIdentity();									// Limpia la matriz de proyeccion
-	glOrtho(0,infGame.glWidth,0,infGame.glHeight,-1,1);					// Crea una proyecciÛn paralela
+	glOrtho(0,infGame.glWidth,0,infGame.glHeight,-1,1);					// Crea una proyecci√≥n paralela
 	glMatrixMode(GL_MODELVIEW);							// Selecciona la matriz de modelo de vista
 	glPushMatrix();										// Guarda matriz de modelo de vista
 	glLoadIdentity();
@@ -3174,7 +2573,7 @@ void dibujaMenuOpciones()
 	glMatrixMode(GL_PROJECTION);						// Selecciona la matriz de proyeccion
 	glPushMatrix();										// Guarda la matriz de proyeccion
 	glLoadIdentity();									// Limpia la matriz de proyeccion
-	glOrtho(0,infGame.glWidth,0,infGame.glHeight,-1,1);					// Crea una proyecciÛn paralela
+	glOrtho(0,infGame.glWidth,0,infGame.glHeight,-1,1);					// Crea una proyecci√≥n paralela
 	glMatrixMode(GL_MODELVIEW);							// Selecciona la matriz de modelo de vista
 	glPushMatrix();										// Guarda matriz de modelo de vista
 	glLoadIdentity();
@@ -3228,7 +2627,7 @@ void dibujaMenuOpciones()
 	else if(infGame.opMenuPrinc.dificultad == 2)
 		Font.glPrint((2.2f/640.0f)*infGame.glWidth, infGame.glWidth*0.6f, infGame.glHeight*0.8f,"Dificil");
 
-	//N˙mero de vidas
+	//N√∫mero de vidas
 	Font.glPrint((2.2f/640.0f)*infGame.glWidth, infGame.glWidth*0.6f, infGame.glHeight*0.6f,"%d", infGame.opMenuPrinc.numVidas);
 
 	//Sonido
@@ -3257,7 +2656,7 @@ void dibujaMenuPausa()
 	glMatrixMode(GL_PROJECTION);						// Selecciona la matriz de proyeccion
 	glPushMatrix();										// Guarda la matriz de proyeccion
 	glLoadIdentity();									// Limpia la matriz de proyeccion
-	glOrtho(0,infGame.glWidth,0,infGame.glHeight,-1,1);					// Crea una proyecciÛn paralela
+	glOrtho(0,infGame.glWidth,0,infGame.glHeight,-1,1);					// Crea una proyecci√≥n paralela
 	glMatrixMode(GL_MODELVIEW);							// Selecciona la matriz de modelo de vista
 	glPushMatrix();										// Guarda matriz de modelo de vista
 	glLoadIdentity();
@@ -3333,7 +2732,7 @@ void ejemploBackFaceCulling()
 	//Punto medio
 	pm=(vert[0]+vert[1]+vert[2]+vert[3])/4.0f;
 
-	//Vector hacia la c·mara (V)
+	//Vector hacia la c√°mara (V)
 	V=Normaliza(CVector(player1.PosicionObj.x-10.0f, player1.PosicionObj.y+30.0f, player1.PosicionObj.z+40.0f)-pm);
 
 	//Prueba con el producto punto
@@ -3760,22 +3159,22 @@ void movimientoSpline()
 	//objSpline=CVector(0.0f, 0.0f, 0.0f);
 }
 
-//PARTÕCULAS -- cambio 4
+//PART√çCULAS -- cambio 4
 
-//Aqui se dibuja cada partÌcula que consiste en un pequeÒo plano con alguna textura que representa algun
+//Aqui se dibuja cada part√≠cula que consiste en un peque√±o plano con alguna textura que representa algun
 //efecto como humo, fuego, vapor, agua, etc. Debido a que se dibujan muchos planos y una forma de quitarle
-//trabajo a la m·quina serÌa dibujar directamente los dos triangulos que forman cada plano en vez de usar
+//trabajo a la m√°quina ser√≠a dibujar directamente los dos triangulos que forman cada plano en vez de usar
 //GL_QUADS se usa GL_TRIANGLE_STRIP para dibujar 2 triangulos en un solo paso, solo indicando 4 vertices.
 
-//A cada particula se le aplica transparencia y la combinaciÛn de par·metros de glBlendFunc depende del efecto
-//que se quiera representar. Antes de dibujar el plano se desactiva iluminaciÛn y se aplica un color de 4 componentes
-//usando la vida de la partÌcula como valor de transparencia alpha
+//A cada particula se le aplica transparencia y la combinaci√≥n de par√°metros de glBlendFunc depende del efecto
+//que se quiera representar. Antes de dibujar el plano se desactiva iluminaci√≥n y se aplica un color de 4 componentes
+//usando la vida de la part√≠cula como valor de transparencia alpha
 
-//Se actualiza la posiciÛn de cada partÌcula usando los valores definidos para velocidad y gravedad y se disminuye su vida
+//Se actualiza la posici√≥n de cada part√≠cula usando los valores definidos para velocidad y gravedad y se disminuye su vida
 //en una cantidad definida por la variable fade.
-//Cuando una partÌcula llega a cierto valor que se define segun el efecto a representar, se reinicia su posiciÛn y la vida
-//de la partÌcula tambien. En ese paso se pueden hacer calculos con alguna funciÛn (por ejemplo senoidal) para definir un
-//patrÛn de movimiento de las partÌculas. asignando el resultado a la nueva velocidad de la partÌcula
+//Cuando una part√≠cula llega a cierto valor que se define segun el efecto a representar, se reinicia su posici√≥n y la vida
+//de la part√≠cula tambien. En ese paso se pueden hacer calculos con alguna funci√≥n (por ejemplo senoidal) para definir un
+//patr√≥n de movimiento de las part√≠culas. asignando el resultado a la nueva velocidad de la part√≠cula
 void DibujaParticulas()
 {
 	glDisable(GL_LIGHTING);
@@ -3813,14 +3212,14 @@ void DibujaParticulas()
 		particle[loop].yi+=particle[loop].yg;
 		particle[loop].zi+=particle[loop].zg;
 
-		particle[loop].life-=particle[loop].fade; // Se reduce la vida de las partÌculas una cantidad "Fade"
+		particle[loop].life-=particle[loop].fade; // Se reduce la vida de las part√≠culas una cantidad "Fade"
 
-		if (particle[loop].life < 0.7f) // Si la vida de la partÌcula esta por agotarse
+		if (particle[loop].life < 0.7f) // Si la vida de la part√≠cula esta por agotarse
 		{
 			particle[loop].life=1.0f; // Se le da nueva vida
 			particle[loop].fade=float(rand()%100)/1000.0f+0.005f; // Un valor aleatorio de desvanecimiento
 			
-			//PosiciÛn inicial de cada particula
+			//Posici√≥n inicial de cada particula
 			particle[loop].x= float((rand()%10)-5.0f)/10.0f;
 			particle[loop].y= float((rand()%100)-50.0f)/10.0f;
 			particle[loop].z= float((rand()%10)-5.0f)/10.0f;
@@ -3877,11 +3276,10 @@ int RenderizaEscena(GLvoid)
 
 	DibujaEscenario();
 	//dibujaSpline();
-	ejemploDeteccionCamara();
 
 	dibujaCajaColision(&cajaPersonaje);
 
-	for(int i=0; i < 7; i++) //for de 7 por que son 7 cajas que componen al escenario
+	for(int i=0; i < numCajas; i++) 
 		dibujaCajaColision(&cajaEscenario[i]);
 
 	dibujaEsferadeColision(&esferaPersonaje);
@@ -3926,7 +3324,6 @@ int RenderizaEscena(GLvoid)
 	glDisable(GL_LIGHT1);
 
 	DibujaEscenario();
-	ejemploDeteccionCamara();
 
 	if(player1.visible == true)
 	{
@@ -3943,26 +3340,26 @@ int RenderizaEscena(GLvoid)
 	//dibujaModelo();
 	dibujaModeloArchivo();
 
-	//PARTÕCULAS -- cambio 6
+	//PART√çCULAS -- cambio 6
 
-	//Las partÌculas deben estar orientada hacia la c·mara siempre, ya que de otro modo, por ejemplo si se ven desde un lado
-	//se notarÌa el "truco", que solo son un conjunto de planos texturizados moviendose con cierto patrÛn y velocidad para
-	//representar el efecto. Para evitar eso se usa una tÈcnica llamada billboarding que consiste en calcular el ·ngulo que
-	//deben girarte las partÌculas para que siempre "vean" a la c·mara
+	//Las part√≠culas deben estar orientada hacia la c√°mara siempre, ya que de otro modo, por ejemplo si se ven desde un lado
+	//se notar√≠a el "truco", que solo son un conjunto de planos texturizados moviendose con cierto patr√≥n y velocidad para
+	//representar el efecto. Para evitar eso se usa una t√©cnica llamada billboarding que consiste en calcular el √°ngulo que
+	//deben girarte las part√≠culas para que siempre "vean" a la c√°mara
 
-	//Dependiendo el efecto y el objeto al que se asocian las partÌculas en la escena, el billboarding se puede calcular para
-	//cada partÌcula o para todo el grupo como en este ejemplo.
+	//Dependiendo el efecto y el objeto al que se asocian las part√≠culas en la escena, el billboarding se puede calcular para
+	//cada part√≠cula o para todo el grupo como en este ejemplo.
 
-	//1. Se define el valor de la normal para cada partÌcula o para el grupo teniendo en cuenta su posiciÛn y ·ngulo inicial
-	//2. Se calcula un vector que va desde cada partÌcula o la posiciÛn del grupo hacia la c·mara
-	//3. Se determina el angulo que hay entre esos dos vectores y se usa para rotar cada partÌcula o el grupo, de modo que la normal
-	//ahora apuntarÌa hacia la c·mara.
+	//1. Se define el valor de la normal para cada part√≠cula o para el grupo teniendo en cuenta su posici√≥n y √°ngulo inicial
+	//2. Se calcula un vector que va desde cada part√≠cula o la posici√≥n del grupo hacia la c√°mara
+	//3. Se determina el angulo que hay entre esos dos vectores y se usa para rotar cada part√≠cula o el grupo, de modo que la normal
+	//ahora apuntar√≠a hacia la c√°mara.
 
 	CVector N, ObjCamVec, up;
 	float angcos;
 
 	//Billboarding
-	N=CVector(0.0f, 0.0f, 1.0f); //OrientaciÛn original del objeto
+	N=CVector(0.0f, 0.0f, 1.0f); //Orientaci√≥n original del objeto
 	ObjCamVec=CVector(player1.PosicionObj.x-10.0f, player1.PosicionObj.y+30.0f, player1.PosicionObj.z+40.0f)-player1.PosicionObj;
 
 	//N.y=0.0f;
@@ -3974,8 +3371,8 @@ int RenderizaEscena(GLvoid)
 	angcos=Punto(N, ObjCamVec);
 	float AngObj=(float)acos(angcos)*180.0f/PI;
 	
-	//PARTÕCULAS -- cambio 5
-	//Se incorpora el dibujo de las partÌculas en el lugar deseado en la escena
+	//PART√çCULAS -- cambio 5
+	//Se incorpora el dibujo de las part√≠culas en el lugar deseado en la escena
 	/*glPushMatrix();
 		glTranslatef(player1.PosicionObj.x, player1.PosicionObj.y+2.5f, player1.PosicionObj.z);
 		glRotatef(AngObj, 0.0f, 1.0f, 0.0f);
@@ -4063,40 +3460,40 @@ GLvoid DestruyeVentanaOGL(GLvoid)						// Elimina la ventana apropiadamente
 	{
 		if (!wglMakeCurrent(NULL,NULL))					// Si no se pueden liberar los contextos DC y RC...
 		{
-			MessageBox(NULL,"Falla al liberar DC y RC.","Error de finalizaciÛn",MB_OK | MB_ICONINFORMATION);
+			MessageBox(NULL,"Falla al liberar DC y RC.","Error de finalizaci√≥n",MB_OK | MB_ICONINFORMATION);
 		}
 
 		if (!wglDeleteContext(hRC))						// Si no se puede eliminar el RC?
 		{
-			MessageBox(NULL,"Falla al liberar el contexto de renderizado.","Error de finalizaciÛn",MB_OK | MB_ICONINFORMATION);
+			MessageBox(NULL,"Falla al liberar el contexto de renderizado.","Error de finalizaci√≥n",MB_OK | MB_ICONINFORMATION);
 		}
 		hRC=NULL;										// Se pone RC en NULL
 	}
 
 	if (hDC && !ReleaseDC(hWnd,hDC))					// Si no se puede eliminar el DC
 	{
-		MessageBox(NULL,"Falla al liberar el contexto de renderizado.","Error de finalizaciÛn",MB_OK | MB_ICONINFORMATION);
+		MessageBox(NULL,"Falla al liberar el contexto de renderizado.","Error de finalizaci√≥n",MB_OK | MB_ICONINFORMATION);
 		hDC=NULL;										// Se pone DC en NULL
 	}
 
 	if (hWnd && !DestroyWindow(hWnd))					// Si no se puede destruir la ventana
 	{
-		MessageBox(NULL,"No se pudo liberar hWnd.","Error de finalizaciÛn",MB_OK | MB_ICONINFORMATION);
+		MessageBox(NULL,"No se pudo liberar hWnd.","Error de finalizaci√≥n",MB_OK | MB_ICONINFORMATION);
 		hWnd=NULL;										// Se pone hWnd en NULL
 	}
 
 	if (!UnregisterClass("OpenGL",hInstance))			// Si no se puede eliminar el registro de la clase
 	{
-		MessageBox(NULL,"No se pudo eliminar el registro de la clase.","Error de finalizaciÛn",MB_OK | MB_ICONINFORMATION);
+		MessageBox(NULL,"No se pudo eliminar el registro de la clase.","Error de finalizaci√≥n",MB_OK | MB_ICONINFORMATION);
 		hInstance=NULL;									// Se pone hInstance en NULL
 	}
 }
 
-//	Este cÛdigo crea la ventana de OpenGL.  Par·metros:					
+//	Este c√≥digo crea la ventana de OpenGL.  Par√°metros:					
 //	title			- Titulo en la parte superior de la ventana			
 //	width			- Ancho de la ventana								
 //	height			- Alto de la ventana								
-//	bits			- N˙mero de bits a usar para el color (8/16/24/32)	
+//	bits			- N√∫mero de bits a usar para el color (8/16/24/32)	
   
 BOOL CreaVentanaOGL(char* title, int width, int height, int bits)
 {
@@ -4104,7 +3501,7 @@ BOOL CreaVentanaOGL(char* title, int width, int height, int bits)
 	WNDCLASS	wc;						// Estructura de la clase ventana
 	DWORD		dwExStyle;				// Estilo extendido de ventana
 	DWORD		dwStyle;				// Estilo de ventana
-	RECT		WindowRect;				// Guarda los valores Superior Izquierdo / Inferior Derecho del rect·ngulo
+	RECT		WindowRect;				// Guarda los valores Superior Izquierdo / Inferior Derecho del rect√°ngulo
 	WindowRect.left=(long)0;			// Inicia el valor Izquierdo a 0
 	WindowRect.right=(long)width;		// Inicia el valor Derecho al ancho especificado
 	WindowRect.top=(long)0;				// Inicia el valor Superior a 0
@@ -4116,10 +3513,10 @@ BOOL CreaVentanaOGL(char* title, int width, int height, int bits)
 	wc.cbClsExtra		= 0;									// Ningun dato extra para la clase
 	wc.cbWndExtra		= 0;									// Ningun dato extra para la ventana
 	wc.hInstance		= hInstance;							// Inicia la instancia
-	wc.hIcon			= LoadIcon(NULL, IDI_WINLOGO);			// Carga el Ìcono por defecto
+	wc.hIcon			= LoadIcon(NULL, IDI_WINLOGO);			// Carga el √≠cono por defecto
 	wc.hCursor			= LoadCursor(NULL, IDC_ARROW);			// Carga el puntero de flecha
 	wc.hbrBackground	= NULL;									// No se requiere ningun fondo
-	wc.lpszMenuName		= NULL;									// No hay men˙ en la ventana
+	wc.lpszMenuName		= NULL;									// No hay men√∫ en la ventana
 	wc.lpszClassName	= "OpenGL";								// Fija el nombre de la clase.
 
 	if (!RegisterClass(&wc))									// Intenta registrar la clase de ventana
@@ -4131,20 +3528,20 @@ BOOL CreaVentanaOGL(char* title, int width, int height, int bits)
 	dwExStyle=WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;					// Estilo extendido de ventana
 	dwStyle=WS_OVERLAPPEDWINDOW;									// Estilo de ventana
 
-	AdjustWindowRectEx(&WindowRect, dwStyle, FALSE, dwExStyle);		// Ajusta la ventana al tamaÒo especificado
+	AdjustWindowRectEx(&WindowRect, dwStyle, FALSE, dwExStyle);		// Ajusta la ventana al tama√±o especificado
 
 	// Crea la ventana
 	if (!(hWnd=CreateWindowEx(	dwExStyle,							// Estilo extendido para la ventana
 								"OpenGL",							// Nombre de la clase
-								title,								// TÌtulo de la ventana
-								dwStyle |							// DefiniciÛn del estilo de la ventana
+								title,								// T√≠tulo de la ventana
+								dwStyle |							// Definici√≥n del estilo de la ventana
 								WS_CLIPSIBLINGS |					// Estilo requerido de la ventana
 								WS_CLIPCHILDREN,					// Estilo requerido de la ventana
-								0, 0,								// PosiciÛn de la ventana
+								0, 0,								// Posici√≥n de la ventana
 								WindowRect.right-WindowRect.left,	// Calcula el ancho de la ventana
 								WindowRect.bottom-WindowRect.top,	// Calcula el alto de la ventana
 								NULL,								// No hay ventana superior
-								NULL,								// No hay men˙
+								NULL,								// No hay men√∫
 								hInstance,							// Instancia
 								NULL)))								// No se pasa nada a WM_CREATE
 	{
@@ -4182,7 +3579,7 @@ BOOL CreaVentanaOGL(char* title, int width, int height, int bits)
 		return FALSE;								
 	}
 
-	if (!(PixelFormat=ChoosePixelFormat(hDC,&pfd)))	// Si Windows no encontrÛ un formato de pixel compatible
+	if (!(PixelFormat=ChoosePixelFormat(hDC,&pfd)))	// Si Windows no encontr√≥ un formato de pixel compatible
 	{
 		DestruyeVentanaOGL();						// Resetea el despliegue
 		MessageBox(NULL,"No se puede encontrar un formato de pixel compatible.","ERROR",MB_OK|MB_ICONEXCLAMATION);
@@ -4218,7 +3615,7 @@ BOOL CreaVentanaOGL(char* title, int width, int height, int bits)
 	if (!IniGL())							// Si no se inicializa la ventana creada
 	{
 		DestruyeVentanaOGL();				// Resetea el despliegue
-		MessageBox(NULL,"Falla en la inicializaciÛn.","ERROR",MB_OK|MB_ICONEXCLAMATION);
+		MessageBox(NULL,"Falla en la inicializaci√≥n.","ERROR",MB_OK|MB_ICONEXCLAMATION);
 		return FALSE;								
 	}
 
@@ -4227,20 +3624,20 @@ BOOL CreaVentanaOGL(char* title, int width, int height, int bits)
 
 LRESULT CALLBACK WndProc(	HWND	hWnd,	// Manejador para esta ventana
 							UINT	uMsg,	// Mensaje para esta ventana
-							WPARAM	wParam,	// InformaciÛn adicional del mensaje
-							LPARAM	lParam)	// InformaciÛn adicional del mensaje
+							WPARAM	wParam,	// Informaci√≥n adicional del mensaje
+							LPARAM	lParam)	// Informaci√≥n adicional del mensaje
 {
 	switch (uMsg)							// Revisa los mensajes de la ventana
 	{
-		case WM_ACTIVATE:					// Revisa el mensaje de activaciÛn de ventana
+		case WM_ACTIVATE:					// Revisa el mensaje de activaci√≥n de ventana
 		{
-			if (!HIWORD(wParam))			// Revisa el estado de minimizaciÛn
+			if (!HIWORD(wParam))			// Revisa el estado de minimizaci√≥n
 			{
-				active=TRUE;				// El programa est· activo
+				active=TRUE;				// El programa est√° activo
 			}
 			else
 			{
-				active=FALSE;				// El programa no est· activo
+				active=FALSE;				// El programa no est√° activo
 			}
 
 			return 0;						// Regresa al ciclo de mensajes
@@ -4250,8 +3647,8 @@ LRESULT CALLBACK WndProc(	HWND	hWnd,	// Manejador para esta ventana
 		{
 			switch (wParam)					// Revisa llamadas del sistema
 			{
-				case SC_SCREENSAVE:			// øScreensaver tratando de iniciar?
-				case SC_MONITORPOWER:		// øMonitor tratando de entrar a modo de ahorro de energÌa?
+				case SC_SCREENSAVE:			// ¬øScreensaver tratando de iniciar?
+				case SC_MONITORPOWER:		// ¬øMonitor tratando de entrar a modo de ahorro de energ√≠a?
 				return 0;					// Evita que suceda
 			}
 			break;							// Sale del caso
@@ -4263,15 +3660,15 @@ LRESULT CALLBACK WndProc(	HWND	hWnd,	// Manejador para esta ventana
 			return 0;						// y se regresa al ciclo
 		}
 
-		case WM_KEYDOWN:					// Si se est· presionando una tecla...
+		case WM_KEYDOWN:					// Si se est√° presionando una tecla...
 		{
-			keys[wParam] = TRUE;			// Si es asÌ, se marca como TRUE
+			keys[wParam] = TRUE;			// Si es as√≠, se marca como TRUE
 			return 0;						// y se regresa al ciclo
 		}
 
-		case WM_KEYUP:						// øSe ha soltado una tecla?
+		case WM_KEYUP:						// ¬øSe ha soltado una tecla?
 		{
-			keys[wParam] = FALSE;			// Si es asÌ, se marca como FALSE
+			keys[wParam] = FALSE;			// Si es as√≠, se marca como FALSE
 			return 0;						// y se regresa al ciclo
 		}
 
@@ -4286,7 +3683,7 @@ LRESULT CALLBACK WndProc(	HWND	hWnd,	// Manejador para esta ventana
 	return DefWindowProc(hWnd,uMsg,wParam,lParam);
 }
 
-// Este es el punto de entrada al programa; la funciÛn principal 
+// Este es el punto de entrada al programa; la funci√≥n principal 
 int WINAPI WinMain(	HINSTANCE	hInstance,			// Instancia
 					HINSTANCE	hPrevInstance,		// Instancia previa
 					LPSTR		lpCmdLine,			// Parametros de la linea de comandos
@@ -4303,7 +3700,7 @@ int WINAPI WinMain(	HINSTANCE	hInstance,			// Instancia
 	audioFunc.iniciaAudio();
 
 	// Crea la ventana OpenGL
-	if (!CreaVentanaOGL("ComputaciÛn Gr·fica Avanzada",640,480,16))
+	if (!CreaVentanaOGL("Computaci√≥n Gr√°fica Avanzada",640,480,16))
 	{
 		return 0;									// Salir del programa si la ventana no fue creada
 	}
@@ -4325,7 +3722,7 @@ int WINAPI WinMain(	HINSTANCE	hInstance,			// Instancia
 		else										// Si no hay mensajes...
 		{
 			// Dibuja la escena. 
-			if (active)								// Si est· activo el programa...
+			if (active)								// Si est√° activo el programa...
 			{
 				if (keys[VK_ESCAPE])				// Si se ha presionado ESC
 				{
@@ -4363,7 +3760,7 @@ int WINAPI WinMain(	HINSTANCE	hInstance,			// Instancia
 		}
 	}
 
-	// FinalizaciÛn del programa
+	// Finalizaci√≥n del programa
 	sonidoF[0].liberaSonido();
 	sonidoF[1].liberaSonido();
 	sonidoF[2].liberaSonido();
@@ -4517,7 +3914,7 @@ void manejaEventosMain()
 	static int menuPrincipalActivo=1;
 	static int menuOpcionesActivo=1;
 
-	if(infGame.estadoJuego == 5) //Men˙ principal
+	if(infGame.estadoJuego == 5) //Men√∫ principal
 	{
 		if(controlFunc.obtieneEstadoTecla(0) == 1) //Up
 		{
@@ -4577,7 +3974,7 @@ void manejaEventosMain()
 				menuPrincipalActivo=1;
 		}
 	}
-	if(infGame.estadoJuego == 8) //Men˙ Opciones principales
+	if(infGame.estadoJuego == 8) //Men√∫ Opciones principales
 	{
 		if(controlFunc.obtieneEstadoTecla(0) == 1) //Up
 		{
@@ -4694,11 +4091,11 @@ void manejaEventosMain()
 					
 					if(fabs(player1.PosicionObj.y - altPiso) < 0.01f)
 					{
-						if(play==false) //Para que la asignaciÛn de valores siguiente solo se haga una vez y empiece la animaciÛn
+						if(play==false) //Para que la asignaci√≥n de valores siguiente solo se haga una vez y empiece la animaci√≥n
 						{
 							//Se le asignan a las variables del personaje los 
 							//valores almacenados en el primer keyframe para que
-							//inicie desde ahÌ la animaciÛn.
+							//inicie desde ah√≠ la animaci√≥n.
 							Angt1   = KeyFrame1[0].Angt1;
 							Angt2   = KeyFrame1[0].Angt2;
 							Angc1   = KeyFrame1[0].Angc1;
@@ -4736,11 +4133,11 @@ void manejaEventosMain()
 					
 					if(fabs(player1.PosicionObj.y - altPiso) < 0.01f)
 					{
-						if(play==false) //Para que la asignaciÛn de valores siguiente solo se haga una vez y empiece la animaciÛn
+						if(play==false) //Para que la asignaci√≥n de valores siguiente solo se haga una vez y empiece la animaci√≥n
 						{
 							//Se le asignan a las variables del personaje los 
 							//valores almacenados en el primer keyframe para que
-							//inicie desde ahÌ la animaciÛn.
+							//inicie desde ah√≠ la animaci√≥n.
 							Angt1   = KeyFrame1[0].Angt1;
 							Angt2   = KeyFrame1[0].Angt2;
 							Angc1   = KeyFrame1[0].Angc1;
@@ -4778,11 +4175,11 @@ void manejaEventosMain()
 				
 					if(fabs(player1.PosicionObj.y - altPiso) < 0.01f)
 					{
-						if(play==false) //Para que la asignaciÛn de valores siguiente solo se haga una vez y empiece la animaciÛn
+						if(play==false) //Para que la asignaci√≥n de valores siguiente solo se haga una vez y empiece la animaci√≥n
 						{
 							//Se le asignan a las variables del personaje los 
 							//valores almacenados en el primer keyframe para que
-							//inicie desde ahÌ la animaciÛn.
+							//inicie desde ah√≠ la animaci√≥n.
 							Angt1   = KeyFrame1[0].Angt1;
 							Angt2   = KeyFrame1[0].Angt2;
 							Angc1   = KeyFrame1[0].Angc1;
@@ -4820,11 +4217,11 @@ void manejaEventosMain()
 					
 					if(fabs(player1.PosicionObj.y - altPiso) < 0.01f)
 					{
-						if(play==false) //Para que la asignaciÛn de valores siguiente solo se haga una vez y empiece la animaciÛn
+						if(play==false) //Para que la asignaci√≥n de valores siguiente solo se haga una vez y empiece la animaci√≥n
 						{
 							//Se le asignan a las variables del personaje los 
 							//valores almacenados en el primer keyframe para que
-							//inicie desde ahÌ la animaciÛn.
+							//inicie desde ah√≠ la animaci√≥n.
 							Angt1   = KeyFrame1[0].Angt1;
 							Angt2   = KeyFrame1[0].Angt2;
 							Angc1   = KeyFrame1[0].Angc1;
@@ -4887,11 +4284,11 @@ void manejaEventosMain()
 
 			if(controlFunc.obtieneEstadoTecla(4) == 1) //Z
 			{
-				if(player1.kick == false && player1.saltando == false) //Para que la asignaciÛn de valores siguiente solo se haga una vez y empiece la animaciÛn
+				if(player1.kick == false && player1.saltando == false) //Para que la asignaci√≥n de valores siguiente solo se haga una vez y empiece la animaci√≥n
 				{
 					//Se le asignan a las variables del personaje los 
 					//valores almacenados en el primer keyframe para que
-					//inicie desde ahÌ la animaciÛn.
+					//inicie desde ah√≠ la animaci√≥n.
 					Angt1   = KeyFrame2[0].Angt1;
 					Angt2   = KeyFrame2[0].Angt2;
 					Angc1   = KeyFrame2[0].Angc1;
@@ -4929,7 +4326,7 @@ void manejaEventosMain()
 				{
 					//Se le asignan a las variables del personaje los 
 					//valores almacenados en el primer keyframe para que
-					//inicie desde ahÌ la animaciÛn.
+					//inicie desde ah√≠ la animaci√≥n.
 					Angt1   = KeyFrame3[0].Angt1;
 					Angt2   = KeyFrame3[0].Angt2;
 					Angc1   = KeyFrame3[0].Angc1;
@@ -5036,19 +4433,19 @@ void manejaEventosMain()
 
 //int ManejaTeclado()
 //{
-//	//Al presionar cualquiera de las teclas de direcciÛn se iniciar· la animaciÛn de caminar
-//	//Al soltar la tecla presionada se detiene la animaciÛn.
-//	if(GetKeyState(VK_UP) & 0x80) //Si est· presionada la tecla UP
+//	//Al presionar cualquiera de las teclas de direcci√≥n se iniciar√° la animaci√≥n de caminar
+//	//Al soltar la tecla presionada se detiene la animaci√≥n.
+//	if(GetKeyState(VK_UP) & 0x80) //Si est√° presionada la tecla UP
 //	{
 //		if(player1.kick==false)
 //		{
 //			ControlPersonaje2(3);
 //			
-//			if(play==false) //Para que la asignaciÛn de valores siguiente solo se haga una vez y empiece la animaciÛn
+//			if(play==false) //Para que la asignaci√≥n de valores siguiente solo se haga una vez y empiece la animaci√≥n
 //			{
 //				//Se le asignan a las variables del personaje los 
 //				//valores almacenados en el primer keyframe para que
-//				//inicie desde ahÌ la animaciÛn.
+//				//inicie desde ah√≠ la animaci√≥n.
 //				Angt1   = KeyFrame1[0].Angt1;
 //				Angt2   = KeyFrame1[0].Angt2;
 //				Angc1   = KeyFrame1[0].Angc1;
@@ -5074,17 +4471,17 @@ void manejaEventosMain()
 //		}
 //	}
 //
-//	if(GetKeyState(VK_DOWN) & 0x80) //Si est· presionada la tecla DOWN
+//	if(GetKeyState(VK_DOWN) & 0x80) //Si est√° presionada la tecla DOWN
 //	{
 //		if(player1.kick==false)
 //		{
 //			ControlPersonaje2(4);
 //			
-//			if(play==false && player1.kick==false) //Para que la asignaciÛn de valores siguiente solo se haga una vez y empiece la animaciÛn
+//			if(play==false && player1.kick==false) //Para que la asignaci√≥n de valores siguiente solo se haga una vez y empiece la animaci√≥n
 //			{
 //				//Se le asignan a las variables del personaje los 
 //				//valores almacenados en el primer keyframe para que
-//				//inicie desde ahÌ la animaciÛn.
+//				//inicie desde ah√≠ la animaci√≥n.
 //				Angt1   = KeyFrame1[0].Angt1;
 //				Angt2   = KeyFrame1[0].Angt2;
 //				Angc1   = KeyFrame1[0].Angc1;
@@ -5110,17 +4507,17 @@ void manejaEventosMain()
 //		}
 //	}
 //
-//	if(GetKeyState(VK_LEFT) & 0x80) //Si est· presionada la tecla LEFT
+//	if(GetKeyState(VK_LEFT) & 0x80) //Si est√° presionada la tecla LEFT
 //	{
 //		if(player1.kick==false)
 //		{
 //			ControlPersonaje2(2);
 //		
-//			if(play==false && player1.kick==false) //Para que la asignaciÛn de valores siguiente solo se haga una vez y empiece la animaciÛn
+//			if(play==false && player1.kick==false) //Para que la asignaci√≥n de valores siguiente solo se haga una vez y empiece la animaci√≥n
 //			{
 //				//Se le asignan a las variables del personaje los 
 //				//valores almacenados en el primer keyframe para que
-//				//inicie desde ahÌ la animaciÛn.
+//				//inicie desde ah√≠ la animaci√≥n.
 //				Angt1   = KeyFrame1[0].Angt1;
 //				Angt2   = KeyFrame1[0].Angt2;
 //				Angc1   = KeyFrame1[0].Angc1;
@@ -5146,17 +4543,17 @@ void manejaEventosMain()
 //		}
 //	}
 //
-//	if(GetKeyState(VK_RIGHT) & 0x80) //Si est· presionada la tecla RIGHT
+//	if(GetKeyState(VK_RIGHT) & 0x80) //Si est√° presionada la tecla RIGHT
 //	{
 //		if(player1.kick==false)
 //		{
 //			ControlPersonaje2(1);
 //			
-//			if(play==false && player1.kick==false) //Para que la asignaciÛn de valores siguiente solo se haga una vez y empiece la animaciÛn
+//			if(play==false && player1.kick==false) //Para que la asignaci√≥n de valores siguiente solo se haga una vez y empiece la animaci√≥n
 //			{
 //				//Se le asignan a las variables del personaje los 
 //				//valores almacenados en el primer keyframe para que
-//				//inicie desde ahÌ la animaciÛn.
+//				//inicie desde ah√≠ la animaci√≥n.
 //				Angt1   = KeyFrame1[0].Angt1;
 //				Angt2   = KeyFrame1[0].Angt2;
 //				Angc1   = KeyFrame1[0].Angc1;
@@ -5184,11 +4581,11 @@ void manejaEventosMain()
 //
 //	if((GetAsyncKeyState('Z')&1) == 1)
 //	{
-//		if(player1.kick == false) //Para que la asignaciÛn de valores siguiente solo se haga una vez y empiece la animaciÛn
+//		if(player1.kick == false) //Para que la asignaci√≥n de valores siguiente solo se haga una vez y empiece la animaci√≥n
 //		{
 //			//Se le asignan a las variables del personaje los 
 //			//valores almacenados en el primer keyframe para que
-//			//inicie desde ahÌ la animaciÛn.
+//			//inicie desde ah√≠ la animaci√≥n.
 //			Angt1   = KeyFrame2[0].Angt1;
 //			Angt2   = KeyFrame2[0].Angt2;
 //			Angc1   = KeyFrame2[0].Angc1;
@@ -5216,10 +4613,10 @@ void manejaEventosMain()
 //		}
 //	}
 //
-//	//Para que al soltar la tecla presionada el personaje no quede en una posiciÛn
-//	//intermedia de la animaciÛn se asignan los valores originales a las variables
+//	//Para que al soltar la tecla presionada el personaje no quede en una posici√≥n
+//	//intermedia de la animaci√≥n se asignan los valores originales a las variables
 //	if(!(GetKeyState(VK_UP) & 0x80 || GetKeyState(VK_DOWN) & 0x80
-//	|| GetKeyState(VK_LEFT) & 0x80  || GetKeyState(VK_RIGHT) & 0x80)) //Si no est· presionada alguna de esas teclas
+//	|| GetKeyState(VK_LEFT) & 0x80  || GetKeyState(VK_RIGHT) & 0x80)) //Si no est√° presionada alguna de esas teclas
 //	{
 //		if(tipoAnim == 1)
 //		{
