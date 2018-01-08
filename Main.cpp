@@ -140,7 +140,7 @@ t3DModel g_3DModel1e;
 
 //Objeto para acceder a las variables de control del personaje
 paramObj player1;
-paramObj playerM;
+paramObj playerM[5];
 
 //Objeto para manejo de la cámara
 paramCam camara1;
@@ -167,7 +167,8 @@ int numCajas=11;
 float altPiso=0.0f;
 float altMin=-0.0f;
 esferaCol esferaPersonaje;
-esferaCol esferaEnemigo;
+esferaCol esferaEnemigos[5];
+int numEnemigos = 5;
 
 //Variables del personaje
 float Angt1;
@@ -427,46 +428,52 @@ void InicializaParametrosdeControl()
 	player1.kick=false;
 	player1.contAuxAnim=0;
 
+	for (int i = 0; i < numEnemigos; i++)
+	{
+		playerM[i].visible = true;
+		playerM[i].cayendo = true;
+		playerM[i].caminando = false;
+		playerM[i].dirX = 0;
+		playerM[i].dirZ = 0;
 
-	playerM.visible = true;
-	playerM.cayendo = true;
-	playerM.caminando = false;
-	playerM.dirX = 0;
-	playerM.dirZ = 0;
+		playerM[i].VelocidadObj = 0.2f;
+		playerM[i].DistanciaCam = 50.0f;
 
-	playerM.VelocidadObj = 0.2f;
-	playerM.DistanciaCam = 50.0f;
+		playerM[i].CamaraPosAlt = 15.0f;	//Posición en y de la cámara (altura a la que se situa la cámara)
+		playerM[i].CamaraObjAlt = 8.0f;	//Posición en y del objetivo de la cámara (altura a la que ve la cámara)
+		playerM[i].AngDir = 0.0f;		//Este ángulo inicial hace que la dirección inicial sea paralela al eje Z y con sentido negativo
+		playerM[i].AngDirCam = 0.0f;		//Este es el ángulo inicial que define la posición de la camara respecto al personaje
+		playerM[i].AngObj = 90.0f;		//Este valor se elige dependiendo de la orientación con la que aparece el modelo en la escena al dibujarlo
+									//sin aplicarle ninguna transformación (hacia adonde está volteando). Se elige un ángulo tal que al aplicarle
+									//una rotación inicial con respecto al eje Y esté viendo hacia la misma dirección que la definida por AngDir
 
-	playerM.CamaraPosAlt = 15.0f;	//Posición en y de la cámara (altura a la que se situa la cámara)
-	playerM.CamaraObjAlt = 8.0f;	//Posición en y del objetivo de la cámara (altura a la que ve la cámara)
-	playerM.AngDir = 0.0f;		//Este ángulo inicial hace que la dirección inicial sea paralela al eje Z y con sentido negativo
-	playerM.AngDirCam = 0.0f;		//Este es el ángulo inicial que define la posición de la camara respecto al personaje
-	playerM.AngObj = 90.0f;		//Este valor se elige dependiendo de la orientación con la que aparece el modelo en la escena al dibujarlo
-								//sin aplicarle ninguna transformación (hacia adonde está volteando). Se elige un ángulo tal que al aplicarle
-								//una rotación inicial con respecto al eje Y esté viendo hacia la misma dirección que la definida por AngDir
+									//Posición inicial personaje
+		playerM[i].Direccion.x = (float)cos(playerM[i].AngDir*PI / 180.0f);
+		playerM[i].Direccion.y = 0.0f;
+		playerM[i].Direccion.z = (float)sin(playerM[i].AngDir*PI / 180.0f);
 
-								//Posición inicial personaje
-	playerM.PosicionObj = CVector(85.0f, 7.0f, 10.0f); //Esta es la posición inicial del objeto en la escena
-	playerM.Direccion.x = (float)cos(playerM.AngDir*PI / 180.0f);
-	playerM.Direccion.y = 0.0f;
-	playerM.Direccion.z = (float)sin(playerM.AngDir*PI / 180.0f);
+		playerM[i].DireccionCam.x = (float)cos(playerM[i].AngDirCam*PI / 180.0f);
+		playerM[i].DireccionCam.y = 0.0f;
+		playerM[i].DireccionCam.z = (float)sin(playerM[i].AngDirCam*PI / 180.0f);
+		playerM[i].PosicionCam = playerM[i].PosicionObj - playerM[i].DireccionCam*playerM[i].DistanciaCam;
+		playerM[i].PosicionCam.y = playerM[i].CamaraPosAlt;
 
-	playerM.DireccionCam.x = (float)cos(playerM.AngDirCam*PI / 180.0f);
-	playerM.DireccionCam.y = 0.0f;
-	playerM.DireccionCam.z = (float)sin(playerM.AngDirCam*PI / 180.0f);
-	playerM.PosicionCam = playerM.PosicionObj - playerM.DireccionCam*playerM.DistanciaCam;
-	playerM.PosicionCam.y = playerM.CamaraPosAlt;
+		playerM[i].ObjetivoCam = playerM[i].PosicionObj;		//La cámara ve siempre al objeto
+		playerM[i].ObjetivoCam.y = playerM[i].CamaraObjAlt;		//Para que no vea a los "pies" del objeto (personaje)
 
-	playerM.ObjetivoCam = playerM.PosicionObj;		//La cámara ve siempre al objeto
-	playerM.ObjetivoCam.y = playerM.CamaraObjAlt;		//Para que no vea a los "pies" del objeto (personaje)
+		playerM[i].escalaX = 1.5f;
+		playerM[i].escalaY = 1.5f;
+		playerM[i].escalaZ = 1.5f;
 
-	playerM.escalaX = 1.5f;
-	playerM.escalaY = 1.5f;
-	playerM.escalaZ = 1.5f;
+		playerM[i].kick = false;
+		playerM[i].contAuxAnim = 0;
+	}
+	playerM[0].PosicionObj = CVector(85.0f, 7.0f, 10.0f); //Esta es la posición inicial del objeto en la escena
+	playerM[1].PosicionObj = playerM[0].PosicionObj + CVector(-50.0f, 16.0f, 0.0f);
+	playerM[2].PosicionObj = playerM[0].PosicionObj + CVector(-80.0f, 31.0f, 0.0f);
+	playerM[3].PosicionObj = playerM[0].PosicionObj + CVector(-15.0f, 46.0f, 0.0f);
+	playerM[4].PosicionObj = playerM[0].PosicionObj + CVector(-35.0f, 76.0f, 0.0f);
 
-	playerM.kick = false;
-	playerM.contAuxAnim = 0;
-		
 }
 
 void InicializaCamara()
@@ -957,55 +964,55 @@ void inicializaPuntosdeControl()
 void iniciaCajasdeColision()
 {
 	cajaPersonaje.pos=CVector(player1.PosicionObj.x, player1.PosicionObj.y+3.0f, player1.PosicionObj.z);
-	cajaPersonaje.tamanio=CVector(6.0f, 6.0f, 6.0f);
-	cajaPersonaje.xMin=cajaPersonaje.pos.x-cajaPersonaje.tamanio.x*0.5f;
-	cajaPersonaje.xMax=cajaPersonaje.pos.x+cajaPersonaje.tamanio.x*0.5f;
-	cajaPersonaje.yMin=cajaPersonaje.pos.y-cajaPersonaje.tamanio.y*0.5f;
-	cajaPersonaje.yMax=cajaPersonaje.pos.y+cajaPersonaje.tamanio.y*0.5f;
-	cajaPersonaje.zMin=cajaPersonaje.pos.z-cajaPersonaje.tamanio.z*0.5f;
-	cajaPersonaje.zMax=cajaPersonaje.pos.z+cajaPersonaje.tamanio.z*0.5f;
+	cajaPersonaje.tamaño=CVector(6.0f, 6.0f, 6.0f);
+	cajaPersonaje.xMin=cajaPersonaje.pos.x-cajaPersonaje.tamaño.x*0.5f;
+	cajaPersonaje.xMax=cajaPersonaje.pos.x+cajaPersonaje.tamaño.x*0.5f;
+	cajaPersonaje.yMin=cajaPersonaje.pos.y-cajaPersonaje.tamaño.y*0.5f;
+	cajaPersonaje.yMax=cajaPersonaje.pos.y+cajaPersonaje.tamaño.y*0.5f;
+	cajaPersonaje.zMin=cajaPersonaje.pos.z-cajaPersonaje.tamaño.z*0.5f;
+	cajaPersonaje.zMax=cajaPersonaje.pos.z+cajaPersonaje.tamaño.z*0.5f;
 
 	cajaEscenario[0].pos=CVector(50.0f, 2.5f, 10.0f);
-	cajaEscenario[0].tamanio=CVector(100.0f, 5.0f, 20.0f);
+	cajaEscenario[0].tamaño=CVector(100.0f, 5.0f, 20.0f);
 
 	cajaEscenario[1].pos=CVector(50.0f, 17.5f, 10.0f);
-	cajaEscenario[1].tamanio=CVector(70.0f, 5.0f, 20.0f);
+	cajaEscenario[1].tamaño=CVector(70.0f, 5.0f, 20.0f);
 
 	cajaEscenario[2].pos=CVector(50.0f, 25.0f, 10.0f);
-	cajaEscenario[2].tamanio=CVector(10.0f, 10.0f, 20.0f);
+	cajaEscenario[2].tamaño=CVector(10.0f, 10.0f, 20.0f);
 
 	cajaEscenario[3].pos=CVector(15.0f, 32.5f, 10.0f);
-	cajaEscenario[3].tamanio=CVector(30.0f, 5.0f, 20.0f);
+	cajaEscenario[3].tamaño=CVector(30.0f, 5.0f, 20.0f);
 
 	cajaEscenario[4].pos=CVector(50.0f, 47.5f, 10.0f);
-	cajaEscenario[4].tamanio=CVector(20.0f, 35.0f, 20.0f);
+	cajaEscenario[4].tamaño=CVector(20.0f, 35.0f, 20.0f);
 
 	cajaEscenario[5].pos = CVector(85.0f, 32.5f, 10.0f);
-	cajaEscenario[5].tamanio = CVector(30.0f, 5.0f, 20.0f);
+	cajaEscenario[5].tamaño = CVector(30.0f, 5.0f, 20.0f);
 
 	cajaEscenario[6].pos=CVector(50.0f, 47.5f, 10.0f);
-	cajaEscenario[6].tamanio=CVector(70.0f, 5.0f, 20.0f);
+	cajaEscenario[6].tamaño=CVector(70.0f, 5.0f, 20.0f);
 
 	cajaEscenario[7].pos = CVector(15.0f, 62.5f, 10.0f);
-	cajaEscenario[7].tamanio = CVector(30.0f, 5.0f, 20.0f);
+	cajaEscenario[7].tamaño = CVector(30.0f, 5.0f, 20.0f);
 
 	cajaEscenario[8].pos=CVector(85.0f, 62.5f, 10.0f);
-	cajaEscenario[8].tamanio=CVector(30.0f, 5.0f, 20.0f);
+	cajaEscenario[8].tamaño=CVector(30.0f, 5.0f, 20.0f);
 
 	cajaEscenario[9].pos = CVector(50.0f, 70.0f, 10.0f);
-	cajaEscenario[9].tamanio = CVector(10.0f, 10.0f, 20.0f);
+	cajaEscenario[9].tamaño = CVector(10.0f, 10.0f, 20.0f);
 
 	cajaEscenario[10].pos = CVector(50.0f, 77.5f, 10.0f);
-	cajaEscenario[10].tamanio = CVector(70.0f, 5.0f, 20.0f);
+	cajaEscenario[10].tamaño = CVector(70.0f, 5.0f, 20.0f);
 
 	for(int i=0; i<numCajas; i++)
 	{
-		cajaEscenario[i].xMin=cajaEscenario[i].pos.x-cajaEscenario[i].tamanio.x*0.5f;
-		cajaEscenario[i].xMax=cajaEscenario[i].pos.x+cajaEscenario[i].tamanio.x*0.5f;
-		cajaEscenario[i].yMin=cajaEscenario[i].pos.y-cajaEscenario[i].tamanio.y*0.5f;
-		cajaEscenario[i].yMax=cajaEscenario[i].pos.y+cajaEscenario[i].tamanio.y*0.5f;
-		cajaEscenario[i].zMin=cajaEscenario[i].pos.z-cajaEscenario[i].tamanio.z*0.5f;
-		cajaEscenario[i].zMax=cajaEscenario[i].pos.z+cajaEscenario[i].tamanio.z*0.5f;
+		cajaEscenario[i].xMin=cajaEscenario[i].pos.x-cajaEscenario[i].tamaño.x*0.5f;
+		cajaEscenario[i].xMax=cajaEscenario[i].pos.x+cajaEscenario[i].tamaño.x*0.5f;
+		cajaEscenario[i].yMin=cajaEscenario[i].pos.y-cajaEscenario[i].tamaño.y*0.5f;
+		cajaEscenario[i].yMax=cajaEscenario[i].pos.y+cajaEscenario[i].tamaño.y*0.5f;
+		cajaEscenario[i].zMin=cajaEscenario[i].pos.z-cajaEscenario[i].tamaño.z*0.5f;
+		cajaEscenario[i].zMax=cajaEscenario[i].pos.z+cajaEscenario[i].tamaño.z*0.5f;
 	}
 }
 
@@ -1054,9 +1061,12 @@ void iniciaEsferasdeColision()
 	esferaPersonaje.radio=3.0f;
 	esferaPersonaje.pos=CVector(player1.PosicionObj.x, player1.PosicionObj.y+3.0f, player1.PosicionObj.z);
 
-	esferaEnemigo.estado=0;
-	esferaEnemigo.radio=3.0f;
-	esferaEnemigo.pos= playerM.PosicionObj;
+	for (int i = 0; i < numEnemigos; i++)
+	{
+		esferaEnemigos[i].estado = 0;
+		esferaEnemigos[i].radio = 3.0f;
+		esferaEnemigos[i].pos = playerM[i].PosicionObj;
+	}
 }
 
 //PARTÍCULAS -- cambio 3
@@ -1142,7 +1152,7 @@ int IniGL(GLvoid)										// Aqui se configuran los parametros iniciales de Ope
 	Font.BuildFont();
 	controlFunc.inicializaControl();
 
-	infGame.estadoJuego=6; //
+	infGame.estadoJuego=6;
 
 	posCamV=CVector(0.0f, 30.0f, 0.0f);
 	dirCamV=CVector(0.0f, 0.0f, 1.0f);
@@ -1193,7 +1203,7 @@ int IniGL(GLvoid)										// Aqui se configuran los parametros iniciales de Ope
 
 	//Inicialización de las variables del proyecto
 
-	posCam = CVector(50.0f, 10.0f, 120.0f);
+	posCam = CVector(50.0f, 100.0f, 120.0f);
 	dirCam = CVector(50.0f, 0.0f, -100.0f);
 
 	//Fin inicialización de las variables del proyecto
@@ -1203,23 +1213,21 @@ int IniGL(GLvoid)										// Aqui se configuran los parametros iniciales de Ope
 
 void colisionEsferas()
 {
-	int numEnemigos=1;
-
-	//for(int i=0; i<numEnemigos; i++)
-	//{
-	CVector vecCentros=esferaEnemigo.pos-esferaPersonaje.pos;
-	float dist=Magnitud(vecCentros);
-
-	if(dist < esferaEnemigo.radio+esferaPersonaje.radio)
+	for(int i=0; i<numEnemigos; i++)
 	{
-		esferaPersonaje.estado=1;
-		if(esferaEnemigo.estado == 0)
+		CVector vecCentros=esferaEnemigos[i].pos-esferaPersonaje.pos;
+		float dist=Magnitud(vecCentros);
+
+		if(dist < esferaEnemigos[i].radio+esferaPersonaje.radio)
 		{
-			esferaEnemigo.estado=1;
-			sonidoF[1].reproduceSonido();
+			esferaPersonaje.estado=1;
+			if(esferaEnemigos[i].estado == 0)
+			{
+				esferaEnemigos[i].estado=1;
+				sonidoF[1].reproduceSonido();
+			}
 		}
 	}
-	//}
 }
 
 void dibujaEsferadeColision(esferaCol *esfera)
@@ -1290,7 +1298,7 @@ void obtieneAltPiso()
 			|| (atr > cajaEscenario[i].zMin && atr < cajaEscenario[i].zMax)))
 		{
 			//Comprueba que sea la más cercana en y (de otra forma podría tomar la altura de la caja más baja si se encuentra una caja debajo de otra)
-			if(fabs(cajaPersonaje.pos.y-cajaEscenario[i].pos.y) <= cajaPersonaje.tamanio.y*0.5f+cajaEscenario[i].tamanio.y*0.5f+player1.VelocidadObj)
+			if(fabs(cajaPersonaje.pos.y-cajaEscenario[i].pos.y) <= cajaPersonaje.tamaño.y*0.5f+cajaEscenario[i].tamaño.y*0.5f+player1.VelocidadObj)
 			{
 				altPiso=cajaEscenario[i].yMax;
 				break;
@@ -1347,12 +1355,12 @@ bool colisionCajas(int dir)
 		}
 
 		cajaPersonaje.pos=CVector(pSig.x, pSig.y+3.0f, pSig.z);
-		cajaPersonaje.xMin=cajaPersonaje.pos.x-cajaPersonaje.tamanio.x*0.5f;
-		cajaPersonaje.xMax=cajaPersonaje.pos.x+cajaPersonaje.tamanio.x*0.5f;
-		cajaPersonaje.yMin=cajaPersonaje.pos.y-cajaPersonaje.tamanio.y*0.5f;
-		cajaPersonaje.yMax=cajaPersonaje.pos.y+cajaPersonaje.tamanio.y*0.5f;
-		cajaPersonaje.zMin=cajaPersonaje.pos.z-cajaPersonaje.tamanio.z*0.5f;
-		cajaPersonaje.zMax=cajaPersonaje.pos.z+cajaPersonaje.tamanio.z*0.5f;
+		cajaPersonaje.xMin=cajaPersonaje.pos.x-cajaPersonaje.tamaño.x*0.5f;
+		cajaPersonaje.xMax=cajaPersonaje.pos.x+cajaPersonaje.tamaño.x*0.5f;
+		cajaPersonaje.yMin=cajaPersonaje.pos.y-cajaPersonaje.tamaño.y*0.5f;
+		cajaPersonaje.yMax=cajaPersonaje.pos.y+cajaPersonaje.tamaño.y*0.5f;
+		cajaPersonaje.zMin=cajaPersonaje.pos.z-cajaPersonaje.tamaño.z*0.5f;
+		cajaPersonaje.zMax=cajaPersonaje.pos.z+cajaPersonaje.tamaño.z*0.5f;
 
 		//Inf-izq-front
 		A.x=cajaPersonaje.xMin;
@@ -1406,15 +1414,15 @@ bool colisionCajas(int dir)
 			col=true;
 			
 			if(dir == 1) //x+
-				player1.PosicionObj.x=cajaEscenario[i].xMin-cajaPersonaje.tamanio.x*0.5f;
+				player1.PosicionObj.x=cajaEscenario[i].xMin-cajaPersonaje.tamaño.x*0.5f;
 			else if(dir == 2) //x-
-				player1.PosicionObj.x=cajaEscenario[i].xMax+cajaPersonaje.tamanio.x*0.5f;
+				player1.PosicionObj.x=cajaEscenario[i].xMax+cajaPersonaje.tamaño.x*0.5f;
 			else if(dir == 3) //z+
-				player1.PosicionObj.z=cajaEscenario[i].zMin-cajaPersonaje.tamanio.z*0.5f;
+				player1.PosicionObj.z=cajaEscenario[i].zMin-cajaPersonaje.tamaño.z*0.5f;
 			else if(dir == 4) //z-
-				player1.PosicionObj.z=cajaEscenario[i].zMax+cajaPersonaje.tamanio.z*0.5f;
+				player1.PosicionObj.z=cajaEscenario[i].zMax+cajaPersonaje.tamaño.z*0.5f;
 			else if(dir == 5) //y+
-				player1.PosicionObj.y=cajaEscenario[i].yMin-cajaPersonaje.tamanio.y*0.5f-3.0f;
+				player1.PosicionObj.y=cajaEscenario[i].yMin-cajaPersonaje.tamaño.y*0.5f-3.0f;
 			else if(dir == 6) //y-
 				player1.PosicionObj.y=cajaEscenario[i].yMax;
 		
@@ -1442,18 +1450,20 @@ void actualizaMovPersonaje()
 			esferaPersonaje.estado=0;
 		}
 	}
-
-	if(esferaEnemigo.estado == 1)
+	for (int i = 0; i < numEnemigos; i++)
 	{
-		if(tiempoColEnemigo < 20)
-			tiempoColEnemigo++;
-		else
+		if (esferaEnemigos[i].estado == 1)
 		{
-			tiempoColEnemigo=0;
-			esferaEnemigo.estado=0;
+			if (tiempoColEnemigo < 20)
+				tiempoColEnemigo++;
+			else
+			{
+				tiempoColEnemigo = 0;
+				esferaEnemigos[i].estado = 0;
+			}
 		}
 	}
-
+	
 	if(player1.saltando == false)
 		obtieneAltPiso();
 
@@ -1734,14 +1744,14 @@ void ControlPersonaje(int funcion)
 void actualizaCajaColPersonaje()
 {
 	cajaPersonaje.pos=CVector(player1.PosicionObj.x, player1.PosicionObj.y+3.0f, player1.PosicionObj.z);
-	cajaPersonaje.xMin=cajaPersonaje.pos.x-cajaPersonaje.tamanio.x*0.5f;
-	cajaPersonaje.xMax=cajaPersonaje.pos.x+cajaPersonaje.tamanio.x*0.5f;
-	cajaPersonaje.yMin=cajaPersonaje.pos.y-cajaPersonaje.tamanio.y*0.5f;
-	cajaPersonaje.yMax=cajaPersonaje.pos.y+cajaPersonaje.tamanio.y*0.5f;
-	cajaPersonaje.zMin=cajaPersonaje.pos.z-cajaPersonaje.tamanio.z*0.5f;
-	cajaPersonaje.zMax=cajaPersonaje.pos.z+cajaPersonaje.tamanio.z*0.5f;
+	cajaPersonaje.xMin=cajaPersonaje.pos.x-cajaPersonaje.tamaño.x*0.5f;
+	cajaPersonaje.xMax=cajaPersonaje.pos.x+cajaPersonaje.tamaño.x*0.5f;
+	cajaPersonaje.yMin=cajaPersonaje.pos.y-cajaPersonaje.tamaño.y*0.5f;
+	cajaPersonaje.yMax=cajaPersonaje.pos.y+cajaPersonaje.tamaño.y*0.5f;
+	cajaPersonaje.zMin=cajaPersonaje.pos.z-cajaPersonaje.tamaño.z*0.5f;
+	cajaPersonaje.zMax=cajaPersonaje.pos.z+cajaPersonaje.tamaño.z*0.5f;
 }
-
+/*
 void ControlPersonaje2(int funcion)
 {
 	if(funcion == 1) //Avanza a la derecha (x+)
@@ -1767,40 +1777,7 @@ void ControlPersonaje2(int funcion)
 
 	//actualizaCajaColPersonaje();
 }
-
-void ControlPersonaje2D(int funcion)
-{
-	if(funcion == 1) //Avanza a la derecha
-	{
-		player1.AngObj=90.0f;
-
-		player1.Direccion=CVector(1.0f,0.0f,0.0f);
-
-		player1.PosicionObj=player1.PosicionObj+player1.Direccion*player1.VelocidadObj;
-		player1.PosicionCam=player1.PosicionObj-player1.DireccionCam*player1.DistanciaCam;
-		player1.PosicionCam.y=player1.CamaraPosAlt;
-		player1.ObjetivoCam=player1.PosicionObj;
-		player1.ObjetivoCam.y=player1.CamaraObjAlt;
-
-		player1.PosicionObjAnt=player1.PosicionObj;
-
-	}
-	else if(funcion == 2) //Giro a la izquierda
-	{
-		player1.AngObj=270.0f;
-
-		player1.Direccion=CVector(-1.0f,0.0f,0.0f);
-
-		player1.PosicionObj=player1.PosicionObj+player1.Direccion*player1.VelocidadObj;
-		player1.PosicionCam=player1.PosicionObj-player1.DireccionCam*player1.DistanciaCam;
-		player1.PosicionCam.y=player1.CamaraPosAlt;
-		player1.ObjetivoCam=player1.PosicionObj;
-		player1.ObjetivoCam.y=player1.CamaraObjAlt;
-
-		player1.PosicionObjAnt=player1.PosicionObj;
-	}
-	
-}
+*/
 
 void DibujaEjes()
 {
@@ -2890,7 +2867,7 @@ void dibujaVolumendeSombra2(paramObj objeto)
 	CVector vertD[2];
 	CVector centro, centroP, centroD;
 
-	CVector posLuz=CVector(objeto.PosicionObj.x-3.0f, objeto.PosicionObj.y+35.0f, objeto.PosicionObj.z-1.0f);
+	CVector posLuz=CVector(objeto.PosicionObj.x, objeto.PosicionObj.y+30.0f, objeto.PosicionObj.z-1.0f);
 
 	float ang, deltaAng;
 
@@ -2916,9 +2893,9 @@ void dibujaVolumendeSombra2(paramObj objeto)
 		vertD[1]=Normaliza(vert[1]-posLuz);
 		centroD=Normaliza(centro-posLuz);
 
-		vertP[0]=vert[0]+vertD[0]*200.0f;
-		vertP[1]=vert[1]+vertD[1]*200.0f;
-		centroP=centro+centroD*200.0f;
+		vertP[0]=vert[0]+vertD[0]*15.0f;
+		vertP[1]=vert[1]+vertD[1]*15.0f;
+		centroP=centro+centroD*15.0f;
 
 		glBegin(GL_TRIANGLES);
 			glVertex3f(vert[1].x, vert[1].y, vert[1].z);
@@ -3348,9 +3325,8 @@ int RenderizaEscena(GLvoid)
 
 	for(int i=0; i < numCajas; i++) 
 		dibujaCajaColision(&cajaEscenario[i]);
-
+	
 	dibujaEsferadeColision(&esferaPersonaje);
-	dibujaEsferadeColision(&esferaEnemigo);
 
 	if(player1.visible == true)
 	{
@@ -3361,41 +3337,51 @@ int RenderizaEscena(GLvoid)
 			DibujaPersonaje();
 		glPopMatrix();
 		
-	}if (playerM.visible == true)
-	{
-		glPushMatrix();
-		glTranslatef(playerM.PosicionObj.x, playerM.PosicionObj.y, playerM.PosicionObj.z);
-		glRotatef(playerM.AngObj, 0.0f, 1.0f, 0.0f);
-		glScalef(playerM.escalaX, playerM.escalaY, playerM.escalaZ);
-		DibujaPersonajeMalo();
-		glPopMatrix();
-		glPushMatrix();
-		glTranslatef(playerM.PosicionObj.x-50.0f, playerM.PosicionObj.y+16.0f, playerM.PosicionObj.z);
-		glRotatef(playerM.AngObj, 0.0f, 1.0f, 0.0f);
-		glScalef(playerM.escalaX, playerM.escalaY, playerM.escalaZ);
-		DibujaPersonajeMalo();
-		glPopMatrix();
-		glPushMatrix();
-		glTranslatef(playerM.PosicionObj.x - 80.0f, playerM.PosicionObj.y+31.0f, playerM.PosicionObj.z);
-		glRotatef(playerM.AngObj, 0.0f, 1.0f, 0.0f);
-		glScalef(playerM.escalaX, playerM.escalaY, playerM.escalaZ);
-		DibujaPersonajeMalo();
-		glPopMatrix();
-		glPushMatrix();
-		glTranslatef(playerM.PosicionObj.x-15.0f, playerM.PosicionObj.y+46.0f, playerM.PosicionObj.z);
-		glRotatef(playerM.AngObj, 0.0f, 1.0f, 0.0f);
-		glScalef(playerM.escalaX, playerM.escalaY, playerM.escalaZ);
-		DibujaPersonajeMalo();
-		glPopMatrix();
-		glPushMatrix();
-		glTranslatef(playerM.PosicionObj.x-35.0f, playerM.PosicionObj.y + 76.0f, playerM.PosicionObj.z);
-		glRotatef(playerM.AngObj, 0.0f, 1.0f, 0.0f);
-		glScalef(playerM.escalaX, playerM.escalaY, playerM.escalaZ);
-		DibujaPersonajeMalo();
-		glPopMatrix();
-
-
 	}
+	for (int i = 0; i < numEnemigos; i++)
+	{
+		if (playerM[i].visible == true)
+		{
+			glPushMatrix();
+			glTranslatef(playerM[i].PosicionObj.x, playerM[i].PosicionObj.y, playerM[i].PosicionObj.z);
+			glRotatef(playerM[i].AngObj, 0.0f, 1.0f, 0.0f);
+			glScalef(playerM[i].escalaX, playerM[i].escalaY, playerM[i].escalaZ);
+			DibujaPersonajeMalo();
+			glPopMatrix();
+		}
+		//Sombra enemigo
+		glColorMask(0, 0, 0, 0);
+		glDepthMask(0);
+
+		glEnable(GL_STENCIL_TEST);
+		glStencilFunc(GL_ALWAYS, 0, 0);
+		glStencilOp(GL_REPLACE, GL_REPLACE, GL_REPLACE);
+
+		//1er paso de la prueba de pase de profundidad
+		glStencilOp(GL_KEEP, GL_KEEP, GL_INCR);
+		glCullFace(GL_BACK);
+		dibujaVolumendeSombra2(playerM[i]);
+
+		//2do paso de la prueba de pase de profundidad
+		glStencilOp(GL_KEEP, GL_KEEP, GL_DECR);
+		glCullFace(GL_FRONT);
+		dibujaVolumendeSombra2(playerM[i]);
+
+		glCullFace(GL_BACK);
+
+		glColorMask(1, 1, 1, 1);
+		glDepthMask(1);
+
+		glStencilFunc(GL_NOTEQUAL, 1, 1);
+		glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+
+		glEnable(GL_LIGHT0);
+		glDisable(GL_LIGHT1);
+		//Fin sombra enemigo
+
+		dibujaEsferadeColision(&esferaEnemigos[i]);
+	}
+	
 	//Sombra personaje
 	glColorMask(0,0,0,0);
 	glDepthMask(0);
@@ -3426,35 +3412,6 @@ int RenderizaEscena(GLvoid)
 	glDisable(GL_LIGHT1);
 	//Fin sombra personaje
 	
-	//Sombra enemigo
-	glColorMask(0, 0, 0, 0);
-	glDepthMask(0);
-
-	glEnable(GL_STENCIL_TEST);
-	glStencilFunc(GL_ALWAYS, 0, 0);
-	glStencilOp(GL_REPLACE, GL_REPLACE, GL_REPLACE);
-
-	//1er paso de la prueba de pase de profundidad
-	glStencilOp(GL_KEEP, GL_KEEP, GL_INCR);
-	glCullFace(GL_BACK);
-	dibujaVolumendeSombra2(playerM);
-
-	//2do paso de la prueba de pase de profundidad
-	glStencilOp(GL_KEEP, GL_KEEP, GL_DECR);
-	glCullFace(GL_FRONT);
-	dibujaVolumendeSombra2(playerM);
-
-	glCullFace(GL_BACK);
-
-	glColorMask(1, 1, 1, 1);
-	glDepthMask(1);
-
-	glStencilFunc(GL_NOTEQUAL, 1, 1);
-	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
-
-	glEnable(GL_LIGHT0);
-	glDisable(GL_LIGHT1);
-	//Fin sombra enemigo
 	DibujaEscenario();
 
 	if(player1.visible == true)
@@ -3662,7 +3619,7 @@ BOOL CreaVentanaOGL(char* title, int width, int height, int bits)
 	dwExStyle=WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;					// Estilo extendido de ventana
 	dwStyle=WS_OVERLAPPEDWINDOW;									// Estilo de ventana
 
-	AdjustWindowRectEx(&WindowRect, dwStyle, FALSE, dwExStyle);		// Ajusta la ventana al tamanio especificado
+	AdjustWindowRectEx(&WindowRect, dwStyle, FALSE, dwExStyle);		// Ajusta la ventana al tamaño especificado
 
 	// Crea la ventana
 	if (!(hWnd=CreateWindowEx(	dwExStyle,							// Estilo extendido para la ventana
