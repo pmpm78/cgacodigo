@@ -29,49 +29,49 @@ void CControl::actualizaControl()
 
 void CControl::controlTeclado()
 {
-	//Al presionar cualquiera de las teclas de direcciÛn se iniciar· la animaciÛn de caminar
-	//Al soltar la tecla presionada se detiene la animaciÛn.
+	//Al presionar cualquiera de las teclas de direcci√≥n se iniciar√° la animaci√≥n de caminar
+	//Al soltar la tecla presionada se detiene la animaci√≥n.
 	
 	//UP
-	if(GetKeyState(VK_UP) & 0x80) //Si est· presionada la tecla UP
+	if(GetKeyState(VK_UP) & 0x80) //Si est√° presionada la tecla UP
 	{
 		estadoTecla[0]=1;
 	}
 
-	if(!(GetKeyState(VK_UP) & 0x80)) //Si no est· presionada la tecla UP
+	if(!(GetKeyState(VK_UP) & 0x80)) //Si no est√° presionada la tecla UP
 	{
 		estadoTecla[0]=0;
 	}
 
 	//DOWN
-	if(GetKeyState(VK_DOWN) & 0x80) //Si est· presionada la tecla DOWN
+	if(GetKeyState(VK_DOWN) & 0x80) //Si est√° presionada la tecla DOWN
 	{
 		estadoTecla[1]=1;
 	}
 
-	if(!(GetKeyState(VK_DOWN) & 0x80)) //Si no est· presionada la tecla DOWN
+	if(!(GetKeyState(VK_DOWN) & 0x80)) //Si no est√° presionada la tecla DOWN
 	{
 		estadoTecla[1]=0;
 	}
 
 	//LEFT
-	if(GetKeyState(VK_LEFT) & 0x80) //Si est· presionada la tecla LEFT
+	if(GetKeyState(VK_LEFT) & 0x80) //Si est√° presionada la tecla LEFT
 	{
 		estadoTecla[2]=1;
 	}
 
-	if(!(GetKeyState(VK_LEFT) & 0x80)) //Si no est· presionada la tecla LEFT
+	if(!(GetKeyState(VK_LEFT) & 0x80)) //Si no est√° presionada la tecla LEFT
 	{
 		estadoTecla[2]=0;
 	}
 
 	//RIGHT
-	if(GetKeyState(VK_RIGHT) & 0x80) //Si est· presionada la tecla RIGHT
+	if(GetKeyState(VK_RIGHT) & 0x80) //Si est√° presionada la tecla RIGHT
 	{
 		estadoTecla[3]=1;
 	}
 
-	if(!(GetKeyState(VK_RIGHT) & 0x80)) //Si no est· presionada la tecla RIGHT
+	if(!(GetKeyState(VK_RIGHT) & 0x80)) //Si no est√° presionada la tecla RIGHT
 	{
 		estadoTecla[3]=0;
 	}
@@ -99,12 +99,12 @@ void CControl::controlTeclado()
 	}
 
 	//Enter
-	if(GetKeyState(VK_RETURN) & 0x80) //Si est· presionada la tecla UP
+	if(GetKeyState(VK_RETURN) & 0x80) //Si est√° presionada la tecla ENTER
 	{
 		estadoTecla[6]=1;
 	}
 
-	if(!(GetKeyState(VK_RETURN) & 0x80)) //Si no est· presionada la tecla UP
+	if(!(GetKeyState(VK_RETURN) & 0x80)) //Si no est√° presionada la tecla ENTER
 	{
 		estadoTecla[6]=0;
 	}
@@ -153,6 +153,28 @@ void CControl::controlTeclado()
 	if (!(GetKeyState('G') & 0x80))
 	{
 		estadoTecla[10] = 0;
+	}
+
+	//R
+	if (GetKeyState('R') & 0x80)
+	{
+		estadoTecla[11] = 1;
+	}
+
+	if (!(GetKeyState('R') & 0x80))
+	{
+		estadoTecla[11] = 0;
+	}
+
+	//Y
+	if (GetKeyState('Y') & 0x80)
+	{
+		estadoTecla[12] = 1;
+	}
+
+	if (!(GetKeyState('Y') & 0x80))
+	{
+		estadoTecla[12] = 0;
 	}
 
 	//Fin teclas para el proyecto
