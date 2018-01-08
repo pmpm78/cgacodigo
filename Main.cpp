@@ -81,6 +81,10 @@ particles particle[MAX_PARTICULAS];	// Arreglo de partículas
 #define FILE_NAME15c  "Modelos/snowbotad.3ds"
 #define FILE_NAME16c  "Modelos/snowhat.3ds"
 #define FILE_NAME17c  "Modelos/snowbody.3ds"
+#define FILE_NAME18c  "Modelos/diablotorso.3ds"
+#define FILE_NAME19c  "Modelos/diablopiernad.3ds"
+#define FILE_NAME20c  "Modelos/diablopiernai.3ds"
+#define FILE_NAME21c  "Modelos/diabloc.3ds"
 
 //Contenedor de texturas del modelo
 CTga textureModel1c[20];
@@ -100,6 +104,10 @@ CTga textureModel14c[20];
 CTga textureModel15c[20];
 CTga textureModel16c[20];
 CTga textureModel17c[20];
+CTga textureModel18c[20];
+CTga textureModel19c[20];
+CTga textureModel20c[20];
+CTga textureModel21c[20];
 
 CTga textureModel1e[5];
 
@@ -123,11 +131,16 @@ t3DModel g_3DModel14c;
 t3DModel g_3DModel15c;
 t3DModel g_3DModel16c;
 t3DModel g_3DModel17c;
+t3DModel g_3DModel18c;
+t3DModel g_3DModel19c;
+t3DModel g_3DModel20c;
+t3DModel g_3DModel21c;
 
 t3DModel g_3DModel1e;
 
 //Objeto para acceder a las variables de control del personaje
 paramObj player1;
+paramObj playerM;
 
 //Objeto para manejo de la cámara
 paramCam camara1;
@@ -175,6 +188,26 @@ float Angpd;
 float Xtor;
 float Ytor;
 float Ztor;
+
+//Variables del personaje Malo
+float MAngt1;
+float MAngt2;
+float MAngc1;
+float MAngc2;
+float MAngbi1;
+float MAngbi2;
+float MAngbib;
+float MAngbd1;
+float MAngbd2;
+float MAngbdb;
+float MAngpizq;
+float MAngpder;
+float MAngpi;
+float MAngpd;
+
+float MXtor;
+float MYtor;
+float MZtor;
 
 //Contenedor de texturas para el escenario
 CTga textura[36];
@@ -310,6 +343,14 @@ int CargaModelos()
 		return 0;
 	if (!g_Load3ds.Load3DSFile(FILE_NAME17c, &g_3DModel17c, textureModel17c))
 		return 0;
+	if (!g_Load3ds.Load3DSFile(FILE_NAME18c, &g_3DModel18c, textureModel18c))
+		return 0;
+	if (!g_Load3ds.Load3DSFile(FILE_NAME19c, &g_3DModel19c, textureModel19c))
+		return 0;
+	if (!g_Load3ds.Load3DSFile(FILE_NAME20c, &g_3DModel20c, textureModel20c))
+		return 0;
+	if (!g_Load3ds.Load3DSFile(FILE_NAME21c, &g_3DModel21c, textureModel21c))
+		return 0;
 
 	
 	return TRUE;
@@ -334,6 +375,10 @@ void DescargaModelos()
 	g_Load3ds.UnLoad3DSFile(&g_3DModel15c, textureModel15c);
 	g_Load3ds.UnLoad3DSFile(&g_3DModel16c, textureModel16c);
 	g_Load3ds.UnLoad3DSFile(&g_3DModel17c, textureModel17c);
+	g_Load3ds.UnLoad3DSFile(&g_3DModel18c, textureModel18c);
+	g_Load3ds.UnLoad3DSFile(&g_3DModel19c, textureModel19c);
+	g_Load3ds.UnLoad3DSFile(&g_3DModel20c, textureModel20c);
+	g_Load3ds.UnLoad3DSFile(&g_3DModel21c, textureModel21c);
 
 	
 }
@@ -349,7 +394,7 @@ void InicializaParametrosdeControl()
 	player1.dirX=0;
 	player1.dirZ=0;
 
-	player1.VelocidadObj=0.05f;
+	player1.VelocidadObj=0.2f;
 	player1.DistanciaCam=50.0f;
 	
 	player1.CamaraPosAlt=15.0f;	//Posición en y de la cámara (altura a la que se situa la cámara)
@@ -381,6 +426,46 @@ void InicializaParametrosdeControl()
 
 	player1.kick=false;
 	player1.contAuxAnim=0;
+
+
+	playerM.visible = true;
+	playerM.cayendo = true;
+	playerM.caminando = false;
+	playerM.dirX = 0;
+	playerM.dirZ = 0;
+
+	playerM.VelocidadObj = 0.2f;
+	playerM.DistanciaCam = 50.0f;
+
+	playerM.CamaraPosAlt = 15.0f;	//Posición en y de la cámara (altura a la que se situa la cámara)
+	playerM.CamaraObjAlt = 8.0f;	//Posición en y del objetivo de la cámara (altura a la que ve la cámara)
+	playerM.AngDir = 0.0f;		//Este ángulo inicial hace que la dirección inicial sea paralela al eje Z y con sentido negativo
+	playerM.AngDirCam = 0.0f;		//Este es el ángulo inicial que define la posición de la camara respecto al personaje
+	playerM.AngObj = 90.0f;		//Este valor se elige dependiendo de la orientación con la que aparece el modelo en la escena al dibujarlo
+								//sin aplicarle ninguna transformación (hacia adonde está volteando). Se elige un ángulo tal que al aplicarle
+								//una rotación inicial con respecto al eje Y esté viendo hacia la misma dirección que la definida por AngDir
+
+								//Posición inicial personaje
+	playerM.PosicionObj = CVector(5.0f, 5.0f, 10.0f); //Esta es la posición inicial del objeto en la escena
+	playerM.Direccion.x = (float)cos(playerM.AngDir*PI / 180.0f);
+	playerM.Direccion.y = 0.0f;
+	playerM.Direccion.z = (float)sin(playerM.AngDir*PI / 180.0f);
+
+	playerM.DireccionCam.x = (float)cos(playerM.AngDirCam*PI / 180.0f);
+	playerM.DireccionCam.y = 0.0f;
+	playerM.DireccionCam.z = (float)sin(playerM.AngDirCam*PI / 180.0f);
+	playerM.PosicionCam = playerM.PosicionObj - playerM.DireccionCam*playerM.DistanciaCam;
+	playerM.PosicionCam.y = playerM.CamaraPosAlt;
+
+	playerM.ObjetivoCam = playerM.PosicionObj;		//La cámara ve siempre al objeto
+	playerM.ObjetivoCam.y = playerM.CamaraObjAlt;		//Para que no vea a los "pies" del objeto (personaje)
+
+	playerM.escalaX = 0.8f;
+	playerM.escalaY = 0.8f;
+	playerM.escalaZ = 0.8f;
+
+	playerM.kick = false;
+	playerM.contAuxAnim = 0;
 		
 }
 
@@ -425,6 +510,26 @@ void IniVarsPlayer()
 	Xtor=0.0f;    //Torso: posición en X
 	Ytor=0.0f;    //Torso: posición en Y
 	Ztor=0.0f;    //Torso: posición en Z
+	//PersonajeMalo
+	MAngt1 = 25.0f;   //Torso: rotación en X
+	MAngt2 = 0.0f;   //Torso: rotación en Z
+	MAngc1 = -25.0f;   //Cabeza: rotación en X
+	MAngc2 = 0.0f;   //Cabeza: rotación en Y
+	MAngbi1 = -100.0f;  //Brazo Izq: rotación en X
+	MAngbi2 = 0.0f;  //Brazo Izq: rotación en Z
+	MAngbib = -30.0f;  //Antebrazo Izq: rotación en X
+	MAngbd1 = 120.0f;  //Brazo Der: rotación en X
+	MAngbd2 = 0.0f;  //Brazo Der: rotación en Z
+	MAngbdb = -80.0f;  //Antebrazo Der: rotación en X
+	MAngpizq = 40.0f; //Pierna Izq: rotación en X
+	MAngpder = -60.0f; //Pierna Der: rotación en X
+	MAngpi = 0.0f;   //Pie Izq: rotación en X
+	MAngpd = 0.0f;   //Pie Der: rotación en X
+
+	MXtor = 0.0f;    //Torso: posición en X
+	MYtor = 0.0f;    //Torso: posición en Y
+	MZtor = 0.0f;    //Torso: posición en Z
+
 }
 
 void CargaTexturas(){
@@ -852,55 +957,55 @@ void inicializaPuntosdeControl()
 void iniciaCajasdeColision()
 {
 	cajaPersonaje.pos=CVector(player1.PosicionObj.x, player1.PosicionObj.y+3.0f, player1.PosicionObj.z);
-	cajaPersonaje.tamaño=CVector(6.0f, 6.0f, 6.0f);
-	cajaPersonaje.xMin=cajaPersonaje.pos.x-cajaPersonaje.tamaño.x*0.5f;
-	cajaPersonaje.xMax=cajaPersonaje.pos.x+cajaPersonaje.tamaño.x*0.5f;
-	cajaPersonaje.yMin=cajaPersonaje.pos.y-cajaPersonaje.tamaño.y*0.5f;
-	cajaPersonaje.yMax=cajaPersonaje.pos.y+cajaPersonaje.tamaño.y*0.5f;
-	cajaPersonaje.zMin=cajaPersonaje.pos.z-cajaPersonaje.tamaño.z*0.5f;
-	cajaPersonaje.zMax=cajaPersonaje.pos.z+cajaPersonaje.tamaño.z*0.5f;
+	cajaPersonaje.tamanio=CVector(6.0f, 6.0f, 6.0f);
+	cajaPersonaje.xMin=cajaPersonaje.pos.x-cajaPersonaje.tamanio.x*0.5f;
+	cajaPersonaje.xMax=cajaPersonaje.pos.x+cajaPersonaje.tamanio.x*0.5f;
+	cajaPersonaje.yMin=cajaPersonaje.pos.y-cajaPersonaje.tamanio.y*0.5f;
+	cajaPersonaje.yMax=cajaPersonaje.pos.y+cajaPersonaje.tamanio.y*0.5f;
+	cajaPersonaje.zMin=cajaPersonaje.pos.z-cajaPersonaje.tamanio.z*0.5f;
+	cajaPersonaje.zMax=cajaPersonaje.pos.z+cajaPersonaje.tamanio.z*0.5f;
 
 	cajaEscenario[0].pos=CVector(50.0f, 2.5f, 10.0f);
-	cajaEscenario[0].tamaño=CVector(100.0f, 5.0f, 20.0f);
+	cajaEscenario[0].tamanio=CVector(100.0f, 5.0f, 20.0f);
 
 	cajaEscenario[1].pos=CVector(50.0f, 17.5f, 10.0f);
-	cajaEscenario[1].tamaño=CVector(70.0f, 5.0f, 20.0f);
+	cajaEscenario[1].tamanio=CVector(70.0f, 5.0f, 20.0f);
 
 	cajaEscenario[2].pos=CVector(50.0f, 25.0f, 10.0f);
-	cajaEscenario[2].tamaño=CVector(10.0f, 10.0f, 20.0f);
+	cajaEscenario[2].tamanio=CVector(10.0f, 10.0f, 20.0f);
 
 	cajaEscenario[3].pos=CVector(15.0f, 32.5f, 10.0f);
-	cajaEscenario[3].tamaño=CVector(30.0f, 5.0f, 20.0f);
+	cajaEscenario[3].tamanio=CVector(30.0f, 5.0f, 20.0f);
 
 	cajaEscenario[4].pos=CVector(50.0f, 47.5f, 10.0f);
-	cajaEscenario[4].tamaño=CVector(20.0f, 35.0f, 20.0f);
+	cajaEscenario[4].tamanio=CVector(20.0f, 35.0f, 20.0f);
 
 	cajaEscenario[5].pos = CVector(85.0f, 32.5f, 10.0f);
-	cajaEscenario[5].tamaño = CVector(30.0f, 5.0f, 20.0f);
+	cajaEscenario[5].tamanio = CVector(30.0f, 5.0f, 20.0f);
 
 	cajaEscenario[6].pos=CVector(50.0f, 47.5f, 10.0f);
-	cajaEscenario[6].tamaño=CVector(70.0f, 5.0f, 20.0f);
+	cajaEscenario[6].tamanio=CVector(70.0f, 5.0f, 20.0f);
 
 	cajaEscenario[7].pos = CVector(15.0f, 62.5f, 10.0f);
-	cajaEscenario[7].tamaño = CVector(30.0f, 5.0f, 20.0f);
+	cajaEscenario[7].tamanio = CVector(30.0f, 5.0f, 20.0f);
 
 	cajaEscenario[8].pos=CVector(85.0f, 62.5f, 10.0f);
-	cajaEscenario[8].tamaño=CVector(30.0f, 5.0f, 20.0f);
+	cajaEscenario[8].tamanio=CVector(30.0f, 5.0f, 20.0f);
 
 	cajaEscenario[9].pos = CVector(50.0f, 70.0f, 10.0f);
-	cajaEscenario[9].tamaño = CVector(10.0f, 10.0f, 20.0f);
+	cajaEscenario[9].tamanio = CVector(10.0f, 10.0f, 20.0f);
 
 	cajaEscenario[10].pos = CVector(50.0f, 77.5f, 10.0f);
-	cajaEscenario[10].tamaño = CVector(70.0f, 5.0f, 20.0f);
+	cajaEscenario[10].tamanio = CVector(70.0f, 5.0f, 20.0f);
 
 	for(int i=0; i<numCajas; i++)
 	{
-		cajaEscenario[i].xMin=cajaEscenario[i].pos.x-cajaEscenario[i].tamaño.x*0.5f;
-		cajaEscenario[i].xMax=cajaEscenario[i].pos.x+cajaEscenario[i].tamaño.x*0.5f;
-		cajaEscenario[i].yMin=cajaEscenario[i].pos.y-cajaEscenario[i].tamaño.y*0.5f;
-		cajaEscenario[i].yMax=cajaEscenario[i].pos.y+cajaEscenario[i].tamaño.y*0.5f;
-		cajaEscenario[i].zMin=cajaEscenario[i].pos.z-cajaEscenario[i].tamaño.z*0.5f;
-		cajaEscenario[i].zMax=cajaEscenario[i].pos.z+cajaEscenario[i].tamaño.z*0.5f;
+		cajaEscenario[i].xMin=cajaEscenario[i].pos.x-cajaEscenario[i].tamanio.x*0.5f;
+		cajaEscenario[i].xMax=cajaEscenario[i].pos.x+cajaEscenario[i].tamanio.x*0.5f;
+		cajaEscenario[i].yMin=cajaEscenario[i].pos.y-cajaEscenario[i].tamanio.y*0.5f;
+		cajaEscenario[i].yMax=cajaEscenario[i].pos.y+cajaEscenario[i].tamanio.y*0.5f;
+		cajaEscenario[i].zMin=cajaEscenario[i].pos.z-cajaEscenario[i].tamanio.z*0.5f;
+		cajaEscenario[i].zMax=cajaEscenario[i].pos.z+cajaEscenario[i].tamanio.z*0.5f;
 	}
 }
 
@@ -1185,7 +1290,7 @@ void obtieneAltPiso()
 			|| (atr > cajaEscenario[i].zMin && atr < cajaEscenario[i].zMax)))
 		{
 			//Comprueba que sea la más cercana en y (de otra forma podría tomar la altura de la caja más baja si se encuentra una caja debajo de otra)
-			if(fabs(cajaPersonaje.pos.y-cajaEscenario[i].pos.y) <= cajaPersonaje.tamaño.y*0.5f+cajaEscenario[i].tamaño.y*0.5f+player1.VelocidadObj)
+			if(fabs(cajaPersonaje.pos.y-cajaEscenario[i].pos.y) <= cajaPersonaje.tamanio.y*0.5f+cajaEscenario[i].tamanio.y*0.5f+player1.VelocidadObj)
 			{
 				altPiso=cajaEscenario[i].yMax;
 				break;
@@ -1242,12 +1347,12 @@ bool colisionCajas(int dir)
 		}
 
 		cajaPersonaje.pos=CVector(pSig.x, pSig.y+3.0f, pSig.z);
-		cajaPersonaje.xMin=cajaPersonaje.pos.x-cajaPersonaje.tamaño.x*0.5f;
-		cajaPersonaje.xMax=cajaPersonaje.pos.x+cajaPersonaje.tamaño.x*0.5f;
-		cajaPersonaje.yMin=cajaPersonaje.pos.y-cajaPersonaje.tamaño.y*0.5f;
-		cajaPersonaje.yMax=cajaPersonaje.pos.y+cajaPersonaje.tamaño.y*0.5f;
-		cajaPersonaje.zMin=cajaPersonaje.pos.z-cajaPersonaje.tamaño.z*0.5f;
-		cajaPersonaje.zMax=cajaPersonaje.pos.z+cajaPersonaje.tamaño.z*0.5f;
+		cajaPersonaje.xMin=cajaPersonaje.pos.x-cajaPersonaje.tamanio.x*0.5f;
+		cajaPersonaje.xMax=cajaPersonaje.pos.x+cajaPersonaje.tamanio.x*0.5f;
+		cajaPersonaje.yMin=cajaPersonaje.pos.y-cajaPersonaje.tamanio.y*0.5f;
+		cajaPersonaje.yMax=cajaPersonaje.pos.y+cajaPersonaje.tamanio.y*0.5f;
+		cajaPersonaje.zMin=cajaPersonaje.pos.z-cajaPersonaje.tamanio.z*0.5f;
+		cajaPersonaje.zMax=cajaPersonaje.pos.z+cajaPersonaje.tamanio.z*0.5f;
 
 		//Inf-izq-front
 		A.x=cajaPersonaje.xMin;
@@ -1301,15 +1406,15 @@ bool colisionCajas(int dir)
 			col=true;
 			
 			if(dir == 1) //x+
-				player1.PosicionObj.x=cajaEscenario[i].xMin-cajaPersonaje.tamaño.x*0.5f;
+				player1.PosicionObj.x=cajaEscenario[i].xMin-cajaPersonaje.tamanio.x*0.5f;
 			else if(dir == 2) //x-
-				player1.PosicionObj.x=cajaEscenario[i].xMax+cajaPersonaje.tamaño.x*0.5f;
+				player1.PosicionObj.x=cajaEscenario[i].xMax+cajaPersonaje.tamanio.x*0.5f;
 			else if(dir == 3) //z+
-				player1.PosicionObj.z=cajaEscenario[i].zMin-cajaPersonaje.tamaño.z*0.5f;
+				player1.PosicionObj.z=cajaEscenario[i].zMin-cajaPersonaje.tamanio.z*0.5f;
 			else if(dir == 4) //z-
-				player1.PosicionObj.z=cajaEscenario[i].zMax+cajaPersonaje.tamaño.z*0.5f;
+				player1.PosicionObj.z=cajaEscenario[i].zMax+cajaPersonaje.tamanio.z*0.5f;
 			else if(dir == 5) //y+
-				player1.PosicionObj.y=cajaEscenario[i].yMin-cajaPersonaje.tamaño.y*0.5f-3.0f;
+				player1.PosicionObj.y=cajaEscenario[i].yMin-cajaPersonaje.tamanio.y*0.5f-3.0f;
 			else if(dir == 6) //y-
 				player1.PosicionObj.y=cajaEscenario[i].yMax;
 		
@@ -1629,38 +1734,38 @@ void ControlPersonaje(int funcion)
 void actualizaCajaColPersonaje()
 {
 	cajaPersonaje.pos=CVector(player1.PosicionObj.x, player1.PosicionObj.y+3.0f, player1.PosicionObj.z);
-	cajaPersonaje.xMin=cajaPersonaje.pos.x-cajaPersonaje.tamaño.x*0.5f;
-	cajaPersonaje.xMax=cajaPersonaje.pos.x+cajaPersonaje.tamaño.x*0.5f;
-	cajaPersonaje.yMin=cajaPersonaje.pos.y-cajaPersonaje.tamaño.y*0.5f;
-	cajaPersonaje.yMax=cajaPersonaje.pos.y+cajaPersonaje.tamaño.y*0.5f;
-	cajaPersonaje.zMin=cajaPersonaje.pos.z-cajaPersonaje.tamaño.z*0.5f;
-	cajaPersonaje.zMax=cajaPersonaje.pos.z+cajaPersonaje.tamaño.z*0.5f;
+	cajaPersonaje.xMin=cajaPersonaje.pos.x-cajaPersonaje.tamanio.x*0.5f;
+	cajaPersonaje.xMax=cajaPersonaje.pos.x+cajaPersonaje.tamanio.x*0.5f;
+	cajaPersonaje.yMin=cajaPersonaje.pos.y-cajaPersonaje.tamanio.y*0.5f;
+	cajaPersonaje.yMax=cajaPersonaje.pos.y+cajaPersonaje.tamanio.y*0.5f;
+	cajaPersonaje.zMin=cajaPersonaje.pos.z-cajaPersonaje.tamanio.z*0.5f;
+	cajaPersonaje.zMax=cajaPersonaje.pos.z+cajaPersonaje.tamanio.z*0.5f;
 }
 
 void ControlPersonaje2(int funcion)
 {
 	if(funcion == 1) //Avanza a la derecha (x+)
 	{
-		player1.PosicionObj.x+=player1.VelocidadObj;
-		player1.AngObj=90.0f;
+		playerM.PosicionObj.x+=playerM.VelocidadObj;
+		playerM.AngObj=90.0f;
 	}
 	else if(funcion == 2) //Avanza a la izquierda (x-)
 	{
-		player1.PosicionObj.x-=player1.VelocidadObj;
-		player1.AngObj=-90.0f;
+		playerM.PosicionObj.x-=playerM.VelocidadObj;
+		playerM.AngObj=-90.0f;
 	}
 	else if(funcion == 3) //Avanza hacia adentro (z-)
 	{
-		player1.PosicionObj.z-=player1.VelocidadObj;
-		player1.AngObj=180.0f;
+		playerM.PosicionObj.z-=playerM.VelocidadObj;
+		playerM.AngObj=180.0f;
 	}
 	else if(funcion == 4) //Avanza hacia afuera (z+)
 	{
-		player1.PosicionObj.z+=player1.VelocidadObj;
-		player1.AngObj=0.0f;
+		playerM.PosicionObj.z+=playerM.VelocidadObj;
+		playerM.AngObj=0.0f;
 	}
 
-	actualizaCajaColPersonaje();
+	//actualizaCajaColPersonaje();
 }
 
 void ControlPersonaje2D(int funcion)
@@ -2280,6 +2385,86 @@ void DibujaPersonaje()
 	glPopMatrix();
 }
 
+void DibujaPersonajeMalo()
+{
+	glPushMatrix();
+
+	glTranslatef(MXtor+10.0f, MYtor + 1.8f, MZtor);
+	glRotatef(MAngt2-3.0f, 0.0f, 1.0f, 0.0f);
+	glRotatef(MAngt1, 1.0f, 0.0f, 0.0f);
+	glColor3f(.068f, .193f, .800f);
+	//Torso
+	//g_Load3ds.Render3DSFile(&g_3DModel18c, textureModel18c, 1);
+	g_Load3ds.Render3DSFile(&g_3DModel21c, textureModel21c, 1);
+	/*
+	//Cabeza
+	glPushMatrix();
+	glTranslatef(0.0f, .1f, 0.0f);
+	glRotatef(Angc2, 0.0f, 1.0f, 0.0f);
+	glRotatef(Angc1, 1.0f, 0.0f, 0.0f);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	g_Load3ds.Render3DSFile(&g_3DModel10c, textureModel10c, 1);
+	glPopMatrix();
+	*/
+	/*
+	//Pierna derecha
+	glPushMatrix();
+	glTranslatef(-0.6f + 10.0f, 0.1f, 0.1f);
+	glRotatef(MAngpder, 1.0f, 0.0f, 0.0f);
+	glColor3f(.068f, .193f, .800f);
+	g_Load3ds.Render3DSFile(&g_3DModel19c, textureModel19c, 1);
+	*/
+	/*
+	//Pie derecho
+	glPushMatrix();
+	glTranslatef(0.07f, -0.2f, 0.0f);
+	glRotatef(Angpd, 1.0f, 0.0f, 0.0f);
+	glColor3f(.038f, .800f, .668f);
+	g_Load3ds.Render3DSFile(&g_3DModel15c, textureModel15c, 1);
+	glPopMatrix();
+	*/
+	//glPopMatrix();
+	/*
+	//Pierna izquierda
+	glPushMatrix();
+	glTranslatef(0.6f + 10.0f, 0.1f, 0.1f);
+	glRotatef(MAngpizq, 1.0f, 0.0f, 0.0f);
+	glColor3f(.068f, .193f, .800f);
+	g_Load3ds.Render3DSFile(&g_3DModel20c, textureModel20c, 1);
+	/*
+	//Pie izquierdo
+	glPushMatrix();
+	glTranslatef(-0.07f, -0.2f, 0.0f);
+	glRotatef(Angpi, 1.0f, 0.0f, 0.0f);
+	glColor3f(.038f, .800f, .668f);
+	g_Load3ds.Render3DSFile(&g_3DModel15c, textureModel15c, 1);
+	glPopMatrix();
+	*/
+	//glPopMatrix();
+	/*
+	//Brazo derecho
+	glPushMatrix();
+	glTranslatef(-0.9f, .05f, -0.1f);
+	glRotatef(Angbd2, 0.0f, 0.0f, 1.0f);
+	glRotatef(Angbd1, 1.0f, 0.0f, 0.0f);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	g_Load3ds.Render3DSFile(&g_3DModel13c, textureModel13c, 1);
+
+	glPopMatrix();
+
+	//Brazo izquierdo
+	glPushMatrix();
+	glTranslatef(0.9f, .05f, -0.1f);
+	glRotatef(Angbi2, 0.0f, 0.0f, 1.0f);
+	glRotatef(Angbi1, 1.0f, 0.0f, 0.0f);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	g_Load3ds.Render3DSFile(&g_3DModel14c, textureModel14c, 1);
+
+	glPopMatrix();
+	*/
+	glPopMatrix();
+}
+
 void ActualizaLuzParam()
 {
 	glLightfv(GL_LIGHT0, GL_POSITION, LightPos);		// Posicion de la luz0
@@ -2815,72 +3000,72 @@ void ejemploBackFaceCulling()
 	}
 }
 
-//void dibujaVolumendeSombra()
-//{
-//	CVector posLuz=CVector(player1.PosicionObj.x-3.0f, player1.PosicionObj.y+35.0f, player1.PosicionObj.z-1.0f);
-//	CVector v1=CVector(player1.PosicionObj.x-1.5f, player1.PosicionObj.y+4.0f, player1.PosicionObj.z+1.5f);
-//	CVector v2=CVector(player1.PosicionObj.x+1.5f, player1.PosicionObj.y+4.0f, player1.PosicionObj.z+1.5f);
-//	CVector v3=CVector(player1.PosicionObj.x+1.5f, player1.PosicionObj.y+4.0f, player1.PosicionObj.z-1.5f);
-//	CVector v4=CVector(player1.PosicionObj.x-1.5f, player1.PosicionObj.y+4.0f, player1.PosicionObj.z-1.5f);
-//
-//	CVector v1d=Normaliza(v1-posLuz);
-//	CVector v2d=Normaliza(v2-posLuz);
-//	CVector v3d=Normaliza(v3-posLuz);
-//	CVector v4d=Normaliza(v4-posLuz);
-//
-//	CVector v1p=v1+v1d*200.0f;
-//	CVector v2p=v2+v2d*200.0f;
-//	CVector v3p=v3+v3d*200.0f;
-//	CVector v4p=v4+v4d*200.0f;
-//
-//	//1
-//	glBegin(GL_QUADS);
-//		glVertex3f(v1.x, v1.y, v1.z);
-//		glVertex3f(v2.x, v2.y, v2.z);
-//		glVertex3f(v3.x, v3.y, v3.z);
-//		glVertex3f(v4.x, v4.y, v4.z);
-//	glEnd();
-//
-//	//2
-//	glBegin(GL_QUADS);
-//		glVertex3f(v1p.x, v1p.y, v1p.z);
-//		glVertex3f(v2p.x, v2p.y, v2p.z);
-//		glVertex3f(v2.x, v2.y, v2.z);
-//		glVertex3f(v1.x, v1.y, v1.z);
-//	glEnd();
-//
-//	//3
-//	glBegin(GL_QUADS);
-//		glVertex3f(v4p.x, v4p.y, v4p.z);
-//		glVertex3f(v1p.x, v1p.y, v1p.z);
-//		glVertex3f(v1.x, v1.y, v1.z);
-//		glVertex3f(v4.x, v4.y, v4.z);
-//	glEnd();
-//
-//	//4
-//	glBegin(GL_QUADS);
-//		glVertex3f(v2p.x, v2p.y, v2p.z);
-//		glVertex3f(v3p.x, v3p.y, v3p.z);
-//		glVertex3f(v3.x, v3.y, v3.z);
-//		glVertex3f(v2.x, v2.y, v2.z);
-//	glEnd();
-//
-//	//5
-//	glBegin(GL_QUADS);
-//		glVertex3f(v3p.x, v3p.y, v3p.z);
-//		glVertex3f(v4p.x, v4p.y, v4p.z);
-//		glVertex3f(v4.x, v4.y, v4.z);
-//		glVertex3f(v3.x, v3.y, v3.z);
-//	glEnd();
-//
-//	//6
-//	glBegin(GL_QUADS);
-//		glVertex3f(v2p.x, v2p.y, v2.z);
-//		glVertex3f(v1p.x, v1p.y, v1p.z);
-//		glVertex3f(v4p.x, v4p.y, v4p.z);
-//		glVertex3f(v3p.x, v3p.y, v3p.z);
-//	glEnd();
-//}
+void dibujaVolumendeSombra()
+{
+	CVector posLuz=CVector(player1.PosicionObj.x-3.0f, player1.PosicionObj.y+35.0f, player1.PosicionObj.z-1.0f);
+	CVector v1=CVector(player1.PosicionObj.x-1.5f, player1.PosicionObj.y+4.0f, player1.PosicionObj.z+1.5f);
+	CVector v2=CVector(player1.PosicionObj.x+1.5f, player1.PosicionObj.y+4.0f, player1.PosicionObj.z+1.5f);
+	CVector v3=CVector(player1.PosicionObj.x+1.5f, player1.PosicionObj.y+4.0f, player1.PosicionObj.z-1.5f);
+	CVector v4=CVector(player1.PosicionObj.x-1.5f, player1.PosicionObj.y+4.0f, player1.PosicionObj.z-1.5f);
+
+	CVector v1d=Normaliza(v1-posLuz);
+	CVector v2d=Normaliza(v2-posLuz);
+	CVector v3d=Normaliza(v3-posLuz);
+	CVector v4d=Normaliza(v4-posLuz);
+
+	CVector v1p=v1+v1d*200.0f;
+	CVector v2p=v2+v2d*200.0f;
+	CVector v3p=v3+v3d*200.0f;
+	CVector v4p=v4+v4d*200.0f;
+
+	//1
+	glBegin(GL_QUADS);
+		glVertex3f(v1.x, v1.y, v1.z);
+		glVertex3f(v2.x, v2.y, v2.z);
+		glVertex3f(v3.x, v3.y, v3.z);
+		glVertex3f(v4.x, v4.y, v4.z);
+	glEnd();
+
+	//2
+	glBegin(GL_QUADS);
+		glVertex3f(v1p.x, v1p.y, v1p.z);
+		glVertex3f(v2p.x, v2p.y, v2p.z);
+		glVertex3f(v2.x, v2.y, v2.z);
+		glVertex3f(v1.x, v1.y, v1.z);
+	glEnd();
+
+	//3
+	glBegin(GL_QUADS);
+		glVertex3f(v4p.x, v4p.y, v4p.z);
+		glVertex3f(v1p.x, v1p.y, v1p.z);
+		glVertex3f(v1.x, v1.y, v1.z);
+		glVertex3f(v4.x, v4.y, v4.z);
+	glEnd();
+
+	//4
+	glBegin(GL_QUADS);
+		glVertex3f(v2p.x, v2p.y, v2p.z);
+		glVertex3f(v3p.x, v3p.y, v3p.z);
+		glVertex3f(v3.x, v3.y, v3.z);
+		glVertex3f(v2.x, v2.y, v2.z);
+	glEnd();
+
+	//5
+	glBegin(GL_QUADS);
+		glVertex3f(v3p.x, v3p.y, v3p.z);
+		glVertex3f(v4p.x, v4p.y, v4p.z);
+		glVertex3f(v4.x, v4.y, v4.z);
+		glVertex3f(v3.x, v3.y, v3.z);
+	glEnd();
+
+	//6
+	glBegin(GL_QUADS);
+		glVertex3f(v2p.x, v2p.y, v2.z);
+		glVertex3f(v1p.x, v1p.y, v1p.z);
+		glVertex3f(v4p.x, v4p.y, v4p.z);
+		glVertex3f(v3p.x, v3p.y, v3p.z);
+	glEnd();
+}
 
 void dibujaVolumendeSombra2()
 {
@@ -2889,7 +3074,7 @@ void dibujaVolumendeSombra2()
 	CVector vertD[2];
 	CVector centro, centroP, centroD;
 
-	CVector posLuz=CVector(player1.PosicionObj.x, player1.PosicionObj.y+30.0f, player1.PosicionObj.z-1.0f);
+	CVector posLuz=CVector(player1.PosicionObj.x-3.0f, player1.PosicionObj.y+35.0f, player1.PosicionObj.z-1.0f);
 
 	float ang, deltaAng;
 
@@ -2915,9 +3100,9 @@ void dibujaVolumendeSombra2()
 		vertD[1]=Normaliza(vert[1]-posLuz);
 		centroD=Normaliza(centro-posLuz);
 
-		vertP[0]=vert[0]+vertD[0]*15.0f;
-		vertP[1]=vert[1]+vertD[1]*15.0f;
-		centroP=centro+centroD*15.0f;
+		vertP[0]=vert[0]+vertD[0]*200.0f;
+		vertP[1]=vert[1]+vertD[1]*200.0f;
+		centroP=centro+centroD*200.0f;
 
 		glBegin(GL_TRIANGLES);
 			glVertex3f(vert[1].x, vert[1].y, vert[1].z);
@@ -3342,12 +3527,12 @@ int RenderizaEscena(GLvoid)
 
 	DibujaEscenario();
 	//dibujaSpline();
-	
+
 	dibujaCajaColision(&cajaPersonaje);
 
 	for(int i=0; i < numCajas; i++) 
 		dibujaCajaColision(&cajaEscenario[i]);
-		
+
 	dibujaEsferadeColision(&esferaPersonaje);
 	dibujaEsferadeColision(&esferaEnemigo);
 
@@ -3359,6 +3544,16 @@ int RenderizaEscena(GLvoid)
 			glScalef(player1.escalaX,player1.escalaY,player1.escalaZ);
 			DibujaPersonaje();
 		glPopMatrix();
+		
+	}if (playerM.visible == true)
+	{
+		glPushMatrix();
+		glTranslatef(playerM.PosicionObj.x, playerM.PosicionObj.y, playerM.PosicionObj.z);
+		glRotatef(playerM.AngObj, 0.0f, 1.0f, 0.0f);
+		glScalef(playerM.escalaX, playerM.escalaY, playerM.escalaZ);
+		DibujaPersonajeMalo();
+		glPopMatrix();
+
 	}
 
 	glColorMask(0,0,0,0);
@@ -3398,7 +3593,9 @@ int RenderizaEscena(GLvoid)
 			glRotatef(player1.AngObj, 0.0f, 1.0f, 0.0f);
 			glScalef(player1.escalaX,player1.escalaY,player1.escalaZ);
 			DibujaPersonaje();
+			
 		glPopMatrix();
+
 	}
 
 	glDisable(GL_STENCIL_TEST);
@@ -3594,7 +3791,7 @@ BOOL CreaVentanaOGL(char* title, int width, int height, int bits)
 	dwExStyle=WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;					// Estilo extendido de ventana
 	dwStyle=WS_OVERLAPPEDWINDOW;									// Estilo de ventana
 
-	AdjustWindowRectEx(&WindowRect, dwStyle, FALSE, dwExStyle);		// Ajusta la ventana al tamaño especificado
+	AdjustWindowRectEx(&WindowRect, dwStyle, FALSE, dwExStyle);		// Ajusta la ventana al tamanio especificado
 
 	// Crea la ventana
 	if (!(hWnd=CreateWindowEx(	dwExStyle,							// Estilo extendido para la ventana
@@ -4428,7 +4625,16 @@ void manejaEventosMain()
 				posCam.z += 0.1f;
 				dirCam.z += 0.1f;
 			}
-
+			if (controlFunc.obtieneEstadoTecla(11) == 1) //R
+			{
+				posCam.y+= 0.1f;
+				dirCam.y+= 0.1f;
+			}
+			if (controlFunc.obtieneEstadoTecla(12) == 1) //y
+			{
+				posCam.y -= 0.1f;
+				dirCam.y -= 0.1f;
+			}
 		}
 		else if(infGame.pausa == 1)
 		{
