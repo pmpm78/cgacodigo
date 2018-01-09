@@ -162,8 +162,8 @@ CVector camSpline;
 CVector objSpline;
 
 cajaCol cajaPersonaje;
-cajaCol cajaEscenario[11];
-int numCajas=11;
+cajaCol cajaEscenario[13];
+int numCajas=13;
 float altPiso=0.0f;
 float altMin=-0.0f;
 esferaCol esferaPersonaje;
@@ -229,7 +229,7 @@ int  tipoAnim=1; //Indicador del tipo de animación: 1-caminando
 
 //Variables para iluminacion
 //GLfloat LightPos[] = {-250.0f, 80.0f, 5.0f, 1.0f};		// Posición de la luz
-GLfloat LightPos[] = {-50.0f, 80.0f, 50.0f, 1.0f};		// Posición de la luz
+GLfloat LightPos[] = {50.0f, 120.0f, 50.0f, 1.0f};		// Posición de la luz
 GLfloat LightAmb[] = { 0.8f,  0.8f, 0.8f, 1.0f};		// Valores de la componente ambiente
 GLfloat LightDif[] = { 0.9f,  0.9f, 0.9f, 1.0f};		// Valores de la componente difusa
 GLfloat LightSpc[] = { 0.5f,  0.5f, 0.5f, 1.0f};		// Valores de la componente especular
@@ -1004,6 +1004,12 @@ void iniciaCajasdeColision()
 
 	cajaEscenario[10].pos = CVector(50.0f, 77.5f, 10.0f);
 	cajaEscenario[10].tamaño = CVector(70.0f, 5.0f, 20.0f);
+
+	cajaEscenario[11].pos = CVector(-2.5f, 45.0f, 10.0f);
+	cajaEscenario[11].tamaño = CVector(5.0f, 90.0f, 20.0f);
+
+	cajaEscenario[12].pos = CVector(102.5f, 45.0f, 10.0f);
+	cajaEscenario[12].tamaño = CVector(5.0f, 90.0f, 20.0f);
 
 	for(int i=0; i<numCajas; i++)
 	{
@@ -4155,89 +4161,89 @@ void manejaEventosMain()
 	{
 		if(infGame.pausa == 0)
 		{
-			if(controlFunc.obtieneEstadoTecla(0) == 1) //Up
-			{
-				if(player1.kick==false && player1.saltando == false)
-				{
-					//ControlPersonaje2(3);
-					player1.caminando=true;
-					player1.dirZ=2;
-					player1.AngObj=180.0f;
-					
-					if(fabs(player1.PosicionObj.y - altPiso) < 0.01f)
-					{
-						if(play==false) //Para que la asignación de valores siguiente solo se haga una vez y empiece la animación
-						{
-							//Se le asignan a las variables del personaje los 
-							//valores almacenados en el primer keyframe para que
-							//inicie desde ahí la animación.
-							Angt1   = KeyFrame1[0].Angt1;
-							Angt2   = KeyFrame1[0].Angt2;
-							Angc1   = KeyFrame1[0].Angc1;
-							Angc2   = KeyFrame1[0].Angc2;
-							Angbi1  = KeyFrame1[0].Angbi1;
-							Angbi2  = KeyFrame1[0].Angbi2;
-							Angbib  = KeyFrame1[0].Angbib;
-							Angbd1  = KeyFrame1[0].Angbd1;
-							Angbd2  = KeyFrame1[0].Angbd2;
-							Angbdb  = KeyFrame1[0].Angbdb;
-							Angpizq = KeyFrame1[0].Angpizq;
-							Angpder = KeyFrame1[0].Angpder;
-							Angpi   = KeyFrame1[0].Angpi;
-							Angpd   = KeyFrame1[0].Angpd;
-							Xtor    = KeyFrame1[0].Xtor;
-							Ytor    = KeyFrame1[0].Ytor;
-							Ztor    = KeyFrame1[0].Ztor;
+			//if(controlFunc.obtieneEstadoTecla(0) == 1) //Up
+			//{
+			//	if(player1.kick==false && player1.saltando == false)
+			//	{
+			//		//ControlPersonaje2(3);
+			//		player1.caminando=true;
+			//		player1.dirZ=2;
+			//		player1.AngObj=180.0f;
+			//		
+			//		if(fabs(player1.PosicionObj.y - altPiso) < 0.01f)
+			//		{
+			//			if(play==false) //Para que la asignación de valores siguiente solo se haga una vez y empiece la animación
+			//			{
+			//				//Se le asignan a las variables del personaje los 
+			//				//valores almacenados en el primer keyframe para que
+			//				//inicie desde ahí la animación.
+			//				Angt1   = KeyFrame1[0].Angt1;
+			//				Angt2   = KeyFrame1[0].Angt2;
+			//				Angc1   = KeyFrame1[0].Angc1;
+			//				Angc2   = KeyFrame1[0].Angc2;
+			//				Angbi1  = KeyFrame1[0].Angbi1;
+			//				Angbi2  = KeyFrame1[0].Angbi2;
+			//				Angbib  = KeyFrame1[0].Angbib;
+			//				Angbd1  = KeyFrame1[0].Angbd1;
+			//				Angbd2  = KeyFrame1[0].Angbd2;
+			//				Angbdb  = KeyFrame1[0].Angbdb;
+			//				Angpizq = KeyFrame1[0].Angpizq;
+			//				Angpder = KeyFrame1[0].Angpder;
+			//				Angpi   = KeyFrame1[0].Angpi;
+			//				Angpd   = KeyFrame1[0].Angpd;
+			//				Xtor    = KeyFrame1[0].Xtor;
+			//				Ytor    = KeyFrame1[0].Ytor;
+			//				Ztor    = KeyFrame1[0].Ztor;
 
-							play=true;
-							playIndex=0;
-							tipoAnim=1;
-						}
-					}
-				}
-			}
+			//				play=true;
+			//				playIndex=0;
+			//				tipoAnim=1;
+			//			}
+			//		}
+			//	}
+			//}
 
-			if(controlFunc.obtieneEstadoTecla(1) == 1) //Down
-			{
-				if(player1.kick==false && player1.saltando == false)
-				{
-					//ControlPersonaje2(4);
-					player1.caminando=true;
-					player1.dirZ=1;
-					player1.AngObj=0.0f;
-					
-					if(fabs(player1.PosicionObj.y - altPiso) < 0.01f)
-					{
-						if(play==false) //Para que la asignación de valores siguiente solo se haga una vez y empiece la animación
-						{
-							//Se le asignan a las variables del personaje los 
-							//valores almacenados en el primer keyframe para que
-							//inicie desde ahí la animación.
-							Angt1   = KeyFrame1[0].Angt1;
-							Angt2   = KeyFrame1[0].Angt2;
-							Angc1   = KeyFrame1[0].Angc1;
-							Angc2   = KeyFrame1[0].Angc2;
-							Angbi1  = KeyFrame1[0].Angbi1;
-							Angbi2  = KeyFrame1[0].Angbi2;
-							Angbib  = KeyFrame1[0].Angbib;
-							Angbd1  = KeyFrame1[0].Angbd1;
-							Angbd2  = KeyFrame1[0].Angbd2;
-							Angbdb  = KeyFrame1[0].Angbdb;
-							Angpizq = KeyFrame1[0].Angpizq;
-							Angpder = KeyFrame1[0].Angpder;
-							Angpi   = KeyFrame1[0].Angpi;
-							Angpd   = KeyFrame1[0].Angpd;
-							Xtor    = KeyFrame1[0].Xtor;
-							Ytor    = KeyFrame1[0].Ytor;
-							Ztor    = KeyFrame1[0].Ztor;
+			//if(controlFunc.obtieneEstadoTecla(1) == 1) //Down
+			//{
+			//	if(player1.kick==false && player1.saltando == false)
+			//	{
+			//		//ControlPersonaje2(4);
+			//		player1.caminando=true;
+			//		player1.dirZ=1;
+			//		player1.AngObj=0.0f;
+			//		
+			//		if(fabs(player1.PosicionObj.y - altPiso) < 0.01f)
+			//		{
+			//			if(play==false) //Para que la asignación de valores siguiente solo se haga una vez y empiece la animación
+			//			{
+			//				//Se le asignan a las variables del personaje los 
+			//				//valores almacenados en el primer keyframe para que
+			//				//inicie desde ahí la animación.
+			//				Angt1   = KeyFrame1[0].Angt1;
+			//				Angt2   = KeyFrame1[0].Angt2;
+			//				Angc1   = KeyFrame1[0].Angc1;
+			//				Angc2   = KeyFrame1[0].Angc2;
+			//				Angbi1  = KeyFrame1[0].Angbi1;
+			//				Angbi2  = KeyFrame1[0].Angbi2;
+			//				Angbib  = KeyFrame1[0].Angbib;
+			//				Angbd1  = KeyFrame1[0].Angbd1;
+			//				Angbd2  = KeyFrame1[0].Angbd2;
+			//				Angbdb  = KeyFrame1[0].Angbdb;
+			//				Angpizq = KeyFrame1[0].Angpizq;
+			//				Angpder = KeyFrame1[0].Angpder;
+			//				Angpi   = KeyFrame1[0].Angpi;
+			//				Angpd   = KeyFrame1[0].Angpd;
+			//				Xtor    = KeyFrame1[0].Xtor;
+			//				Ytor    = KeyFrame1[0].Ytor;
+			//				Ztor    = KeyFrame1[0].Ztor;
 
-							play=true;
-							playIndex=0;
-							tipoAnim=1;
-						}
-					}
-				}
-			}
+			//				play=true;
+			//				playIndex=0;
+			//				tipoAnim=1;
+			//			}
+			//		}
+			//	}
+			//}
 
 			if(controlFunc.obtieneEstadoTecla(2) == 1) //Left
 			{
