@@ -211,7 +211,7 @@ float MYtor;
 float MZtor;
 
 //Contenedor de texturas para el escenario
-CTga textura[36];
+CTga textura[10];
 
 //Variables para animaciones
 const int maxKF1=3; //Num. total de KeyFrames para la secuencia 1 (caminar)
@@ -421,9 +421,9 @@ void InicializaParametrosdeControl()
 	player1.ObjetivoCam=player1.PosicionObj;		//La cámara ve siempre al objeto
 	player1.ObjetivoCam.y=player1.CamaraObjAlt;		//Para que no vea a los "pies" del objeto (personaje)
 
-	player1.escalaX=1.0f;
-	player1.escalaY=1.0f;
-	player1.escalaZ=1.0f;
+	player1.escalaX=1.2f;
+	player1.escalaY=1.2f;
+	player1.escalaZ=1.2f;
 
 	player1.kick=false;
 	player1.contAuxAnim=0;
@@ -546,6 +546,7 @@ void CargaTexturas(){
 	textura[2].LoadTGA("Texturas/fondo.tga");
 	textura[3].LoadTGA("Texturas/centroSoporte.tga");
 	textura[4].LoadTGA("Texturas/centro.tga");
+	textura[5].LoadTGA("Texturas/titulo.tga");
 }
 
 void DescargaTexturas()
@@ -1062,7 +1063,7 @@ int IniGL(GLvoid)										// Aqui se configuran los parametros iniciales de Ope
 	Font.BuildFont();
 	controlFunc.inicializaControl();
 
-	infGame.estadoJuego=6;
+	infGame.estadoJuego=1;
 
 	posCamV=CVector(0.0f, 30.0f, 0.0f);
 	dirCamV=CVector(0.0f, 0.0f, 1.0f);
@@ -1112,8 +1113,8 @@ int IniGL(GLvoid)										// Aqui se configuran los parametros iniciales de Ope
 
 	//Inicialización de las variables del proyecto
 
-	posCam = CVector(50.0f, 100.0f, 120.0f);
-	dirCam = CVector(50.0f, 0.0f, -100.0f);
+	posCam = CVector(50.0f, 60.0f, 145.0f);
+	dirCam = CVector(50.0f, 50.0f, -100.0f);
 
 	//Fin inicialización de las variables del proyecto
 
@@ -1483,7 +1484,7 @@ void controlEstados()
 		if(timerEstados.TiempoActual() > 31000)
 		{
 			infGame.tiempoEstado=0;
-			infGame.estadoJuego=5;
+			infGame.estadoJuego=6;
 			timerEstados.detieneTimer();
 		}
 	}
@@ -2455,9 +2456,9 @@ void dibujaPantalladeIntroduccion()
 	else if(timerEstados.TiempoActual() >= 13000 && timerEstados.TiempoActual() < 17000)
 		Font.glPrint((2.2f/640.0f)*infGame.glWidth, infGame.glWidth*0.11f, infGame.glHeight*0.48f,"  llamado Chiluca...");
 	else if(timerEstados.TiempoActual() >= 17000 && timerEstados.TiempoActual() < 21000)
-		Font.glPrint((2.2f/640.0f)*infGame.glWidth, infGame.glWidth*0.11f, infGame.glHeight*0.48f,"    personas muy...  ");
+		Font.glPrint((2.2f/640.0f)*infGame.glWidth, infGame.glWidth*0.11f, infGame.glHeight*0.48f,"  3 desrrolladores...  ");
 	else if(timerEstados.TiempoActual() > 21000 && timerEstados.TiempoActual() < 25000)
-		Font.glPrint((2.2f/640.0f)*infGame.glWidth, infGame.glWidth*0.14f, infGame.glHeight*0.48f,"   ... chilucotas   ");
+		Font.glPrint((2.2f/640.0f)*infGame.glWidth, infGame.glWidth*0.05f, infGame.glHeight*0.48f,"Alejandro, Daniel y Pedro");
 			
 	glDisable(GL_ALPHA_TEST);
 	glDisable(GL_TEXTURE_2D);
@@ -2489,7 +2490,7 @@ void dibujaTituloJuego()
 
 	glColor3f(color, color, color);
 
-	glBindTexture(GL_TEXTURE_2D, textura[30].texID);
+	glBindTexture(GL_TEXTURE_2D, textura[5].texID);
 
 	glBegin(GL_QUADS);
 		glTexCoord2f(0.0f, 0.0f); glVertex2f(infGame.glWidth*0.0f, infGame.glHeight*0.0f);
@@ -3229,27 +3230,27 @@ void dibujaSegunEstado()
 {
 	if(infGame.estadoJuego == 1)
 	{
-		/*glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+		glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glLoadIdentity();
 
-		dibujaLogoStudio();*/
+		dibujaLogoStudio();
 	}
 	else if(infGame.estadoJuego == 2)
 	{
-		/*glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glLoadIdentity();
 
-		dibujaPantalladeCarga();*/
+		dibujaPantalladeCarga();
 	}
 	else if(infGame.estadoJuego == 3)
 	{
-		/*glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glLoadIdentity();
 
-		dibujaPantalladeIntroduccion();*/
+		dibujaPantalladeIntroduccion();
 	}
 	else if(infGame.estadoJuego == 4 || infGame.estadoJuego == 5)
 	{
