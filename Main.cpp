@@ -469,10 +469,10 @@ void InicializaParametrosdeControl()
 		playerM[i].contAuxAnim = 0;
 	}
 	playerM[0].PosicionObj = CVector(85.0f, 7.0f, 10.0f); //Esta es la posición inicial del objeto en la escena
-	playerM[1].PosicionObj = playerM[0].PosicionObj + CVector(-50.0f, 16.0f, 0.0f);
-	playerM[2].PosicionObj = playerM[0].PosicionObj + CVector(-80.0f, 31.0f, 0.0f);
-	playerM[3].PosicionObj = playerM[0].PosicionObj + CVector(-15.0f, 46.0f, 0.0f);
-	playerM[4].PosicionObj = playerM[0].PosicionObj + CVector(-35.0f, 76.0f, 0.0f);
+	playerM[1].PosicionObj = playerM[0].PosicionObj + CVector(-65.0f, 15.0f, 0.0f);
+	playerM[2].PosicionObj = playerM[0].PosicionObj + CVector(-67.0f, 60.0f, 0.0f);
+	playerM[3].PosicionObj = playerM[0].PosicionObj + CVector(-15.0f, 45.0f, 0.0f);
+	playerM[4].PosicionObj = playerM[0].PosicionObj + CVector(-35.0f, 75.0f, 0.0f);
 
 }
 
@@ -543,87 +543,18 @@ void CargaTexturas(){
 
 	textura[0].LoadTGA("Texturas/pisoFrente.tga");
 	textura[1].LoadTGA("Texturas/piso.tga");
-	textura[2].LoadTGA("Texturas/pisoGrafiti.tga");
-}
-
-void CargaTexturasDelProfe()
-{
-	textura[0].LoadTGA("Texturas/t1.tga");
-	textura[1].LoadTGA("Texturas/t2.tga");
-	textura[2].LoadTGA("Texturas/t3.tga");
-	textura[3].LoadTGA("Texturas/t4.tga");
-	textura[4].LoadTGA("Texturas/t5.tga");
-	textura[5].LoadTGA("Texturas/t6.tga");
-	textura[6].LoadTGA("Texturas/t7.tga");
-	textura[7].LoadTGA("Texturas/t8.tga");
-	textura[8].LoadTGA("Texturas/t9.tga");
-	textura[9].LoadTGA("Texturas/t10.tga");
-	textura[10].LoadTGA("Texturas/t11.tga");
-	textura[11].LoadTGA("Texturas/t12.tga");
-	textura[12].LoadTGA("Texturas/t13.tga");
-	textura[13].LoadTGA("Texturas/t14.tga");
-	textura[14].LoadTGA("Texturas/t15.tga");
-	textura[15].LoadTGA("Texturas/t16.tga");	
-	textura[16].LoadTGA("Texturas/t17.tga");
-	textura[17].LoadTGA("Texturas/t18.tga");
-	textura[18].LoadTGA("Texturas/t19.tga");
-	textura[19].LoadTGA("Texturas/t20.tga");
-	textura[20].LoadTGA("Texturas/t21.tga");
-	textura[21].LoadTGA("Texturas/t22.tga");
-	textura[22].LoadTGA("Texturas/t23.tga");
-	textura[23].LoadTGA("Texturas/t24.tga");
-	textura[24].LoadTGA("Texturas/t25.tga");
-	textura[25].LoadTGA("Texturas/t26.tga");
-	textura[26].LoadTGA("Texturas/t27.tga");
-	textura[27].LoadTGA("Texturas/t28.tga");
-	textura[28].LoadTGA("Texturas/t29.tga");
-	textura[29].LoadTGA("Texturas/t30.tga");
-	textura[30].LoadTGA("Texturas/img0.tga");
-	textura[31].LoadTGA("Texturas/particula.tga");
+	textura[2].LoadTGA("Texturas/fondo.tga");
+	textura[3].LoadTGA("Texturas/centroSoporte.tga");
+	textura[4].LoadTGA("Texturas/centro.tga");
 }
 
 void DescargaTexturas()
-{
-
-	textura[0].Elimina();
-	textura[1].Elimina();
-	textura[2].Elimina();
-}
-
-void DescargaTexturasDelProfe()
 {
 	textura[0].Elimina();
 	textura[1].Elimina();
 	textura[2].Elimina();
 	textura[3].Elimina();
 	textura[4].Elimina();
-	textura[5].Elimina();
-	textura[6].Elimina();
-	textura[6].Elimina();
-	textura[7].Elimina();
-	textura[8].Elimina();
-	textura[10].Elimina();
-	textura[11].Elimina();
-	textura[12].Elimina();
-	textura[13].Elimina();
-	textura[14].Elimina();
-	textura[15].Elimina();
-	textura[16].Elimina();
-	textura[17].Elimina();
-	textura[18].Elimina();
-	textura[19].Elimina();
-	textura[20].Elimina();
-	textura[21].Elimina();
-	textura[22].Elimina();
-	textura[23].Elimina();
-	textura[24].Elimina();
-	textura[25].Elimina();
-	textura[26].Elimina();
-	textura[27].Elimina();
-	textura[28].Elimina();
-	textura[29].Elimina();
-	textura[30].Elimina();
-	textura[31].Elimina();
 }
 
 void InicializaAnim()
@@ -934,33 +865,6 @@ void DatosAnimacion()
 
 }
 
-void inicializaPuntosdeControl()
-{
-	totalP=(20-3)*resolucion;
-	pSpAct=0;
-
-	puntosdeControl[0]=CVector(-40.0f, 6.0f, 50.0f);
-	puntosdeControl[1]=CVector(-30.0f, 16.0f, 40.0f);
-	puntosdeControl[2]=CVector(-30.0f, 23.0f, 30.0f);
-	puntosdeControl[3]=CVector(-25.0f, 36.0f, 25.0f);
-	puntosdeControl[4]=CVector(-22.0f, 44.0f, 21.0f);
-	puntosdeControl[5]=CVector(-18.0f, 50.0f, 17.0f);
-	puntosdeControl[6]=CVector(-12.0f, 17.0f, 15.0f);
-	puntosdeControl[7]=CVector(-4.0f, 16.0f, 23.0f);
-	puntosdeControl[8]=CVector(2.0f, 10.0f, 29.0f);
-	puntosdeControl[9]=CVector(4.0f, 25.0f, 32.0f);
-	puntosdeControl[10]=CVector(10.0f, 27.0f, 20.0f);
-	puntosdeControl[11]=CVector(20.0f, 40.0f, 10.0f);
-	puntosdeControl[12]=CVector(24.0f, 52.0f, 4.0f);
-	puntosdeControl[13]=CVector(28.0f, 35.0f, -10.0f);
-	puntosdeControl[14]=CVector(-35.0f, 40.0f, -19.0f);
-	puntosdeControl[15]=CVector(-100.0f, 50.0f, -7.0f);
-	puntosdeControl[16]=CVector(-120.0f, 50.0f, 10.0f);
-	puntosdeControl[17]=CVector(-110.0f, 40.0f, 10.0f);
-	puntosdeControl[18]=CVector(-90.0f, 30.0f, 50.0f);
-	puntosdeControl[19]=CVector(-80.0f, 18.0f, 10.0f);
-}
-
 void iniciaCajasdeColision()
 {
 	cajaPersonaje.pos=CVector(player1.PosicionObj.x, player1.PosicionObj.y+3.0f, player1.PosicionObj.z);
@@ -1178,7 +1082,6 @@ int IniGL(GLvoid)										// Aqui se configuran los parametros iniciales de Ope
 	sonidoF[1].cargaSonido("Audio/sonido.mp3", 0);
 	sonidoF[2].cargaSonido("Audio/intro.mp3", 0);
 
-	inicializaPuntosdeControl();
 	iniciaCajasdeColision();
 	iniciaEsferasdeColision();
 	/*
@@ -1247,9 +1150,9 @@ void dibujaEsferadeColision(esferaCol *esfera)
 
 	glDisable(GL_LIGHTING);
 	if(esfera->estado == 0)
-		glColor3f(0.0f, 1.0f, 0.0f);
+		glColor3f(0.0f, 0.0f, 0.0f);
 	else if(esfera->estado == 1)
-		glColor3f(1.0f, 1.0f, 1.0f);
+		glColor3f(0.0f, 0.0f, 0.0f);
 
 	glLineWidth(3.0f);
 
@@ -1825,65 +1728,21 @@ void DibujaEjes()
 	glColor3f(1.0f,1.0f,1.0f);
 }
 
-void DibujaCaja(int tipo)
-{
-	glEnable(GL_TEXTURE_2D);
-
-	//cara frontal
-	if(tipo == 1)
-		glBindTexture(GL_TEXTURE_2D, textura[17].texID);
-	else if(tipo == 2)
-		glBindTexture(GL_TEXTURE_2D, textura[18].texID);
-	else if(tipo == 3)
-		glBindTexture(GL_TEXTURE_2D, textura[19].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(0.0f,0.0f,1.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-2.5f, -2.0f, 3.5f);
-		glTexCoord2f(1.0f, 0.0f); glVertex3f( 2.5f, -2.0f, 3.5f);
-		glTexCoord2f(1.0f, 1.0f); glVertex3f( 2.5f,  2.0f, 3.5f);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(-2.5f,  2.0f, 3.5f);
-	glEnd();
-
-	//cara izq
-	glBindTexture(GL_TEXTURE_2D, textura[20].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(-1.0f,0.0f,0.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-2.5f, -2.0f, -3.5f);
-		glTexCoord2f(1.0f, 0.0f); glVertex3f(-2.5f, -2.0f,  3.5f);
-		glTexCoord2f(1.0f, 1.0f); glVertex3f(-2.5f,  2.0f,  3.5f);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(-2.5f,  2.0f, -3.5f);
-	glEnd();
-
-	//cara der
-	glBindTexture(GL_TEXTURE_2D, textura[20].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(1.0f,0.0f,0.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(2.5f, -2.0f,  3.5f);
-		glTexCoord2f(1.0f, 0.0f); glVertex3f(2.5f, -2.0f, -3.5f);
-		glTexCoord2f(1.0f, 1.0f); glVertex3f(2.5f,  2.0f, -3.5f);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f(2.5f,  2.0f,  3.5f);
-	glEnd();
-
-	//cara sup
-	glBindTexture(GL_TEXTURE_2D, textura[21].texID);
-
-	glBegin(GL_QUADS);
-		glNormal3f(0.0f,1.0f,0.0f);
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-2.5f, 2.0f, -3.5f);
-		glTexCoord2f(1.0f, 0.0f); glVertex3f(-2.5f, 2.0f,  3.5f);
-		glTexCoord2f(1.0f, 1.0f); glVertex3f( 2.5f, 2.0f,  3.5f);
-		glTexCoord2f(0.0f, 1.0f); glVertex3f( 2.5f, 2.0f, -3.5f);
-	glEnd();
-
-	glDisable(GL_TEXTURE_2D);
-}
-
 void DibujaEscenario(){
 
 	glEnable(GL_TEXTURE_2D);
+	
+	//Fondo
+
+	glBindTexture(GL_TEXTURE_2D, textura[2].texID);
+
+	glBegin(GL_QUADS);
+	glNormal3f(0.0f, 0.0f, 1.0f);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(0.0f, 0.0f, -10.0);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(100.0f, 0.0f, -10.0);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(100.0f, 90.0f, -10.0);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(0.0f, 90.0f, -10.0);
+	glEnd();
 
 	//1er nivel
 
@@ -1933,13 +1792,13 @@ void DibujaEscenario(){
 
 	//centro
 	
-	glBindTexture(GL_TEXTURE_2D, textura[0].texID);
+	glBindTexture(GL_TEXTURE_2D, textura[3].texID);
 
 	glBegin(GL_QUADS);
 	glNormal3f(0.0f, 0.0f, 1.0f);
 	glTexCoord2f(0.0f, 0.0f); glVertex3f(45.0f, base2height, profundidadEscenario);
-	glTexCoord2f(0.2f, 0.0f); glVertex3f(55.0f, base2height, profundidadEscenario);
-	glTexCoord2f(0.2f, 1.0f); glVertex3f(55.0f, piso2heightAlta, profundidadEscenario);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(55.0f, base2height, profundidadEscenario);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(55.0f, piso2heightAlta, profundidadEscenario);
 	glTexCoord2f(0.0f, 1.0f); glVertex3f(45.0f, piso2heightAlta, profundidadEscenario);
 	glEnd();
 
@@ -2001,13 +1860,13 @@ void DibujaEscenario(){
 
 	//centro
 
-	glBindTexture(GL_TEXTURE_2D, textura[0].texID);
+	glBindTexture(GL_TEXTURE_2D, textura[4].texID);
 
 	glBegin(GL_QUADS);
 	glNormal3f(0.0f, 0.0f, 1.0f);
 	glTexCoord2f(0.0f, 0.0f); glVertex3f(40.0f, base3height, profundidadEscenario);
-	glTexCoord2f(0.7f, 0.0f); glVertex3f(60.0f, base3height, profundidadEscenario);
-	glTexCoord2f(0.7f, 1.0f); glVertex3f(60.0f, piso5heightBaja, profundidadEscenario);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(60.0f, base3height, profundidadEscenario);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(60.0f, piso5heightBaja, profundidadEscenario);
 	glTexCoord2f(0.0f, 1.0f); glVertex3f(40.0f, piso5heightBaja, profundidadEscenario);
 	glEnd();
 
@@ -2137,14 +1996,14 @@ void DibujaEscenario(){
 
 	//centro
 
-	glBindTexture(GL_TEXTURE_2D, textura[0].texID);
+	glBindTexture(GL_TEXTURE_2D, textura[3].texID);
 
 	glBegin(GL_QUADS);
 	glNormal3f(0.0f, 0.0f, 1.0f);
-	glTexCoord2f(0.2f, 0.0f); glVertex3f(45.0f, piso5heightBaja, profundidadEscenario);
-	glTexCoord2f(0.5f, 0.0f); glVertex3f(55.0f, piso5heightBaja, profundidadEscenario);
-	glTexCoord2f(0.5f, 1.0f); glVertex3f(55.0f, base6height, profundidadEscenario);
-	glTexCoord2f(0.2f, 1.0f); glVertex3f(45.0f, base6height, profundidadEscenario);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(45.0f, piso5heightBaja, profundidadEscenario);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(55.0f, piso5heightBaja, profundidadEscenario);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(55.0f, base6height, profundidadEscenario);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(45.0f, base6height, profundidadEscenario);
 	glEnd();
 
 	//6o nivel
@@ -3086,128 +2945,6 @@ void dibujaModeloArchivo()
 	}
 }
 
-void dibujaSpline()
-{
-	float t;
-	CVector ter3,ter2,ter1,ter;
-	CVector Punto;
-
-	glDisable(GL_LIGHTING);
-	glColor3f(1.0f, 1.0f, 0.0f);
-
-	glBegin(GL_LINE_STRIP);
-
-	float delta_t=1.0f/resolucion;
-
-	for(int i=1; i<18; i++) //max-2
-	{
-		ter3=puntosdeControl[i-1]*-1.0f+puntosdeControl[i]*3.0f+puntosdeControl[i+1]*-3.0f+puntosdeControl[i+2];
-		ter2=puntosdeControl[i-1]*3.0f+puntosdeControl[i]*-6.0f+puntosdeControl[i+1]*3.0f;
-		ter1=puntosdeControl[i-1]*-3.0f+puntosdeControl[i+1]*3.0f;
-		ter=puntosdeControl[i-1]+puntosdeControl[i]*4.0f+puntosdeControl[i+1];
-
-		for(int j=0; j<resolucion; j++)
-		{
-			t=j*delta_t;
-			Punto=(ter3*pow(t,3)+ter2*pow(t,2)+ter1*t+ter)/6.0f;
-
-			glVertex3f(Punto.x, Punto.y, Punto.z);
-		}
-	}
-
-	glEnd();
-
-	glPointSize(10.0f);
-
-	glBegin(GL_POINTS);
-
-		for(int i=0; i<20; i++)
-		{
-			glColor3f(1.0f, 0.0f, 0.0f);
-			
-			glVertex3f(puntosdeControl[i].x, puntosdeControl[i].y, puntosdeControl[i].z);
-		}
-
-	glEnd();
-
-	glPointSize(1.0f);
-
-	glColor3f(1.0f, 1.0f, 1.0f);
-	glEnable(GL_LIGHTING);
-}
-
-void movimientoSpline()
-{
-	float t;
-	float tAux;
-	CVector ter3,ter2,ter1,ter;
-	CVector Punto;
-
-	float delta_t=1.0f/resolucion;
-	static int pcAct=1;
-	static int segAct=0;
-
-	ter3=puntosdeControl[pcAct-1]*-1.0f+puntosdeControl[pcAct]*3.0f+puntosdeControl[pcAct+1]*-3.0f+puntosdeControl[pcAct+2];
-	ter2=puntosdeControl[pcAct-1]*3.0f+puntosdeControl[pcAct]*-6.0f+puntosdeControl[pcAct+1]*3.0f;
-	ter1=puntosdeControl[pcAct-1]*-3.0f+puntosdeControl[pcAct+1]*3.0f;
-	ter=puntosdeControl[pcAct-1]+puntosdeControl[pcAct]*4.0f+puntosdeControl[pcAct+1];
-
-	t=segAct*delta_t;
-	Punto=(ter3*pow(t,3)+ter2*pow(t,2)+ter1*t+ter)/6.0f;
-	
-	pAct=Punto;
-	if(pSpAct < totalP-1)
-	{
-		if(segAct < resolucion-1)
-		{
-			tAux=(segAct+1)*delta_t;
-			pSig=(ter3*pow(tAux,3)+ter2*pow(tAux,2)+ter1*tAux+ter)/6.0f;
-		}
-		else
-		{
-			tAux=0.0f;
-			if(pcAct < 18)
-			{
-				CVector ter_=puntosdeControl[(pcAct+1)-1]+puntosdeControl[(pcAct+1)]*4.0f+puntosdeControl[(pcAct+1)+1];
-				pSig=ter_/6.0f;
-			}
-			else
-			{
-				CVector ter_=puntosdeControl[1-1]+puntosdeControl[1]*4.0f+puntosdeControl[1+1];
-				pSig=ter_/6.0f;
-			}
-		}
-		
-		DirSp=Normaliza(pSig-pAct);
-	}
-	
-
-	if(segAct < resolucion-1)
-	{
-		segAct++;
-		pSpAct++;
-	}
-	else
-	{
-		if(pcAct < 18) //max-2
-			pcAct++;
-		else
-		{
-			pcAct=1;
-			pSpAct=0;
-			if(t > 0.9f)
-				infGame.estadoJuego=6;
-		}
-
-		if(pcAct < 18) 
-			segAct=0;
-	}
-
-	camSpline=Punto;
-	objSpline=Punto+DirSp*5.0f;
-	//objSpline=CVector(0.0f, 0.0f, 0.0f);
-}
-
 //PARTÍCULAS -- cambio 4
 
 //Aqui se dibuja cada partícula que consiste en un pequeño plano con alguna textura que representa algun
@@ -3327,13 +3064,13 @@ int RenderizaEscena(GLvoid)
 	DibujaEscenario();
 	//dibujaSpline();
 
-	dibujaCajaColision(&cajaPersonaje);
+	/*dibujaCajaColision(&cajaPersonaje);
 
 	for(int i=0; i < numCajas; i++) 
 		dibujaCajaColision(&cajaEscenario[i]);
 	
 	dibujaEsferadeColision(&esferaPersonaje);
-
+	*/
 	if(player1.visible == true)
 	{
 		glPushMatrix();
@@ -3385,7 +3122,7 @@ int RenderizaEscena(GLvoid)
 		glDisable(GL_LIGHT1);
 		//Fin sombra enemigo
 
-		dibujaEsferadeColision(&esferaEnemigos[i]);
+		//dibujaEsferadeColision(&esferaEnemigos[i]);
 	}
 	
 	//Sombra personaje
